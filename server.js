@@ -1,10 +1,15 @@
 ﻿require('rootpath')();
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+
+const path = __dirname + '/client/dist/';
+
+const app = express();
+
+app.use(express.static(path));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -18,6 +23,10 @@ app.use('/accounts', require('./accounts/accounts.controller'));
 
 // swagger docs route
 app.use('/api-docs', require('_helpers/swagger'));
+
+app.get('/', function (req,res) {
+  res.sendFile(path + "index.html");
+});
 
 // global error handler
 app.use(errorHandler);
