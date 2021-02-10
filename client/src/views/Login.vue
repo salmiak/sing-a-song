@@ -1,9 +1,11 @@
 <template>
   <div class="login">
     <h1>Logga in</h1>
-    <input v-model="email" placeholder="Email" />
-    <input v-model="password" placeholder="Lösenord" type="password" />
-    <button @click="login">Logga in</button>
+    <form @submit.prevent="handleSubmit">
+      <input v-model="email" placeholder="Email" />
+      <input v-model="password" placeholder="Lösenord" type="password" />
+      <button :disabled="loggingIn">Logga in</button>
+    </form>
     <div v-if="user">
       <h2>Hej {{user.firstName}}</h2>
     </div>
@@ -14,32 +16,36 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
-const api = 'http://localhost:4000/accounts'
+// const api = 'http://localhost:4000/accounts'
 
 export default {
   name: 'Login',
-  data() {
-    return {
-      email: '',
-      password: ''
-    }
+  data () {
+      return {
+          email: '',
+          password: '',
+          submitted: false
+      }
   },
   computed: {
-    user() {
-      return this.$store.state.user
-    }
+      loggingIn () {
+          return this.$store.state.authentication.status.loggingIn;
+      }
+  },
+  created () {
+      // reset login status
+      this.$store.dispatch('authentication/logout');
   },
   methods: {
-    login() {
-      this.$http.post(api + '/authenticate', {
-        email: this.email,
-        password: this.password
-      }).then((response) => {
-        this.$store.commit('setUser', response.body)
-        this.email = ""
-        this.password = ""
-      })
-    }
+      handleSubmit (e) {
+        console.log(e) // eslint-disable-line no-console
+          this.submitted = true;
+          const { email, password } = this;
+          const { dispatch } = this.$store;
+          if (email && password) {
+              dispatch('authentication/login', { email, password });
+          }
+      }
   }
 }
 </script>
