@@ -6,9 +6,6 @@
       <input v-model="password" placeholder="Lösenord" type="password" />
       <button :disabled="loggingIn">Logga in</button>
     </form>
-    <div v-if="user">
-      <h2>Hej {{user.firstName}}</h2>
-    </div>
   </div>
 </template>
 

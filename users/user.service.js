@@ -249,7 +249,7 @@ function basicDetails(user) {
 async function sendVerificationEmail(user, origin) {
     let message;
     if (origin) {
-        const verifyUrl = `${origin}/user/verify-email?token=${user.verificationToken}`;
+        const verifyUrl = `${origin}/users/verify-email/${user.verificationToken}`;
         message = `<p>Please click the below link to verify your email address:</p>
                    <p><a href="${verifyUrl}">${verifyUrl}</a></p>`;
     } else {
@@ -269,7 +269,7 @@ async function sendVerificationEmail(user, origin) {
 async function sendAlreadyRegisteredEmail(email, origin) {
     let message;
     if (origin) {
-        message = `<p>If you don't know your password please visit the <a href="${origin}/user/forgot-password">forgot password</a> page.</p>`;
+        message = `<p>If you don't know your password please visit the <a href="${origin}/users/forgot-password">forgot password</a> page.</p>`;
     } else {
         message = `<p>If you don't know your password you can reset it via the <code>/user/forgot-password</code> api route.</p>`;
     }
@@ -286,7 +286,7 @@ async function sendAlreadyRegisteredEmail(email, origin) {
 async function sendPasswordResetEmail(user, origin) {
     let message;
     if (origin) {
-        const resetUrl = `${origin}/user/reset-password?token=${user.resetToken}`;
+        const resetUrl = `${origin}/users/reset-password?token=${user.resetToken}`;
         message = `<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
                    <p><a href="${resetUrl}">${resetUrl}</a></p>`;
     } else {

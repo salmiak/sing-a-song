@@ -6,6 +6,7 @@ const apiUrl = 'http://localhost:4000'
 export const userService = {
     login,
     logout,
+    register,
     getAll
 };
 
@@ -34,6 +35,17 @@ function logout() {
     localStorage.removeItem('user');
 }
 
+function register(payload) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/users/register`, requestOptions)
+        .then(handleResponse);
+}
+
 function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -46,6 +58,7 @@ function getAll() {
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
+        console.log(response.ok) // eslint-disable-line no-console
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api

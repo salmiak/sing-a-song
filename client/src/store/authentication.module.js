@@ -1,5 +1,7 @@
 import { userService } from '../_services';
-import { router } from '../_helpers';
+import router from '../router'
+
+console.log(router) // eslint-disable-line no-console
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -17,6 +19,7 @@ export const authentication = {
                 .then(
                     user => {
                         commit('loginSuccess', user);
+                        console.log('nu') // eslint-disable-line no-console
                         router.push('/');
                     },
                     error => {
@@ -28,7 +31,21 @@ export const authentication = {
         logout({ commit }) {
             userService.logout();
             commit('logout');
-        }
+        },
+        register(a, payload) {
+          return new Promise((resolve, reject) => {
+            userService.register(payload)
+            .then(
+              response => {
+                resolve(response)
+              },
+              error => {
+                localStorage({error})
+                reject()
+              }
+            );
+          })
+        },
     },
     mutations: {
         loginRequest(state, user) {
