@@ -18,10 +18,12 @@ async function initialize() {
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
     db.RefreshToken = require('../users/refresh-token.model')(sequelize);
+    db.Profile = require('../profiles/profile.model')(sequelize);
 
     // define relationships
     db.User.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.User);
+    db.User.hasOne(db.Profile, { onDelete: 'CASCADE' });
 
     // sync all models with database
     await sequelize.sync();
