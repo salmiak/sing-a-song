@@ -98,19 +98,6 @@ async function register(params, origin) {
     // save user
     await user.save();
 
-    console.log(user) // eslint-disable-line no-console
-    console.log(user.id) // eslint-disable-line no-console
-
-    // create and save profile
-    const profile = new db.Profile({
-      userId: user.id,
-      description: 'test'
-    })
-
-    await profile.save();
-
-    console.log(profile) // eslint-disable-line no-console
-
     // send email
     await sendVerificationEmail(user, origin);
 }
@@ -123,6 +110,13 @@ async function verifyEmail({ token }) {
     user.verified = Date.now();
     user.verificationToken = null;
     await user.save();
+
+    // create and save profile
+    const profile = new db.Profile({
+      userId: user.id,
+      description: 'Jag är ny på Sing-a-song och har inte fyllt i min profil än.'
+    })
+    await profile.save();
 }
 
 async function forgotPassword({ email }, origin) {

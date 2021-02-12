@@ -52,7 +52,7 @@ async function getProfile(id) {
     return profile;
 }
 
-function basicDetails(user) {
+function basicDetails(profile) {
     const { id, description } = profile;
     return { id, description };
 }

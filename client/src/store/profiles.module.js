@@ -1,6 +1,6 @@
 import { services } from '../_services';
 
-export const users = {
+export const profiles = {
     namespaced: true,
     state: {
         all: {}
@@ -9,7 +9,7 @@ export const users = {
         getAll({ commit }) {
             commit('getAllRequest');
 
-            services.userService.getAll()
+            services.profileService.getAll()
                 .then(
                     users => commit('getAllSuccess', users),
                     error => commit('getAllFailure', error)
