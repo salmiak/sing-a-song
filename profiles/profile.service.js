@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function getAll() {
-    const profiles = await db.Profile.findAll();
+    const profiles = await db.Profile.findAll({ include: db.User });
     return profiles.map(x => basicDetails(x));
 }
 
@@ -53,6 +53,13 @@ async function getProfile(id) {
 }
 
 function basicDetails(profile) {
-    const { id, description } = profile;
-    return { id, description };
+  console.log(profile) // eslint-disable-line no-console
+    const { id, description, userId } = profile;
+    const { firstName, lastName, } = profile.user;
+    const user = {
+      id: userId,
+      firstName,
+      lastName
+    }
+    return { id, description, user, userId };
 }

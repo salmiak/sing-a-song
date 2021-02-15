@@ -4,10 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        description: { type: DataTypes.STRING },
-        created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-        updated: { type: DataTypes.DATE },
-        // user: { type: } // Relation to the user
+        description: { type: DataTypes.STRING }
     };
 
     const options = {

@@ -3,11 +3,12 @@
       <h1>Sing-a-song</h1>
       <em v-if="profiles.loading">Laddar profiler...</em>
       <span v-if="profiles.error" class="text-danger">ERROR: {{profiles.error}}</span>
-      <ul v-if="profiles.items">
-          <li v-for="profile in profiles.items" :key="profile.id">
+      <template v-if="profiles.items">
+          <p v-for="profile in profiles.items" :key="profile.id">
+              <strong>{{profile.user.firstName}} {{profile.user.lastName}}:</strong><br/>
               {{profile.description}}
-          </li>
-      </ul>
+          </p>
+      </template>
   </div>
 </template>
 

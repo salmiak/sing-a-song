@@ -24,6 +24,7 @@ async function initialize() {
     db.User.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.User);
     db.User.hasOne(db.Profile, { onDelete: 'CASCADE' });
+    db.Profile.belongsTo(db.User);
 
     // sync all models with database
     await sequelize.sync();

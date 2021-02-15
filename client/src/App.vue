@@ -1,10 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Skapa konto</router-link>
+      <router-link to="/">Hem</router-link> |
+      <router-link to="/about">Om Sing a Song</router-link> |
+      <template v-if="$store.state.authentication.user">
+        <router-link to="/login">Logga ut {{$store.state.authentication.user.firstName}}</router-link>
+      </template>
+      <template v-else>
+        <router-link to="/login">Logga in</router-link> |
+        <router-link to="/register">Skapa konto</router-link>
+      </template>
     </div>
     <router-view/>
   </div>

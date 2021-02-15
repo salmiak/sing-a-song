@@ -1,4 +1,4 @@
-import { userService } from '../_services';
+import { services } from '../_services';
 import router from '../router'
 
 console.log(router) // eslint-disable-line no-console
@@ -15,7 +15,7 @@ export const authentication = {
         login({ dispatch, commit }, { email, password }) {
             commit('loginRequest', { email });
 
-            userService.login(email, password)
+            services.userService.login(email, password)
                 .then(
                     user => {
                         commit('loginSuccess', user);
@@ -29,12 +29,12 @@ export const authentication = {
                 );
         },
         logout({ commit }) {
-            userService.logout();
+            services.userService.logout();
             commit('logout');
         },
         register(a, payload) {
           return new Promise((resolve, reject) => {
-            userService.register(payload)
+            services.userService.register(payload)
             .then(
               response => {
                 resolve(response)
