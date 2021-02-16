@@ -19,7 +19,6 @@ export const authentication = {
                 .then(
                     user => {
                         commit('loginSuccess', user);
-                        console.log('nu') // eslint-disable-line no-console
                         router.push('/');
                     },
                     error => {
