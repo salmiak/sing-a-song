@@ -1,19 +1,49 @@
 <template>
-  <div class="login">
-    <h1>Registrera dig</h1>
-    <form v-if="!success" @submit.prevent="handleSubmit">
-      <input v-model="firstName" placeholder="Förnamn" /><br/>
-      <input v-model="lastName" placeholder="Efternamn" /><br/>
-      <input v-model="email" placeholder="Email" /><br/>
-      <input v-model="password" placeholder="Lösenord" type="password" /><br/>
-      <input v-model="confirmPassword" placeholder="Lösenord igen" type="password" /><br/>
-      <input type="checkbox" v-model="acceptTerms" /> Genom att kryssa i godkänner du våra användarvilkor.<br/>
-      <button :disabled="submitted">Skapa konto</button>
-    </form>
-    <div v-else>
-      Kolla din email
-    </div>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col>
+        <h1>Registrera dig</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="col-6">
+        <v-form v-if="!success" @submit.prevent="handleSubmit">
+          <v-text-field
+            outlined
+            v-model="firstName"
+            label="Förnamn" ></v-text-field>
+          <v-text-field
+            outlined
+            v-model="lastName"
+            label="Efternamn" ></v-text-field>
+          <v-text-field
+            outlined
+            v-model="email"
+            label="Email" ></v-text-field>
+          <v-text-field
+            outlined
+            v-model="password"
+            label="Lösenord"
+            type="password" ></v-text-field>
+          <v-text-field
+            outlined
+            v-model="confirmPassword"
+            label="Lösenord igen"
+            type="password" ></v-text-field>
+          <v-checkbox
+            v-model="acceptTerms"
+            label="Genom att kryssa i godkänner du våra användarvilkor"
+          ></v-checkbox>
+          <v-btn
+            @click="handleSubmit"
+            :disabled="submitted">Skapa konto</v-btn>
+        </v-form>
+        <div v-else>
+          Kolla din email
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

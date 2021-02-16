@@ -1,11 +1,21 @@
 <template lang="html">
-  <div class="account">
-    <h1>Hej {{user.firstName}}!</h1>
-    <h2>Ditt konto</h2>
-    <p>Gick med {{user.created}}</p>
-    <h2>Din profil</h2>
-    <p>Beskrivning: {{profile.description}}</p>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col>
+        <h1>Hej {{user.firstName}}!</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <h2>Ditt konto</h2>
+        <p>Gick med {{user.created}}</p>
+      </v-col>
+      <v-col>
+        <h2>Din profil</h2>
+        <p>Beskrivning: {{profile.description}}</p>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

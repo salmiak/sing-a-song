@@ -1,20 +1,34 @@
 <template>
-  <div class="login">
-    <h1>Logga in</h1>
-    <form @submit.prevent="handleSubmit">
-      <input v-model="email" placeholder="Email" />
-      <input v-model="password" placeholder="Lösenord" type="password" />
-      <button :disabled="loggingIn">Logga in</button>
-    </form>
-  </div>
+  <v-container class="login">
+    <v-row>
+      <v-col>
+        <h1>Logga in</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="col-6">
+        <v-form @submit.prevent="handleSubmit">
+          <v-text-field
+            v-model="email"
+            label="Email"
+            outlined
+          ></v-text-field>
+          <v-text-field
+            v-model="password"
+            label="Lösenord" type="password"
+            outlined
+          ></v-text-field>
+          <v-btn
+            :disabled="loggingIn"
+            @click="handleSubmit"
+          >Logga in</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-// const api = 'http://localhost:4000/accounts'
-
 export default {
   name: 'Login',
   data () {
@@ -34,8 +48,7 @@ export default {
       this.$store.dispatch('authentication/logout');
   },
   methods: {
-      handleSubmit (e) {
-        console.log(e) // eslint-disable-line no-console
+      handleSubmit () {
           this.submitted = true;
           const { email, password } = this;
           const { dispatch } = this.$store;
