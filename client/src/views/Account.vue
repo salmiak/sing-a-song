@@ -21,7 +21,7 @@
 
       <v-tab-item>
         <v-row>
-          <v-col class="col-6">
+          <v-col class="col-6 pb-4">
             <h2>Ditt konto</h2>
             <p>Gick med {{user.created}}</p>
 
@@ -61,10 +61,38 @@
 
       <v-tab-item>
         <v-row>
-          <v-col>
+          <v-col class="col-8 pb-4">
             <h2>Din profil</h2>
             <template v-if="profile">
-              <p>Beskrivning: {{profile.description}}</p>
+
+              <v-textarea
+                label="Beskrivning"
+                v-model="profile.description"
+                hint="Visas på din profil"
+                auto-grow
+                rows="3"
+              ></v-textarea>
+
+              <v-combobox
+                v-model="profile.areas"
+                :items="areas"
+                label="Vilka regioner kan du uppträda i?"
+                multiple
+                chips
+              ></v-combobox>
+
+              <v-textarea
+                label="Kontaktuppgifter"
+                v-model="profile.contact"
+                hint="E-postadresser kommer förvandlas till länkar."
+                auto-grow
+                rows="3"
+              ></v-textarea>
+
+              <v-btn
+                @click="updateProfile"
+                :disabled="submitted">Uppdatera konto</v-btn>
+
             </template>
             <template v-else>
               <p>Laddar profil...</p>
@@ -82,7 +110,13 @@ export default {
   name:'Account',
   data() {
     return {
-      tabs: null
+      tabs: null,
+      areas: [
+        'Götaland',
+        'Svealand',
+        'Södra Norrland',
+        'Norra Norrland'
+      ]
     }
   },
   computed: {
