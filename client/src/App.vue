@@ -4,6 +4,7 @@
       <router-link to="/">Hem</router-link> |
       <router-link to="/about">Om Sing a Song</router-link> |
       <template v-if="$store.state.authentication.user">
+        <router-link to="/account">Ditt konto</router-link> |
         <router-link to="/login">Logga ut {{$store.state.authentication.user.firstName}}</router-link>
       </template>
       <template v-else>

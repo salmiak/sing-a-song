@@ -8,7 +8,7 @@
       <input v-model="password" placeholder="Lösenord" type="password" /><br/>
       <input v-model="confirmPassword" placeholder="Lösenord igen" type="password" /><br/>
       <input type="checkbox" v-model="acceptTerms" /> Genom att kryssa i godkänner du våra användarvilkor.<br/>
-      <button :disabled="loggingIn">Logga in</button>
+      <button :disabled="submitted">Skapa konto</button>
     </form>
     <div v-else>
       Kolla din email
@@ -35,15 +35,6 @@ export default {
         submitted: false,
         success: false
       }
-  },
-  computed: {
-      loggingIn () {
-          return this.$store.state.authentication.status.loggingIn;
-      }
-  },
-  created () {
-      // reset login status
-      this.$store.dispatch('authentication/logout');
   },
   methods: {
     handleSubmit () {
