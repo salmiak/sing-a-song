@@ -33,8 +33,7 @@
           <v-col
             class="text-center"
           >
-            <h1 class="text-h3">{{profileMock.name}}</h1>
-            <p>{{userName}}</p>
+            <h1 class="text-h3 mb-4">{{userName}}</h1>
             <p>{{profile.description}}</p>
           </v-col>
         </v-row>

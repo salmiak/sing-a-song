@@ -11,7 +11,7 @@
         <span v-if="profiles.error" class="text-danger">ERROR: {{profiles.error}}</span>
         <template v-if="profiles.items">
             <p v-for="profile in profiles.items" :key="profile.id">
-                <strong>{{profile.user.firstName}} {{profile.user.lastName}}:</strong><br/>
+                <router-link :to="`/profile/${profile.id}`"><strong>{{profile.user.firstName}} {{profile.user.lastName}}:</strong></router-link><br/>
                 {{profile.description}}
             </p>
         </template>
