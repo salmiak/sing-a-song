@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1>Sing-a-song</h1>
+        <h1 class="text-h1 mt-16">Sing-a-song</h1>
       </v-col>
     </v-row>
     <v-row>

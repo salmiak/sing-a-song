@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1>Hej {{user.firstName}}!</h1>
+        <h1 class="text-h1 mt-16">Hej {{user.firstName}}!</h1>
       </v-col>
     </v-row>
     <v-row>
@@ -10,6 +10,7 @@
         <v-tabs
           v-model="tabs"
           color="red"
+          class="mb-16"
         >
           <v-tab>Ditt konto</v-tab>
           <v-tab>Din profil</v-tab>
@@ -22,10 +23,10 @@
       <v-tab-item>
         <v-row>
           <v-col class="col-6 pb-4">
-            <h2>Ditt konto</h2>
-            <p>Gick med {{user.created}}</p>
+            <h2 class="text-h2">Ditt konto</h2>
+            <p class="text--secondary">Gick med {{user.created}}</p>
 
-            <h3>Kontoinformation</h3>
+            <h3 class="text-h3 mt-8">Kontoinformation</h3>
             <v-form @submit.prevent="updateAccount">
               <v-text-field
                 v-model="user.firstName"
@@ -41,7 +42,7 @@
                 :disabled="submitted">Uppdatera konto</v-btn>
             </v-form>
 
-            <h3>Ändra lösenord</h3>
+            <h3 class="text-h3 mt-8">Ändra lösenord</h3>
             <v-form>
               <v-text-field
                 v-model="password"
@@ -62,7 +63,7 @@
       <v-tab-item>
         <v-row>
           <v-col class="col-8 pb-4">
-            <h2>Din profil</h2>
+            <h2 class="text-h2">Din profil</h2>
             <template v-if="profile">
 
               <v-textarea
