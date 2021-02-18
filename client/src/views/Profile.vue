@@ -7,7 +7,7 @@
             <v-parallax
               height="250"
               src="https://source.unsplash.com/collection/10604933/"
-              class="ma-0"
+              class="ma-1 mt-4 rounded"
             >
             </v-parallax>
           </v-col>
@@ -40,23 +40,23 @@
         <v-row
           v-for="i in 5"
           :key="i"
-          class="brown darken-3"
+          class=""
         >
           <v-col
             v-for="img in 3"
             :key="'img' + img"
-            class="col-4 pa-0"
+            class="col-4 pa-1"
           >
             <v-img
-              :aspect-ratio="1"
+              :aspect-ratio="4/3"
               max-height="480"
               max-width="640"
-              :src="`https://source.unsplash.com/320x240/?music,${img}${i}`"
-
+              :src="`https://source.unsplash.com/640x640/?music,${img}${i}`"
+              class="rounded"
             >
               <template v-slot:placeholder>
                 <v-row
-                  class="fill-height ma-0"
+                  class="fill-height ma-0 brown darken-3"
                   align="center"
                   justify="center"
                 >
