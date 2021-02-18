@@ -9,7 +9,7 @@
       <v-col>
         <v-tabs
           v-model="tabs"
-          color="red"
+          color="primary"
           class="mb-16"
         >
           <v-tab>Ditt konto</v-tab>

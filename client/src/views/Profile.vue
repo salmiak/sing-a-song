@@ -56,13 +56,13 @@
             >
               <template v-slot:placeholder>
                 <v-row
-                  class="fill-height ma-0 brown darken-3"
+                  class="fill-height ma-0 secondary"
                   align="center"
                   justify="center"
                 >
                   <v-progress-circular
                     indeterminate
-                    color="red lighten-3"
+                    color="accent"
                   ></v-progress-circular>
                 </v-row>
               </template>
