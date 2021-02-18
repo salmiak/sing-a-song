@@ -7,6 +7,7 @@ export const userService = {
     login,
     logout,
     register,
+    update,
     getAll
 };
 
@@ -44,6 +45,22 @@ function register(payload) {
 
     return fetch(`${apiUrl}/users/register`, requestOptions)
         .then(handleResponse);
+}
+
+function update(payload) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/users/${payload.id}`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+          let userCookie = JSON.parse(localStorage.getItem('user'));
+          Object.assign(userCookie, user)
+          localStorage.setItem('user', JSON.stringify(userCookie));
+        });
 }
 
 function getAll() {

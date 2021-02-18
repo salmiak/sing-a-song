@@ -24,7 +24,7 @@
         <v-row>
           <v-col class="col-6 pb-4">
             <h2 class="text-h2">Ditt konto</h2>
-            <p class="text--secondary">Gick med {{user.created}}</p>
+            <p class="mt-4 text--disabled text-body-2">Gick med {{user.created}}</p>
 
             <h3 class="text-h3 mt-8">Kontoinformation</h3>
             <v-form @submit.prevent="updateAccount">
@@ -37,6 +37,14 @@
               <v-text-field
                 v-model="user.email"
                 label="Email" ></v-text-field>
+
+                <v-alert
+                  type="error"
+                  :value="!!accountValidationError"
+                  transition="scale-transition"
+                  class="elevation-2"
+                >{{accountValidationError}}</v-alert>
+
               <v-btn
                 @click="updateAccount"
                 :disabled="submitted">Uppdatera konto</v-btn>
@@ -52,6 +60,14 @@
                 v-model="confirmPassword"
                 label="Lösenord igen"
                 type="password" ></v-text-field>
+
+                <v-alert
+                  type="error"
+                  :value="!!passwordValidationError"
+                  transition="scale-transition"
+                  class="elevation-2"
+                >{{passwordValidationError}}</v-alert>
+
               <v-btn
                 @click="updatePassword"
                 :disabled="submitted">Uppdatera lösenord</v-btn>
@@ -111,13 +127,18 @@ export default {
   name:'Account',
   data() {
     return {
+      submitted: false,
       tabs: null,
       areas: [
         'Götaland',
         'Svealand',
         'Södra Norrland',
         'Norra Norrland'
-      ]
+      ],
+      password: '',
+      confirmPassword: '',
+      passwordValidationError: null,
+      accountValidationError: null
     }
   },
   computed: {
@@ -140,22 +161,33 @@ export default {
   },
   methods: {
     updateAccount () {
-      /*
-      const { email, password } = this;
-      const { dispatch } = this.$store;
-      if (email && password) {
-          dispatch('authentication/login', { email, password });
-      }
-      */
+      this.accountValidationError = null
+      this.submitted = true
+      this.$store.dispatch('authentication/update', this.user)
+        .then(() => {
+          this.submitted = false
+        }, error => {
+          this.accountValidationError = error
+          this.submitted = false
+        })
     },
-    updatePassword () {
-      /*
-      const { email, password } = this;
-      const { dispatch } = this.$store;
-      if (email && password) {
-          dispatch('authentication/login', { email, password });
-      }
-      */
+    updatePassword() {
+      this.passwordValidationError = null
+      this.submitted = true
+      this.$store.dispatch('authentication/update', {
+        id: this.user.id,
+        password: this.password,
+        confirmPassword: this.confirmPassword
+      })
+        .then(() => {
+          this.submitted = false
+        }, error => {
+          this.passwordValidationError = error
+          this.submitted = false
+        })
+    },
+    updateProfile() {
+
     }
   }
 }

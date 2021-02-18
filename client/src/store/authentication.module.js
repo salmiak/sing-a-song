@@ -39,8 +39,22 @@ export const authentication = {
                 resolve(response)
               },
               error => {
-                localStorage({error})
-                reject()
+                console.error({error})
+                reject(error)
+              }
+            );
+          })
+        },
+        update(a, payload) {
+          return new Promise((resolve, reject) => {
+            services.userService.update(payload)
+            .then(
+              response => {
+                resolve(response)
+              },
+              error => {
+                console.error({error})
+                reject(error)
               }
             );
           })
