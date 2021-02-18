@@ -186,6 +186,8 @@ function create(req, res, next) {
 }
 
 function updateSchema(req, res, next) {
+    console.log('validate') // eslint-disable-line no-console
+
     const schemaRules = {
         title: Joi.string().empty(''),
         firstName: Joi.string().empty(''),
@@ -205,6 +207,9 @@ function updateSchema(req, res, next) {
 }
 
 function update(req, res, next) {
+    console.log('update') // eslint-disable-line no-console
+    console.log(req.body) // eslint-disable-line no-console
+
     // users can update their own user and admins can update any user
     if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Unauthorized' });
