@@ -24,7 +24,5 @@ Run `$ npm start` to launch server, this will serve the content of the `client/d
 [ ] Find a place to host and publish
 [ ] Add real SMTP-service for email
 [ ] Add file upload
-[ ] Add fields to profile to support layout of profile page
 [ ] Add media model
-[ ] Make account page work and update on save
 [ ] Add tab in account-page to route

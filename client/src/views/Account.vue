@@ -82,6 +82,10 @@
             <h2 class="text-h2">Din profil</h2>
             <template v-if="profile">
 
+              <v-text-field
+                v-model="profile.stageName"
+                label="Artistnamn" ></v-text-field>
+
               <v-textarea
                 label="Beskrivning"
                 v-model="profile.description"
@@ -91,7 +95,7 @@
               ></v-textarea>
 
               <v-combobox
-                v-model="profile.areas"
+                v-model="profile.geoReach"
                 :items="areas"
                 label="Vilka regioner kan du uppträda i?"
                 multiple
@@ -100,7 +104,7 @@
 
               <v-textarea
                 label="Kontaktuppgifter"
-                v-model="profile.contact"
+                v-model="profile.contactDetails"
                 hint="E-postadresser kommer förvandlas till länkar."
                 auto-grow
                 rows="3"
@@ -135,7 +139,6 @@ export default {
   data() {
     return {
       submitted: false,
-      tabs: null,
       areas: [
         'Götaland',
         'Svealand',

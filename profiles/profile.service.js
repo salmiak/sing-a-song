@@ -56,12 +56,12 @@ async function getProfile(id) {
 }
 
 function basicDetails(profile) {
-    const { id, description, userId } = profile;
+    const { id, description, userId, stageName, geoReach, contactDetails } = profile;
     const { firstName, lastName, } = profile.user;
     const user = {
       id: userId,
       firstName,
       lastName
     }
-    return { id, description, user, userId };
+    return { id, description, user, userId, stageName, geoReach, contactDetails };
 }

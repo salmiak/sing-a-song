@@ -4,7 +4,10 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        description: { type: DataTypes.STRING }
+        stageName: { type: DataTypes.STRING },
+        description: { type: DataTypes.TEXT },
+        contactDetails: { type: DataTypes.TEXT },
+        geoReach: { type: DataTypes.JSON }
     };
 
     const options = {

@@ -13,7 +13,7 @@
           </v-col>
         </v-row>
         <v-row
-          justify = "center"
+          justify="center"
         >
           <v-col
             class="col-3 text-center"
@@ -29,11 +29,13 @@
             </v-avatar>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row
+          justify="center"
+        >
           <v-col
-            class="text-center"
+            class="text-center col-8"
           >
-            <h1 class="text-h3 mb-4">{{userName}}</h1>
+            <h1 class="text-h3 mb-4">{{profile.stageName || userName}}</h1>
             <p>{{profile.description}}</p>
             <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
           </v-col>
