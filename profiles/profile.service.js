@@ -33,6 +33,9 @@ async function update(id, params) {
 
     // copy params to user and save
     Object.assign(profile, params);
+
+    console.log(profile) // eslint-disable-line no-console
+
     // profile.updated = Date.now();
     await profile.save();
 
@@ -47,7 +50,7 @@ async function _delete(id) {
 // helper functions
 
 async function getProfile(id) {
-    const profile = await db.Profile.findByPk(id);
+    const profile = await db.Profile.findByPk(id, { include: db.User });
     if (!profile) throw 'Profile not found';
     return profile;
 }

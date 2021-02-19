@@ -14,7 +14,21 @@ export const profiles = {
                     users => commit('getAllSuccess', users),
                     error => commit('getAllFailure', error)
                 );
-        }
+        },
+        update(a, payload) {
+          return new Promise((resolve, reject) => {
+            services.profileService.update(payload)
+            .then(
+              response => {
+                resolve(response)
+              },
+              error => {
+                console.error({error})
+                reject(error)
+              }
+            );
+          })
+        },
     },
     mutations: {
         getAllRequest(state) {

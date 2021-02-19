@@ -61,12 +61,12 @@
                 label="Lösenord igen"
                 type="password" ></v-text-field>
 
-                <v-alert
-                  type="error"
-                  :value="!!passwordValidationError"
-                  transition="scale-transition"
-                  class="elevation-2"
-                >{{passwordValidationError}}</v-alert>
+              <v-alert
+                type="error"
+                :value="!!passwordValidationError"
+                transition="scale-transition"
+                class="elevation-2"
+              >{{passwordValidationError}}</v-alert>
 
               <v-btn
                 @click="updatePassword"
@@ -106,6 +106,13 @@
                 rows="3"
               ></v-textarea>
 
+              <v-alert
+                type="error"
+                :value="!!profileValidationError"
+                transition="scale-transition"
+                class="elevation-2"
+              >{{profileValidationError}}</v-alert>
+
               <v-btn
                 @click="updateProfile"
                 :disabled="submitted">Uppdatera konto</v-btn>
@@ -138,7 +145,8 @@ export default {
       password: '',
       confirmPassword: '',
       passwordValidationError: null,
-      accountValidationError: null
+      accountValidationError: null,
+      profileValidationError: null
     }
   },
   computed: {
@@ -187,7 +195,15 @@ export default {
         })
     },
     updateProfile() {
-
+      this.profileValidationError = null
+      this.submitted = true
+      this.$store.dispatch('profiles/update', this.profile)
+        .then(() => {
+          this.submitted = false
+        }, error => {
+          this.profileValidationError = error
+          this.submitted = false
+        })
     }
   }
 }

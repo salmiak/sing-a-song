@@ -4,7 +4,8 @@ import { authHeader } from '../_helpers';
 const apiUrl = 'http://localhost:4000'
 
 export const profileService = {
-    getAll
+    getAll,
+    update
 };
 
 function getAll() {
@@ -14,6 +15,17 @@ function getAll() {
     };
 
     return fetch(`${apiUrl}/profiles`, requestOptions).then(handleResponse);
+}
+
+function update(payload) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/profiles/${payload.id}`, requestOptions)
+        .then(handleResponse)
 }
 
 function handleResponse(response) {

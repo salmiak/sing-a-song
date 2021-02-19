@@ -35,6 +35,7 @@
           >
             <h1 class="text-h3 mb-4">{{userName}}</h1>
             <p>{{profile.description}}</p>
+            <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
           </v-col>
         </v-row>
         <v-row
