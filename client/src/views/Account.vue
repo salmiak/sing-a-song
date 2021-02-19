@@ -8,19 +8,18 @@
     <v-row>
       <v-col>
         <v-tabs
-          v-model="tabs"
           color="primary"
           class="mb-16"
         >
-          <v-tab>Ditt konto</v-tab>
-          <v-tab>Din profil</v-tab>
+          <v-tab to="/account/account">Ditt konto</v-tab>
+          <v-tab to="/account/profile">Din profil</v-tab>
         </v-tabs>
       </v-col>
     </v-row>
 
-    <v-tabs-items v-model="tabs">
+    <v-tabs-items v-model="$route.params.tab">
 
-      <v-tab-item>
+      <v-tab-item value="account">
         <v-row>
           <v-col class="col-6 pb-4">
             <h2 class="text-h2">Ditt konto</h2>
@@ -76,7 +75,7 @@
         </v-row>
       </v-tab-item>
 
-      <v-tab-item>
+      <v-tab-item value="profile">
         <v-row>
           <v-col class="col-8 pb-4">
             <h2 class="text-h2">Din profil</h2>
@@ -119,7 +118,11 @@
 
               <v-btn
                 @click="updateProfile"
-                :disabled="submitted">Uppdatera konto</v-btn>
+                :disabled="submitted"
+                class="mb-4"
+              >Uppdatera konto</v-btn>
+
+              <p><router-link :to="`/profile/${profile.id}`">Besök din profil</router-link></p>
 
             </template>
             <template v-else>

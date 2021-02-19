@@ -33,8 +33,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/account',
+    path: '/account/:tab',
     name: 'Account',
+    component: Account
+  },
+  {
+    alias: '/account',
+    path: '/account/account',
     component: Account
   },
   {

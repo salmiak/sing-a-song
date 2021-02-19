@@ -9,6 +9,23 @@
               src="https://source.unsplash.com/collection/4927557/"
               class="ma-1 mt-4 rounded"
             >
+              <v-row
+                v-if="profile.userId === $store.state.authentication.user.id"
+                align="end"
+                justify="end"
+              >
+                <v-col
+                  class="text-right pb-7"
+                  cols="4"
+                >
+                  <v-btn
+                    color="primary"
+                    to="/account/profile"
+                  >
+                    <v-icon left>mdi-pen</v-icon> Redigera profil
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-parallax>
           </v-col>
         </v-row>

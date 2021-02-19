@@ -25,4 +25,3 @@ Run `$ npm start` to launch server, this will serve the content of the `client/d
 [ ] Add real SMTP-service for email
 [ ] Add file upload
 [ ] Add media model
-[ ] Add tab in account-page to route
