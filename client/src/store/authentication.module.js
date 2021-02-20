@@ -1,8 +1,6 @@
 import { services } from '../_services';
 import router from '../router'
 
-console.log(router) // eslint-disable-line no-console
-
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
     ? { status: { loggedIn: true }, user }
