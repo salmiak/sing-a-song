@@ -109,14 +109,12 @@ async function verifyEmail({ token }) {
 
     user.verified = Date.now();
     user.verificationToken = null;
-    await user.save();
 
-    // create and save profile
-    const profile = new db.Profile({
-      userId: user.id,
+    await user.createProfile({
       description: 'Jag är ny på Sing-a-song och har inte fyllt i min profil än.'
-    })
-    await profile.save();
+    });
+
+    await user.save();
 }
 
 async function forgotPassword({ email }, origin) {

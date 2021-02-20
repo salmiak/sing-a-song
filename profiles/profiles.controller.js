@@ -26,7 +26,7 @@ function getById(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schemaRules = {
-        stageName: Joi.string().empty(''),
+        stageName: Joi.string().optional().empty(''),
         description: Joi.string().empty(''),
         contactDetails: Joi.string().empty(''),
         geoReach: Joi.any().empty(''),
