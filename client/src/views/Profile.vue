@@ -111,60 +111,7 @@ export default {
     profile() {
       if (!this.$store.state.profiles.all.items)
         return undefined
-      const profile = this.$store.state.profiles.all.items.find(p => p.id == this.id)
-      profile.media = [
-        {
-          id: 1,
-          type: 'youtube',
-          value: 'IvUU8joBb1Q'
-        },
-        {
-          id: 9,
-          type: 'spotify',
-          value: 'track/3kBPnItITm3Od2IVhuJPxf'
-        },
-        {
-          id: 10,
-          type: 'spotify',
-          value: 'album/7e8Iiag5t3Z3CNSQbT7M8B'
-        },
-        {
-          id: 2,
-          type: 'youtube',
-          value: 'ASqS1do7SWk'
-        },
-        {
-          id: 3,
-          type: 'youtube',
-          value: 'XQqbNElwLVE'
-        },
-        {
-          id: 4,
-          type: 'youtube',
-          value: 'RT8NVDHe9-k'
-        },
-        {
-          id: 5,
-          type: 'youtube',
-          value: 'FDE0JuAlktc'
-        },
-        {
-          id: 6,
-          type: 'youtube',
-          value: '6HsLrDvfloo'
-        },
-        {
-          id: 7,
-          type: 'youtube',
-          value: 'yo0kya_XUkA'
-        },
-        {
-          id: 8,
-          type: 'youtube',
-          value: 'OAEJ3c9pSsE'
-        }
-      ]
-      return profile
+      return this.$store.state.profiles.all.items.find(p => p.id == this.id)
     },
     userName() {
       return this.profile.user.firstName + " " + this.profile.user.lastName
