@@ -19,12 +19,15 @@ async function initialize() {
     db.User = require('../users/user.model')(sequelize);
     db.RefreshToken = require('../users/refresh-token.model')(sequelize);
     db.Profile = require('../profiles/profile.model')(sequelize);
+    db.Media = require('../media/media.model')(sequelize);
 
     // define relationships
     db.User.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.User);
     db.User.hasOne(db.Profile, { onDelete: 'CASCADE' });
     db.Profile.belongsTo(db.User);
+    db.Profile.hasMany(db.Media, { onDelete: 'CASCADE' });
+    db.Media.belongsTo(db.Profile);
 
     // sync all models with database
     await sequelize.sync();

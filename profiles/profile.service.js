@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function getAll() {
-    const profiles = await db.Profile.findAll({ include: db.User });
+    const profiles = await db.Profile.findAll({ include: [db.User, db.Media] });
     return profiles.map(x => basicDetails(x));
 }
 
@@ -50,7 +50,7 @@ async function _delete(id) {
 // helper functions
 
 async function getProfile(id) {
-    const profile = await db.Profile.findByPk(id, { include: db.User });
+    const profile = await db.Profile.findByPk(id, { include: [db.User, db.Media] });
     if (!profile) throw 'Profile not found';
     return profile;
 }
