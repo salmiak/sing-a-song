@@ -1,7 +1,10 @@
 <template lang="html">
 
-    <v-container>
+    <v-container
+      class="pb-16"
+    >
       <template v-if="profile">
+        <!-- Profile Cover -->
         <v-row>
           <v-col class="pa-0">
             <v-parallax
@@ -11,12 +14,12 @@
             >
               <v-row
                 v-if="profile.userId === $store.state.authentication.user.id"
-                align="end"
+                align="start"
                 justify="end"
               >
                 <v-col
-                  class="text-right pb-7"
-                  cols="4"
+                  class="pt-7"
+                  cols="12"
                 >
                   <v-btn
                     color="primary"
@@ -29,6 +32,8 @@
             </v-parallax>
           </v-col>
         </v-row>
+
+        <!-- Profile details -->
         <v-row
           justify="center"
         >
@@ -57,36 +62,15 @@
             <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
           </v-col>
         </v-row>
-        <v-row
-          v-for="i in 5"
-          :key="i"
-          class=""
-        >
+
+        <!--  Media -->
+        <v-row>
           <v-col
-            v-for="img in 3"
-            :key="'img' + img"
-            class="col-4 pa-1"
+            v-for="media in profile.media"
+            :key="media.id"
+            class="d-flex child-flex pa-1 col-12 col-sm-6 col-md-4"
           >
-            <v-img
-              :aspect-ratio="4/3"
-              max-height="480"
-              max-width="640"
-              :src="`https://source.unsplash.com/640x640/?music,${img}${i}`"
-              class="rounded"
-            >
-              <template v-slot:placeholder>
-                <v-row
-                  class="fill-height ma-0 secondary"
-                  align="center"
-                  justify="center"
-                >
-                  <v-progress-circular
-                    indeterminate
-                    color="accent"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
+            <media-card :media="media" />
           </v-col>
         </v-row>
       </template>
@@ -99,8 +83,13 @@
 </template>
 
 <script>
+import MediaCard from '@/components/MediaCard'
+
 export default {
   name: 'Profile',
+  components: {
+    MediaCard
+  },
   data() {
     return {
       profileMock: {
@@ -122,7 +111,60 @@ export default {
     profile() {
       if (!this.$store.state.profiles.all.items)
         return undefined
-      return this.$store.state.profiles.all.items.find(p => p.id == this.id)
+      const profile = this.$store.state.profiles.all.items.find(p => p.id == this.id)
+      profile.media = [
+        {
+          id: 1,
+          type: 'youtube',
+          value: 'IvUU8joBb1Q'
+        },
+        {
+          id: 9,
+          type: 'spotify',
+          value: 'track/3kBPnItITm3Od2IVhuJPxf'
+        },
+        {
+          id: 10,
+          type: 'spotify',
+          value: 'album/7e8Iiag5t3Z3CNSQbT7M8B'
+        },
+        {
+          id: 2,
+          type: 'youtube',
+          value: 'ASqS1do7SWk'
+        },
+        {
+          id: 3,
+          type: 'youtube',
+          value: 'XQqbNElwLVE'
+        },
+        {
+          id: 4,
+          type: 'youtube',
+          value: 'RT8NVDHe9-k'
+        },
+        {
+          id: 5,
+          type: 'youtube',
+          value: 'FDE0JuAlktc'
+        },
+        {
+          id: 6,
+          type: 'youtube',
+          value: '6HsLrDvfloo'
+        },
+        {
+          id: 7,
+          type: 'youtube',
+          value: 'yo0kya_XUkA'
+        },
+        {
+          id: 8,
+          type: 'youtube',
+          value: 'OAEJ3c9pSsE'
+        }
+      ]
+      return profile
     },
     userName() {
       return this.profile.user.firstName + " " + this.profile.user.lastName
