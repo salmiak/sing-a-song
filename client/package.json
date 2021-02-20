@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "js-video-url-parser": "^0.4.3",
+    "spotify-uri": "^2.1.0",
     "vue": "^2.6.11",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.2.0",

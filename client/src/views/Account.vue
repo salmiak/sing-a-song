@@ -2,17 +2,13 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1 class="text-h1 mt-16">Hej {{user.firstName}}!</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
         <v-tabs
           color="primary"
           class="mb-16"
         >
           <v-tab to="/account/account">Ditt konto</v-tab>
           <v-tab to="/account/profile">Din profil</v-tab>
+          <v-tab to="/account/media">Din media</v-tab>
         </v-tabs>
       </v-col>
     </v-row>
@@ -132,13 +128,63 @@
         </v-row>
       </v-tab-item>
 
+      <v-tab-item value="media">
+        <v-row>
+          <v-col>
+              <h2 class="text-h2 mb-4">Din media</h2>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <v-text-field
+              label="Lägg till media"
+              hint="Klistra in länken till din media här"
+              v-model="newMediaURL" />
+          </v-col>
+        </v-row>
+
+        <v-row
+          dense
+        >
+          <v-col
+            v-for="media in profile.media"
+            :key="media.id"
+            class="d-flex child-flex col-12 col-sm-6 col-md-4"
+            style="position: relative"
+          >
+            <v-btn
+              elevation="2"
+              fab
+              dark
+              color="primary"
+              absolute
+              small
+              style="top: -8px; right: -8px;"
+              @click="deleteMedia(media.id)"
+              >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <media-card :media="media" />
+          </v-col>
+        </v-row>
+
+      </v-tab-item>
+
     </v-tabs-items>
   </v-container>
 </template>
 
 <script>
+import spotifyUri from 'spotify-uri'
+import urlParser from "js-video-url-parser"
+import MediaCard from '@/components/MediaCard'
+
 export default {
   name:'Account',
+  components: {
+    MediaCard
+  },
   data() {
     return {
       submitted: false,
@@ -152,7 +198,8 @@ export default {
       confirmPassword: '',
       passwordValidationError: null,
       accountValidationError: null,
-      profileValidationError: null
+      profileValidationError: null,
+      newMediaURL: undefined
     }
   },
   computed: {
@@ -172,6 +219,18 @@ export default {
   },
   created () {
       this.$store.dispatch('profiles/getAll');
+  },
+  watch: {
+    newMediaURL() {
+      console.log(this.newMediaURL) // eslint-disable-line no-console
+
+      if (this.newMediaURL.search('spotify') !== -1) {
+        console.log( spotifyUri.parse(this.newMediaURL) ) // eslint-disable-line no-console
+      } else {
+        console.log(urlParser.parse(this.newMediaURL)) // eslint-disable-line no-console
+      }
+
+    }
   },
   methods: {
     updateAccount () {
@@ -210,6 +269,9 @@ export default {
           this.profileValidationError = error
           this.submitted = false
         })
+    },
+    deleteMedia(id) {
+      console.log({id}) // eslint-disable-line no-console
     }
   }
 }
