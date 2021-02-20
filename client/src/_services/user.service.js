@@ -1,7 +1,7 @@
 // import config from 'config';
-import { authHeader } from '../_helpers';
+import helpers from '../_helpers';
 
-const apiUrl = 'http://localhost:4000'
+const { authHeader, apiUrl } = helpers
 
 export const userService = {
     login,

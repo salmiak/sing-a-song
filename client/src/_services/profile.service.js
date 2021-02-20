@@ -1,10 +1,8 @@
 // import config from 'config';
-import { authHeader } from '../_helpers';
+import helpers from '../_helpers';
 import { userService }  from './user.service';
 
-console.log(userService) // eslint-disable-line no-console
-
-const apiUrl = 'http://localhost:4000'
+const { authHeader, apiUrl } = helpers
 
 export const profileService = {
     getAll,
