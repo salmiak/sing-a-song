@@ -156,11 +156,20 @@
               <v-alert
                 v-if="newMediaValidation"
                 type="success"
+                transition="scale-transition"
                 outlined
                 class="mt-2"
               >
                 Länken är en <strong>{{newMediaValidation.provider}}
                   {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
+              </v-alert>
+              <v-alert
+                type="error"
+                :value="!!mediaValidationError"
+                transition="scale-transition"
+                class="elevation-2"
+              >
+                {{mediaValidationError}}
               </v-alert>
             </v-card>
           </v-col>
@@ -183,7 +192,7 @@
               absolute
               small
               style="top: 0px; right: 0px;"
-              @click="deleteMedia(media.id)"
+              @click="deleteMedia(media)"
               >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -295,24 +304,29 @@ export default {
       if (!this.newMediaValidation) {
         return false
       }
-
-      console.log('adding new media') // eslint-disable-line no-console
+      this.mediaValidationError = undefined
+      this.submitted = true
 
       this.$store.dispatch('media/add', {
         newMediaURL: this.newMediaURL,
         profileId: this.profile.id
       })
-        .then(() => {
+        .then(media => {
+          this.submitted = false
           this.newMediaURL = ''
-          console.log('added new media') // eslint-disable-line no-console
+          this.$store.commit('profiles/addMedia', media)
         }, error => {
-          console.log(error) // eslint-disable-line no-console
-          /*this.profileValidationError = error
-          this.submitted = false*/
+          this.submitted = false
+          this.mediaValidationError = error
         })
     },
-    deleteMedia(id) {
-      console.log({id}) // eslint-disable-line no-console
+    deleteMedia(media) {
+      this.$store.dispatch('media/remove', media)
+        .then(() => {
+          this.$store.commit('profiles/deleteMedia', media)
+        }, error => {
+          console.log(error) // eslint-disable-line no-console
+        })
     }
   }
 }

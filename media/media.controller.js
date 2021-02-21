@@ -8,6 +8,7 @@ const mediaService = require('./media.service');
 // routes
 router.get('/', getAll);
 router.post('/', authorize(), createSchema, create);
+router.delete('/:id', authorize(), _delete);
 router.get('/:id', getById);
 router.put('/:id', authorize(), updateSchema, update);
 
@@ -60,4 +61,9 @@ function update(req, res, next) {
     mediaService.update(req.params.id, req.body)
         .then(media => res.json(media))
         .catch(next);
+}
+
+function _delete(req, res, next) {
+  mediaService.delete(req.params.id)
+  res.json({ message: 'deleted' });
 }

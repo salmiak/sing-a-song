@@ -50,7 +50,7 @@ async function _delete(id) {
 // helper functions
 
 async function getMedia(id) {
-    const media = await db.Media.findByPk(id, { include: db.User });
+    const media = await db.Media.findByPk(id, { include: db.Profile });
     if (!media) throw 'Media not found';
     return media;
 }

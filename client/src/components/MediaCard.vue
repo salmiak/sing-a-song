@@ -5,7 +5,7 @@
     <v-responsive :aspect-ratio="1/1">
 
       <iframe
-        v-if="media.type === 'youtube'"
+        v-if="media.provider === 'youtube'"
         width="480"
         height="480"
         :src="`https://www.youtube.com/embed/${media.value}?color=white`" frameborder="0"
@@ -13,8 +13,8 @@
         allowfullscreen></iframe>
 
       <iframe
-        v-if="media.type === 'spotify'"
-        :src="`https://open.spotify.com/embed/${media.value}`"
+        v-if="media.provider === 'spotify'"
+        :src="`https://open.spotify.com/embed/${media.type}/${media.value}`"
         width="300"
         height="380"
         frameborder="0"

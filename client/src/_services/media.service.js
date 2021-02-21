@@ -7,7 +7,8 @@ const { authHeader, apiUrl } = helpers
 export const mediaService = {
     getAll,
     create,
-    update
+    update,
+    remove
 };
 
 function getAll() {
@@ -34,6 +35,17 @@ function create(payload) {
 function update(payload) {
     const requestOptions = {
         method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/media/${payload.id}`, requestOptions)
+        .then(handleResponse)
+}
+
+function remove(payload) {
+    const requestOptions = {
+        method: 'DELETE',
         headers: authHeader(),
         body: JSON.stringify(payload)
     };

@@ -56,12 +56,15 @@ async function getProfile(id) {
 }
 
 function basicDetails(profile) {
-    const { id, description, userId, stageName, geoReach, contactDetails } = profile;
+
+  console.log(profile) // eslint-disable-line no-console
+
+    const { id, description, userId, stageName, geoReach, contactDetails, media } = profile;
     const { firstName, lastName, } = profile.user;
     const user = {
       id: userId,
       firstName,
       lastName
     }
-    return { id, description, user, userId, stageName, geoReach, contactDetails };
+    return { id, description, user, userId, stageName, geoReach, contactDetails, media };
 }
