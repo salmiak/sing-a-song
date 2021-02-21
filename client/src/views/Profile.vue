@@ -13,7 +13,7 @@
               class="ma-1 mt-4 rounded"
             >
               <v-row
-                v-if="profile.userId === $store.state.authentication.user.id"
+                v-if="showEdit"
                 align="start"
                 justify="end"
               >
@@ -115,6 +115,12 @@ export default {
     },
     userName() {
       return this.profile.user.firstName + " " + this.profile.user.lastName
+    },
+    showEdit() {
+      if (!this.$store.state.authentication.user)
+        return false
+
+      return this.profile.userId === this.$store.state.authentication.user.id
     }
   }
 }
