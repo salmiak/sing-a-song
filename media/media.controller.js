@@ -28,8 +28,9 @@ function getById(req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
         type: Joi.string().required(),
+        url: Joi.string().required(),
         value: Joi.string().required(),
-        description: Joi.string().empty(''),
+        provider: Joi.string().required(),
         profileId: Joi.number().empty('')
     });
     validateRequest(req, next, schema);

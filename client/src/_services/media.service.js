@@ -6,6 +6,7 @@ const { authHeader, apiUrl } = helpers
 
 export const mediaService = {
     getAll,
+    create,
     update
 };
 
@@ -17,6 +18,17 @@ function getAll() {
 
     return fetch(`${apiUrl}/media`, requestOptions)
         .then(handleResponse);
+}
+
+function create(payload) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/media/`, requestOptions)
+        .then(handleResponse)
 }
 
 function update(payload) {

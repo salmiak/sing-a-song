@@ -6,7 +6,8 @@ function model(sequelize) {
     const attributes = {
         type: { type: DataTypes.STRING },
         value: { type: DataTypes.STRING },
-        description: { type: DataTypes.TEXT }
+        url: { type: DataTypes.STRING },
+        provider: { type: DataTypes.STRING },
     };
 
     const options = {

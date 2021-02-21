@@ -56,12 +56,6 @@ async function getMedia(id) {
 }
 
 function basicDetails(media) {
-    const { id, description, userId, value, type } = media;
-    const { firstName, lastName, } = media.user;
-    const user = {
-      id: userId,
-      firstName,
-      lastName
-    }
-    return { id, description, userId, value, type, user };
+    const { id, provider, value, type, profileId } = media;
+    return { id, provider, value, type, profileId };
 }

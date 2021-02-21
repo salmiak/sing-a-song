@@ -137,10 +137,32 @@
 
         <v-row>
           <v-col>
-            <v-text-field
-              label="Lägg till media"
-              hint="Klistra in länken till din media här"
-              v-model="newMediaURL" />
+            <v-card
+              class="pa-4 elevation-4"
+            >
+              <v-text-field
+                label="Lägg till media"
+                hint="Klistra in länken till din media här"
+                color="success"
+                v-model="newMediaURL" />
+              <v-btn
+                :disabled="!newMediaValidation"
+                color="primary"
+                @click="addNewMedia"
+              >
+                <v-icon left>mdi-plus</v-icon>
+                Lägg till
+              </v-btn>
+              <v-alert
+                v-if="newMediaValidation"
+                type="success"
+                outlined
+                class="mt-2"
+              >
+                Länken är en <strong>{{newMediaValidation.provider}}
+                  {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
+              </v-alert>
+            </v-card>
           </v-col>
         </v-row>
 
@@ -160,7 +182,7 @@
               color="primary"
               absolute
               small
-              style="top: -8px; right: -8px;"
+              style="top: 0px; right: 0px;"
               @click="deleteMedia(media.id)"
               >
               <v-icon>mdi-delete</v-icon>
@@ -215,22 +237,21 @@ export default {
       if (this.$store.state.profiles.all.items)
         return this.$store.state.profiles.all.items.find(i => i.userId === this.user.id)
       return false
+    },
+    newMediaValidation() {
+      if (!this.newMediaURL) {
+        return undefined
+      } else if (this.newMediaURL.search('spotify') !== -1) {
+        return Object.assign(spotifyUri.parse(this.newMediaURL), {
+          provider: 'spotify'
+        })
+      } else {
+        return urlParser.parse(this.newMediaURL)
+      }
     }
   },
   created () {
       this.$store.dispatch('profiles/getAll');
-  },
-  watch: {
-    newMediaURL() {
-      console.log(this.newMediaURL) // eslint-disable-line no-console
-
-      if (this.newMediaURL.search('spotify') !== -1) {
-        console.log( spotifyUri.parse(this.newMediaURL) ) // eslint-disable-line no-console
-      } else {
-        console.log(urlParser.parse(this.newMediaURL)) // eslint-disable-line no-console
-      }
-
-    }
   },
   methods: {
     updateAccount () {
@@ -268,6 +289,26 @@ export default {
         }, error => {
           this.profileValidationError = error
           this.submitted = false
+        })
+    },
+    addNewMedia() {
+      if (!this.newMediaValidation) {
+        return false
+      }
+
+      console.log('adding new media') // eslint-disable-line no-console
+
+      this.$store.dispatch('media/add', {
+        newMediaURL: this.newMediaURL,
+        profileId: this.profile.id
+      })
+        .then(() => {
+          this.newMediaURL = ''
+          console.log('added new media') // eslint-disable-line no-console
+        }, error => {
+          console.log(error) // eslint-disable-line no-console
+          /*this.profileValidationError = error
+          this.submitted = false*/
         })
     },
     deleteMedia(id) {
