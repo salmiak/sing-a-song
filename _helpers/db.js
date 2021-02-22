@@ -14,9 +14,36 @@ async function initialize() {
     // connect to db
     // const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 
-    const sequelize = new Sequelize((process.env.DATABASE_URL || require('config.json').DATABASE_URL), {
+    var clientOptions = {}
+    if (process.env.db_host) {
+      clientOptions = {
+        user: process.env.db_user,
+        password: process.env.db_password,
+        database: process.env.db_database,
+        port: process.env.db_port,
+        host: process.env.db_host,
+        ssl: true
+      }
+    } else {
+      clientOptions = {
+          user: "alfred",
+          password: "",
+          database: "alfred",
+          port: 5432,
+          host: "localhost",
+          ssl: false
+      }
+    }
+
+    const sequelize = new Sequelize(clientOptions.database, clientOptions.user, clientOptions.password, {
+      host: clientOptions.host,
+      dialect: 'postgres',
+      ssl:true,
       dialectOptions: {
-        ssl: !!process.env.DATABASE_URL
+        ssl: clientOptions.ssl ? {
+          require: true,
+          rejectUnauthorized: false
+        } : false
       }
     })
 
