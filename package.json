@@ -8,9 +8,8 @@
         "url": "https://github.com/cornflourblue/node-mysql-signup-verification-api.git"
     },
     "scripts": {
-        "build:client": "cd client && npm run build",
-        "start:server": "node server.js",
-        "start": "concurrently \"npm run build:client\" \"npm run start:server\"",
+        "build": "cd client && npm run build",
+        "start": "node server.js",
         "start:dev": "nodemon server.js"
     },
     "dependencies": {
@@ -32,7 +31,6 @@
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
-        "concurrently": "^6.0.0",
         "nodemon": "^2.0.3"
     },
     "engines": {
