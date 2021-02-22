@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+// const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 
 module.exports = db = {};
@@ -14,7 +14,11 @@ async function initialize() {
     // connect to db
     // const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 
-    const sequelize = new Sequelize(process.env.DATABASE_URL || require('config.json').DATABASE_URL)
+    const sequelize = new Sequelize((process.env.DATABASE_URL || require('config.json').DATABASE_URL), {
+      dialectOptions: {
+        ssl: !!process.env.DATABASE_URL
+      }
+    })
 
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
