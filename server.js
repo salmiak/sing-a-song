@@ -5,10 +5,10 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
-const path = __dirname + '/client/dist/';
-
 const app = express();
 
+process.env.PWD = process.cwd();
+const path = process.env.PWD + '/client/dist/';
 app.use(express.static(path));
 
 app.use(bodyParser.urlencoded({ extended: false }));
