@@ -15,7 +15,7 @@ async function initialize() {
     // connect to db
     // const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 
-    const sequelize = new Sequelize('postgres://alfred@localhost:5432/alfred')
+    const sequelize = new Sequelize(config.DATABASE_URL)
 
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
