@@ -109,10 +109,10 @@
             class="col-3 text-center"
           >
             <v-avatar
-              :size="profile.coverURL ? 128 : 64"
+              :size="profile.avatarURL ? 128 : 64"
               class="elevation-5"
               :class="{
-                'mt-n16': !!profile.coverURL,
+                'mt-n13': !!profile.coverURL,
                 'mt-4': !profile.coverURL
                 }"
               color="accent darken-1"
@@ -126,7 +126,7 @@
                 v-else
                 class="white--text text-h5"
               >
-                {{ profile.stageName.slice(0,2) }}
+                {{ profile.stageName ? profile.stageName.slice(0,2) : user.firstName[0] + user.lastName[0] }}
               </span>
             </v-avatar>
           </v-col>
