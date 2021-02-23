@@ -22,6 +22,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 app.use('/users', require('./users/users.controller'));
 app.use('/profiles', require('./profiles/profiles.controller'));
 app.use('/media', require('./media/media.controller'));
+app.use('/sign-s3', require('./s3/s3.controller'));
 
 // swagger docs route
 app.use('/api-docs', require('_helpers/swagger'));

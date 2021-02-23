@@ -77,6 +77,16 @@
             <h2 class="text-h2">Din profil</h2>
             <template v-if="profile">
 
+              <img :src="newAvatarURL" v-if="newAvatarURL" />
+
+              <v-file-input
+                v-model="avatarFile"
+                show-size
+                truncate-length="15"
+                label="Profilbild"
+                accept="image/*"
+              ></v-file-input>
+
               <v-text-field
                 v-model="profile.stageName"
                 label="Artistnamn" ></v-text-field>
@@ -207,6 +217,7 @@
 </template>
 
 <script>
+import helpers from '../_helpers';
 import spotifyUri from 'spotify-uri'
 import urlParser from "js-video-url-parser"
 import MediaCard from '@/components/MediaCard'
@@ -230,7 +241,10 @@ export default {
       passwordValidationError: null,
       accountValidationError: null,
       profileValidationError: null,
-      newMediaURL: undefined
+      mediaValidationError: null,
+      newMediaURL: undefined,
+      avatarFile: undefined,
+      newAvatarURL: undefined
     }
   },
   computed: {
@@ -261,6 +275,47 @@ export default {
   },
   created () {
       this.$store.dispatch('profiles/getAll');
+  },
+  watch: {
+    avatarFile(file) {
+      const that = this
+      if (!file)
+        return false
+
+      function uploadFile(file, signedRequest, url){
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', signedRequest);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+              // ToDo: Update the profile with new avatar URL.
+              console.log('Update the profile with the new URL: ' + url) // eslint-disable-line no-console
+              that.newAvatarURL = url
+            }
+            else{
+              console.error('Could not upload file.');
+            }
+          }
+        };
+        xhr.send(file);
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+      xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            const response = JSON.parse(xhr.responseText);
+            uploadFile(file, response.signedRequest, response.url);
+          }
+          else{
+            console.error('Could not get signed URL.');
+          }
+        }
+      };
+      xhr.send();
+    }
   },
   methods: {
     updateAccount () {
