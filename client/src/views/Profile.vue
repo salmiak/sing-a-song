@@ -5,11 +5,11 @@
     >
       <template v-if="profile">
         <!-- Profile Cover -->
-        <v-row>
+        <v-row v-if="profile.coverURL">
           <v-col class="pa-0">
             <v-parallax
               height="250"
-              src="https://source.unsplash.com/collection/4927557/"
+              :src="profile.coverURL"
               class="ma-1 mt-4 rounded"
             >
               <v-row
@@ -41,13 +41,25 @@
             class="col-3 text-center"
           >
             <v-avatar
-              size="128"
-              class="elevation-14 mt-n16"
+              :size="profile.coverURL ? 128 : 64"
+              class="elevation-5"
+              :class="{
+                'mt-n16': !!profile.coverURL,
+                'mt-4': !profile.coverURL
+                }"
+              color="accent darken-1"
             >
               <img
-                src="https://source.unsplash.com/collection/66520309/256x256"
-                alt="John"
+                v-if="profile.avatarURL"
+                :src="profile.avatarURL"
+                :alt="profile.stageName || userName"
               >
+              <span
+                v-else
+                class="white--text text-h5"
+              >
+                {{ profile.stageName.slice(0,2) }}
+              </span>
             </v-avatar>
           </v-col>
         </v-row>

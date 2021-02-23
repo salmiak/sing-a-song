@@ -34,8 +34,6 @@ async function update(id, params) {
     // copy params to user and save
     Object.assign(profile, params);
 
-    console.log(profile) // eslint-disable-line no-console
-
     // profile.updated = Date.now();
     await profile.save();
 
@@ -56,12 +54,12 @@ async function getProfile(id) {
 }
 
 function basicDetails(profile) {
-    const { id, description, userId, stageName, geoReach, contactDetails, media } = profile;
+    const { id, description, userId, stageName, avatarURL, coverURL, geoReach, contactDetails, media } = profile;
     const { firstName, lastName, } = profile.user;
     const user = {
       id: userId,
       firstName,
       lastName
     }
-    return { id, description, user, userId, stageName, geoReach, contactDetails, media };
+    return { id, description, user, userId, stageName, avatarURL, coverURL, geoReach, contactDetails, media };
 }

@@ -23,5 +23,6 @@ Run `$ npm start` to launch server, this will serve the content of the `client/d
 ## ToDo
 [ ] Find a place to host and publish
 [ ] Add real SMTP-service for email
-[ ] Add file upload
 [ ] Add media model
+[ ] Make it possible to delete an uploaded image
+[ ] Better styling of profile edit

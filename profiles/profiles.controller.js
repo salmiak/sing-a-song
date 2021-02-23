@@ -30,7 +30,9 @@ function updateSchema(req, res, next) {
         description: Joi.string().empty(''),
         contactDetails: Joi.string().empty(''),
         geoReach: Joi.any().empty(''),
-        userId: Joi.number().empty('')
+        userId: Joi.number().empty(''),
+        avatarURL: Joi.string().optional().empty(''),
+        coverURL: Joi.string().optional().empty('')
     };
 
     const schema = Joi.object(schemaRules);

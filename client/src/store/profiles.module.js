@@ -43,6 +43,10 @@ export const profiles = {
         addMedia(state, media) {
           state.all.items.find(profile => profile.id === media.profileId).media.unshift(media)
         },
+        update(state, payload) {
+          const profileIndex = state.all.items.findIndex(profile => profile.id === payload.profileId)
+          state.all.items.splice(profileIndex, 1, payload)
+        },
         deleteMedia(state, media) {
           const profile = state.all.items.find(profile => profile.id === media.profileId)
           const indexToDelete = profile.media.findIndex(m => m.id === media.id)

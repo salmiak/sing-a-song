@@ -72,18 +72,84 @@
       </v-tab-item>
 
       <v-tab-item value="profile">
+
+        <!-- Profile Cover -->
+        <v-row v-if="profile.coverURL">
+          <v-col class="pa-0">
+            <v-parallax
+              height="250"
+              :src="profile.coverURL"
+              class="ma-1 mt-4 rounded"
+            >
+              <v-row
+                align="start"
+                justify="end"
+              >
+                <v-col
+                  class="pt-7"
+                  cols="12"
+                >
+                  <v-btn
+                    color="primary"
+                    to="/account/profile"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-parallax>
+          </v-col>
+        </v-row>
+
+        <!-- Profile details -->
+        <v-row
+          justify="center"
+        >
+          <v-col
+            class="col-3 text-center"
+          >
+            <v-avatar
+              :size="profile.coverURL ? 128 : 64"
+              class="elevation-5"
+              :class="{
+                'mt-n16': !!profile.coverURL,
+                'mt-4': !profile.coverURL
+                }"
+              color="accent darken-1"
+            >
+              <img
+                v-if="profile.avatarURL"
+                :src="profile.avatarURL"
+                :alt="profile.stageName"
+              >
+              <span
+                v-else
+                class="white--text text-h5"
+              >
+                {{ profile.stageName.slice(0,2) }}
+              </span>
+            </v-avatar>
+          </v-col>
+        </v-row>
+
         <v-row>
           <v-col class="col-8 pb-4">
             <h2 class="text-h2">Din profil</h2>
             <template v-if="profile">
 
-              <img :src="newAvatarURL" v-if="newAvatarURL" />
-
               <v-file-input
                 v-model="avatarFile"
                 show-size
                 truncate-length="15"
-                label="Profilbild"
+                label="Ladda upp ny profilbild"
+                accept="image/*"
+              ></v-file-input>
+
+              <v-file-input
+                v-model="coverFile"
+                show-size
+                truncate-length="15"
+                label="Ladda upp ny omslagsbild"
                 accept="image/*"
               ></v-file-input>
 
@@ -244,7 +310,7 @@ export default {
       mediaValidationError: null,
       newMediaURL: undefined,
       avatarFile: undefined,
-      newAvatarURL: undefined
+      coverFile: undefined
     }
   },
   computed: {
@@ -278,43 +344,14 @@ export default {
   },
   watch: {
     avatarFile(file) {
-      const that = this
       if (!file)
         return false
-
-      function uploadFile(file, signedRequest, url){
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', signedRequest);
-        xhr.onreadystatechange = () => {
-          if(xhr.readyState === 4){
-            if(xhr.status === 200){
-              // ToDo: Update the profile with new avatar URL.
-              console.log('Update the profile with the new URL: ' + url) // eslint-disable-line no-console
-              that.newAvatarURL = url
-            }
-            else{
-              console.error('Could not upload file.');
-            }
-          }
-        };
-        xhr.send(file);
-      }
-
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
-      xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
-      xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            const response = JSON.parse(xhr.responseText);
-            uploadFile(file, response.signedRequest, response.url);
-          }
-          else{
-            console.error('Could not get signed URL.');
-          }
-        }
-      };
-      xhr.send();
+      this.updateImage(file, 'avatar')
+    },
+    coverFile(file) {
+      if (!file)
+        return false
+      this.updateImage(file, 'cover')
     }
   },
   methods: {
@@ -354,6 +391,57 @@ export default {
           this.profileValidationError = error
           this.submitted = false
         })
+    },
+    updateImage(file, target) {
+      const that = this
+
+      function uploadFile(file, signedRequest, url){
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', signedRequest);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+
+              const payload = {
+                id: that.profile.id,
+                userId: that.user.id
+              }
+              if (target === 'avatar') {
+                payload.avatarURL = url
+              } else if (target === 'cover') {
+                payload.coverURL = url
+              } else {
+                console.error('missing target')
+              }
+
+              that.$store.dispatch('profiles/update', payload)
+              .then(response => {
+                that.$store.commit('profiles/update', response)
+              })
+            }
+            else{
+              console.error('Could not upload file.');
+            }
+          }
+        };
+        xhr.send(file);
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+      xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            const response = JSON.parse(xhr.responseText);
+            uploadFile(file, response.signedRequest, response.url);
+          }
+          else{
+            console.error('Could not get signed URL.');
+          }
+        }
+      };
+      xhr.send();
     },
     addNewMedia() {
       if (!this.newMediaValidation) {
