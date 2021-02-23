@@ -12,7 +12,7 @@ const smtpOptions = {
   }
 }
 
-async function sendEmail({ to, subject, html, from = "localhost@salmiakmedia.se" }) {
+async function sendEmail({ to, subject, html, from = "singasong@salmiakmedia.se" }) {
     const transporter = nodemailer.createTransport(smtpOptions);
     await transporter.sendMail({ from, to, subject, html });
     // console.log({to, subject, html}) // eslint-disable-line no-console

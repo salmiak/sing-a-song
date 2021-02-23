@@ -105,7 +105,7 @@ async function register(params, origin) {
 async function verifyEmail({ token }) {
     const user = await db.User.findOne({ where: { verificationToken: token } });
 
-    if (!user) throw 'Verification failed';
+    if (!user) throw 'Verification failed - unknown token';
 
     user.verified = Date.now();
     user.verificationToken = null;
