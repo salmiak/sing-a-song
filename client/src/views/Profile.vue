@@ -58,7 +58,7 @@
                 v-else
                 class="white--text text-h5"
               >
-                {{ profile.stageName ? profile.stageName.slice(0,2) : user.firstName[0] + user.lastName[0] }}
+                {{ profile.stageName ? profile.stageName.slice(0,2) : profile.user.firstName[0] + profile.user.lastName[0] }}
               </span>
             </v-avatar>
           </v-col>
@@ -104,13 +104,6 @@ export default {
   },
   data() {
     return {
-      profileMock: {
-        name: 'Salty Beans',
-        regions: [
-          'Götaland',
-          'Svealand'
-        ]
-      }
     }
   },
   created() {
