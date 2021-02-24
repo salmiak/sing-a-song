@@ -3,8 +3,10 @@ const nodemailer = require('nodemailer');
 
 module.exports = sendEmail;
 
+const emailFrom = process.env.email_from || require('config.json').emailFrom
+
 const smtpOptions = {
-  "host": "smtp.ethereal.email",
+  "host": process.env.smtp_host || require('config.json').smtpHost,
   "port": 587,
   "auth": {
     "user": process.env.smtp_user || require('config.json').smtpUser,
@@ -12,7 +14,7 @@ const smtpOptions = {
   }
 }
 
-async function sendEmail({ to, subject, html, from = "singasong@salmiakmedia.se" }) {
+async function sendEmail({ to, subject, html, from = emailFrom }) {
     const transporter = nodemailer.createTransport(smtpOptions);
     await transporter.sendMail({ from, to, subject, html });
     // console.log({to, subject, html}) // eslint-disable-line no-console
