@@ -18,10 +18,3 @@ A portfolio website for semi professional musicians in Sweden.
 
 ### Start server
 Run `$ npm start` to launch server, this will serve the content of the `client/dist` as static + API.
-
-
-## ToDo
-[ ] Add real SMTP-service for email
-[ ] Make it possible to delete an uploaded image
-[ ] Better styling of profile edit
-[ ] Drag and drop reorder of media on profile

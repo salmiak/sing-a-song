@@ -1,5 +1,5 @@
 // import config from 'config';
-import helpers from '../_helpers';
+import helpers from '@/_helpers';
 
 const { authHeader, apiUrl } = helpers
 
@@ -25,15 +25,34 @@ function login(email, password) {
             if (user.jwtToken) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
+                startRefreshTokenTimer();
             }
-
             return user;
         });
 }
 
+function refreshToken() {
+    const requestOptions = {
+        method: 'POST'
+    };
+
+    return fetch(`${apiUrl}/users/refresh-token`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            if (user.jwtToken) {
+                localStorage.setItem('user', JSON.stringify(user));
+                startRefreshTokenTimer();
+            }
+            return user;
+        });
+}
+
+refreshToken();
+
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+    stopRefreshTokenTimer();
 }
 
 function register(payload) {
@@ -72,6 +91,8 @@ function getAll() {
     return fetch(`${apiUrl}/users`, requestOptions).then(handleResponse);
 }
 
+// helper functions
+
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
@@ -88,4 +109,21 @@ function handleResponse(response) {
 
         return data;
     });
+}
+
+let refreshTokenTimeout;
+
+function startRefreshTokenTimer() {
+    // parse json object from base64 encoded jwt token
+    const user = JSON.parse(localStorage.getItem('user'));
+    const jwtToken = JSON.parse(atob(user.jwtToken.split('.')[1]));
+
+    // set a timeout to refresh the token a minute before it expires
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    refreshTokenTimeout = setTimeout(refreshToken, timeout);
+}
+
+function stopRefreshTokenTimer() {
+    clearTimeout(refreshTokenTimeout);
 }
