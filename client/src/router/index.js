@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/login/:status',
-    name: 'Login',
+    name: 'Time to Login',
     component: Login
   },
   {
@@ -51,7 +51,7 @@ const routes = [
   },
   {
     path: '/account/:tab',
-    name: 'Account',
+    name: 'Account Details',
     component: Account
   },
   {
@@ -61,6 +61,11 @@ const routes = [
   },
   {
     path: '/profile/:id',
+    name: 'Profile Redirect',
+    component: Profile
+  },
+  {
+    path: '/profile/:id/:slug',
     name: 'Profile',
     component: Profile
   },

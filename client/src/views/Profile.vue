@@ -69,7 +69,7 @@
           <v-col
             class="text-center col-8"
           >
-            <h1 class="text-h3 mb-4">{{profile.stageName || userName}}</h1>
+            <h1 class="text-h3 mb-4">{{profileName}}</h1>
             <p>{{profile.description}}</p>
             <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
           </v-col>
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import helpers from '@/_helpers'
 import MediaCard from '@/components/MediaCard'
 
 export default {
@@ -109,6 +110,13 @@ export default {
   created() {
     this.$store.dispatch('profiles/getAll');
   },
+  watch: {
+    profileSlug() {
+      if (!this.$route.params.slug !== this.profileSlug) {
+        this.$router.push(`/profile/${this.id}/${this.profileSlug}`)
+      }
+    }
+  },
   computed: {
     id() {
       return this.$route.params.id
@@ -117,6 +125,14 @@ export default {
       if (!this.$store.state.profiles.all.items)
         return undefined
       return this.$store.state.profiles.all.items.find(p => p.id == this.id)
+    },
+    profileName() {
+      if (!this.$store.state.profiles.all.items)
+        return undefined
+      return this.profile.stageName || this.profile.user.firstName + " " + this.profile.user.lastName
+    },
+    profileSlug() {
+      return helpers.slugify(this.profileName)
     },
     userName() {
       return this.profile.user.firstName + " " + this.profile.user.lastName
