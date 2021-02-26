@@ -25,6 +25,18 @@ export const authentication = {
                     }
                 );
         },
+        forgotPassword(a, { email }) {
+          return new Promise((resolve, reject) => {
+            services.userService.forgotPassword(email)
+              .then(response => {
+                console.log(response) // eslint-disable-line no-console
+                resolve(response)
+              }, error => {
+                console.error(error) // eslint-disable-line no-console
+                reject(error)
+              })
+          });
+        },
         logout({ commit }) {
             services.userService.logout();
             commit('logout');

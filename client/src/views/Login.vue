@@ -22,6 +22,9 @@
             :disabled="loggingIn"
             @click="handleSubmit"
           >Logga in</v-btn>
+          <p>
+            <router-link to="/forgot-password">Glömt lösenord</router-link>
+          </p>
         </v-form>
       </v-col>
     </v-row>

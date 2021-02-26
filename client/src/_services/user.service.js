@@ -5,6 +5,7 @@ const { authHeader, apiUrl } = helpers
 
 export const userService = {
     login,
+    forgotPassword,
     logout,
     register,
     update,
@@ -32,6 +33,10 @@ function login(email, password) {
 }
 
 function refreshToken() {
+
+  if (process.env !== 'production')
+    return console.log('Not in production, not using refresh token') // eslint-disable-line no-console
+
     const requestOptions = {
         method: 'POST'
     };
@@ -48,6 +53,17 @@ function refreshToken() {
 }
 
 refreshToken();
+
+function forgotPassword(email) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    };
+
+    return fetch(`${apiUrl}/users/forgot-password`, requestOptions)
+        .then(handleResponse)
+}
 
 function logout() {
     // remove user from local storage to log user out
