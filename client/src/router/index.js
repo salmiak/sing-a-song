@@ -22,6 +22,11 @@ const routes = [
     component: Login
   },
   {
+    path: '/login/:status',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/forgot-password',
     name: 'Forgot Password',
     component: ForgotPassword
@@ -67,8 +72,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/', '/register', '/about','/login'];
-  const authRequired = !publicPages.includes(to.path) && to.path.search('profile') === -1 && to.path.search('password') === -1;
+  const authRequired = to.path.search('account') !== -1
   const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {
