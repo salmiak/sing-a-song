@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Profile from '../views/Profile.vue'
@@ -24,6 +25,11 @@ const routes = [
     path: '/forgot-password',
     name: 'Forgot Password',
     component: ForgotPassword
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'Reset Password',
+    component: ResetPassword
   },
   {
     path: '/register',
@@ -61,8 +67,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/', '/register', '/about','/login', '/forgot-password'];
-  const authRequired = !publicPages.includes(to.path) && to.path.search('profile') === -1;
+  const publicPages = ['/', '/register', '/about','/login'];
+  const authRequired = !publicPages.includes(to.path) && to.path.search('profile') === -1 && to.path.search('password') === -1;
   const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {

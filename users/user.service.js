@@ -291,7 +291,7 @@ async function sendAlreadyRegisteredEmail(email, origin) {
 async function sendPasswordResetEmail(user, origin) {
     let message;
     if (origin) {
-        const resetUrl = `${origin}/users/reset-password?token=${user.resetToken}`;
+        const resetUrl = `${origin}/#/reset-password/${user.resetToken}`;
         message = `<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
                    <p><a href="${resetUrl}">${resetUrl}</a></p>`;
     } else {

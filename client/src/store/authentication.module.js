@@ -29,10 +29,28 @@ export const authentication = {
           return new Promise((resolve, reject) => {
             services.userService.forgotPassword(email)
               .then(response => {
-                console.log(response) // eslint-disable-line no-console
                 resolve(response)
               }, error => {
-                console.error(error) // eslint-disable-line no-console
+                reject(error)
+              })
+          });
+        },
+        validateResetToken(a, { token }) {
+          return new Promise((resolve, reject) => {
+            services.userService.validateResetToken(token)
+              .then(response => {
+                resolve(response)
+              }, error => {
+                reject(error)
+              })
+          });
+        },
+        resetPassword(a, payload) {
+          return new Promise((resolve, reject) => {
+            services.userService.resetPassword(payload)
+              .then(response => {
+                resolve(response)
+              }, error => {
                 reject(error)
               })
           });

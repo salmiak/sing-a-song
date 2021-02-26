@@ -6,6 +6,8 @@ const { authHeader, apiUrl } = helpers
 export const userService = {
     login,
     forgotPassword,
+    validateResetToken,
+    resetPassword,
     logout,
     register,
     update,
@@ -64,6 +66,29 @@ function forgotPassword(email) {
     return fetch(`${apiUrl}/users/forgot-password`, requestOptions)
         .then(handleResponse)
 }
+
+function validateResetToken(token) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+    };
+
+    return fetch(`${apiUrl}/users/validate-reset-token`, requestOptions)
+        .then(handleResponse)
+}
+
+function resetPassword(payload) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    };
+
+    return fetch(`${apiUrl}/users/reset-password`, requestOptions)
+        .then(handleResponse)
+}
+
 
 function logout() {
     // remove user from local storage to log user out
