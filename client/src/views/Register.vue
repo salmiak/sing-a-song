@@ -39,7 +39,9 @@
             :disabled="submitted">Skapa konto</v-btn>
         </v-form>
         <div v-else>
-          Kolla din email
+          <v-alert
+            color="success"
+          >Kolla din email</v-alert>
         </div>
       </v-col>
     </v-row>

@@ -104,7 +104,9 @@ function verifyEmailSchema(req, res, next) {
 
 function verifyEmail(req, res, next) {
     userService.verifyEmail(req.params)
-        .then(() => res.json({ message: 'Verification successful, you can now login' }))
+        .then(() => {
+          res.redirect('/#/login/verifiedEmail')
+        })
         .catch(next);
 }
 

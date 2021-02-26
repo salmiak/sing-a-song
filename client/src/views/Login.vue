@@ -1,5 +1,23 @@
 <template>
   <v-container class="login">
+
+    <v-alert
+      v-if="$route.params.status === 'verifiedEmail'"
+      color="success"
+    >
+      Du är verifierad! Nu kan du logga in.
+    </v-alert>
+
+
+    <v-alert
+      v-if="$route.params.status === 'passwordReset'"
+      color="success"
+    >
+      Nu kan du logga in med ditt nya lösenord.
+    </v-alert>
+
+
+
     <v-row>
       <v-col>
         <h1>Logga in</h1>

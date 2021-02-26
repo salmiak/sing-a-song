@@ -20,17 +20,19 @@
           <v-text-field
             v-model="password"
             label="Lösenord"
+            type="password"
             outlined
           ></v-text-field>
           <v-text-field
             v-model="confirmPassword"
             label="Lösenord igen"
+            type="password"
             outlined
           ></v-text-field>
           <v-btn
             :disabled="submitted"
             @click="handleSubmit"
-          >Sätt nytt lösenord</v-btn>
+          >Spara nytt lösenord</v-btn>
         </v-form>
         <v-alert
           v-if="success || error"
@@ -85,9 +87,8 @@ export default {
           const { dispatch } = this.$store;
           if ( password && confirmPassword ) {
             dispatch('authentication/resetPassword', { password, confirmPassword, token })
-            .then(r => {
-              this.success = r.message
-              this.submitted = false
+            .then(() => {
+              this.$router.push('/login/passwordReset')
             },
             error => {
               this.error = error
