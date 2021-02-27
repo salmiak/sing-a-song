@@ -79,6 +79,7 @@
 
 export default {
   name: 'Home',
+  title: 'Sing a Song',
   components: {
     MediaCard
   },

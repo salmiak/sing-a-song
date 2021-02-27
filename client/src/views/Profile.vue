@@ -100,6 +100,9 @@ import MediaCard from '@/components/MediaCard'
 
 export default {
   name: 'Profile',
+  title() {
+    return `${this.profileName} | Sing a Song`
+  },
   components: {
     MediaCard
   },

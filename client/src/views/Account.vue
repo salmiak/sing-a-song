@@ -290,6 +290,7 @@ import MediaCard from '@/components/MediaCard'
 
 export default {
   name:'Account',
+  title: 'Ditt konto | Sing a Song',
   components: {
     MediaCard
   },

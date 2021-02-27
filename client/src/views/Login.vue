@@ -52,6 +52,7 @@
 <script>
 export default {
   name: 'Login',
+  title: 'Logga in | Sing a Song',
   data () {
       return {
           email: '',

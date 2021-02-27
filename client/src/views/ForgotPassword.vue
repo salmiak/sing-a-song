@@ -31,6 +31,7 @@
 <script>
 export default {
   name: 'ForgotPassword',
+  title: 'Glömt lösenord | Sing a Song',
   data () {
       return {
           submitted: false,

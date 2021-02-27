@@ -56,6 +56,7 @@
 
 export default {
   name: 'Register',
+  title: 'Registrera dig | Sing a Song',
   data () {
       return {
         firstName: '',

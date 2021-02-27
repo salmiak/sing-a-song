@@ -57,6 +57,7 @@
 <script>
 export default {
   name: 'ResetPassword',
+  title: 'Nytt lösenord | Sing a Song',
   data () {
       return {
           password: '',
