@@ -1,6 +1,7 @@
 <template lang="html">
   <v-card
-    class="mediaCard">
+    class="mediaCard"
+    color="secondary darken-4">
 
     <v-responsive :aspect-ratio="1/1">
 
@@ -20,6 +21,14 @@
         frameborder="0"
         allowtransparency="true"
         allow="encrypted-media"></iframe>
+
+      <iframe
+        v-if="media.provider === 'vimeo'"
+        :src="`https://player.vimeo.com/video/${media.value}?color=ff9933&byline=0&portrait=0`"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen></iframe>
 
     </v-responsive>
   </v-card>
