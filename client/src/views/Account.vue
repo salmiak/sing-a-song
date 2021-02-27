@@ -33,16 +33,17 @@
                 v-model="user.email"
                 label="Email" ></v-text-field>
 
-                <v-alert
-                  type="error"
-                  :value="!!accountValidationError"
-                  transition="scale-transition"
-                  class="elevation-2"
-                >{{accountValidationError}}</v-alert>
-
               <v-btn
                 @click="updateAccount"
                 :disabled="submitted">Uppdatera konto</v-btn>
+
+              <v-alert
+                v-if="validation && validation.target === 'account'"
+                :type="validation.type"
+                text
+                class="mt-2"
+                transition="scale-transition"
+              >{{validation.message}}</v-alert>
             </v-form>
 
             <h3 class="text-h3 mt-8">Ändra lösenord</h3>
@@ -56,16 +57,17 @@
                 label="Lösenord igen"
                 type="password" ></v-text-field>
 
-              <v-alert
-                type="error"
-                :value="!!passwordValidationError"
-                transition="scale-transition"
-                class="elevation-2"
-              >{{passwordValidationError}}</v-alert>
-
               <v-btn
                 @click="updatePassword"
                 :disabled="submitted">Uppdatera lösenord</v-btn>
+
+              <v-alert
+                v-if="validation && validation.target === 'password'"
+                :type="validation.type"
+                text
+                class="mt-2"
+                transition="scale-transition"
+              >{{validation.message}}</v-alert>
             </v-form>
 
             <h3 class="text-h3 mt-8 mb-4">Farliga grejer</h3>
@@ -85,7 +87,7 @@
                 outlined
               >
                 <v-icon left>mdi-delete</v-icon>
-                Ta bort användare
+                Radera konto
               </v-btn>
             </v-form>
           </v-col>
@@ -202,18 +204,19 @@
                 rows="3"
               ></v-textarea>
 
-              <v-alert
-                type="error"
-                :value="!!profileValidationError"
-                transition="scale-transition"
-                class="elevation-2"
-              >{{profileValidationError}}</v-alert>
-
               <v-btn
                 @click="updateProfile"
                 :disabled="submitted"
                 class="mb-4"
               >Uppdatera konto</v-btn>
+
+              <v-alert
+                v-if="validation && validation.target === 'profile'"
+                :type="validation.type"
+                text
+                class="mt-2"
+                transition="scale-transition"
+              >{{validation.message}}</v-alert>
 
               <p><router-link :to="`/profile/${profile.id}`">Besök din profil</router-link></p>
 
@@ -260,14 +263,15 @@
                 Länken är en <strong>{{newMediaValidation.provider}}
                   {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
               </v-alert>
+
               <v-alert
-                type="error"
-                :value="!!mediaValidationError"
+                v-if="validation && validation.target === 'media'"
+                :type="validation.type"
+                text
+                class="mt-2"
                 transition="scale-transition"
-                class="elevation-2"
-              >
-                {{mediaValidationError}}
-              </v-alert>
+              >{{validation.message}}</v-alert>
+
             </v-card>
           </v-col>
         </v-row>
@@ -326,10 +330,7 @@ export default {
       ],
       password: '',
       confirmPassword: '',
-      passwordValidationError: null,
-      accountValidationError: null,
-      profileValidationError: null,
-      mediaValidationError: null,
+      validation: {},
       newMediaURL: undefined,
       avatarFile: undefined,
       coverFile: undefined,
@@ -381,22 +382,38 @@ export default {
         setTimeout(()=> {
           this.askToDeleteUser = false
         }, 5000)
+    },
+    validation() {
+      if(this.validation.target) {
+        setTimeout(() => {
+          this.validation = {}
+        }, 10000)
+      }
     }
   },
   methods: {
     updateAccount () {
-      this.accountValidationError = null
+      this.validation = {}
       this.submitted = true
       this.$store.dispatch('authentication/update', this.user)
         .then(() => {
+          this.validation = {
+            target: 'account',
+            message: 'Ditt konto sparades',
+            type: 'success'
+          }
           this.submitted = false
         }, error => {
-          this.accountValidationError = error
+          this.validation = {
+            target: 'account',
+            message: error,
+            type: 'error'
+          }
           this.submitted = false
         })
     },
     updatePassword() {
-      this.passwordValidationError = null
+      this.validation = {}
       this.submitted = true
       this.$store.dispatch('authentication/update', {
         id: this.user.id,
@@ -404,9 +421,18 @@ export default {
         confirmPassword: this.confirmPassword
       })
         .then(() => {
+          this.validation = {
+            target: 'password',
+            message: 'Ditt lösenord uppdaterades',
+            type: 'success'
+          }
           this.submitted = false
         }, error => {
-          this.passwordValidationError = error
+          this.validation = {
+            target: 'password',
+            message: error,
+            type: 'error'
+          }
           this.submitted = false
         })
     },
@@ -416,13 +442,22 @@ export default {
     },
 
     updateProfile() {
-      this.profileValidationError = null
+      this.validation = {}
       this.submitted = true
       this.$store.dispatch('profiles/update', this.profile)
         .then(() => {
+          this.validation = {
+            target: 'profile',
+            message: 'Din profil uppdaterades',
+            type: 'success'
+          }
           this.submitted = false
         }, error => {
-          this.profileValidationError = error
+          this.validation = {
+            target: 'profile',
+            message: error,
+            type: 'error'
+          }
           this.submitted = false
         })
     },
@@ -490,11 +525,20 @@ export default {
         profileId: this.profile.id
       })
         .then(media => {
+          this.validation = {
+            target: 'media',
+            message: 'Media tillagt',
+            type: 'success'
+          }
           this.submitted = false
           this.newMediaURL = ''
           this.$store.commit('profiles/addMedia', media)
         }, error => {
-          this.submitted = false
+          this.validation = {
+            target: 'media',
+            message: error,
+            type: 'error'
+          }
           this.mediaValidationError = error
         })
     },
