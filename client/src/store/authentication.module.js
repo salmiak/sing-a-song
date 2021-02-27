@@ -10,7 +10,7 @@ export const authentication = {
     namespaced: true,
     state: initialState,
     actions: {
-        login({ dispatch, commit }, { email, password }) {
+        login({ commit }, { email, password }) {
             commit('loginRequest', { email });
 
             services.userService.login(email, password)
@@ -21,7 +21,6 @@ export const authentication = {
                     },
                     error => {
                         commit('loginFailure', error);
-                        dispatch('alert/error', error, { root: true });
                     }
                 );
         },
@@ -86,6 +85,17 @@ export const authentication = {
               }
             );
           })
+        },
+        _delete({ dispatch }, id) {
+          services.userService._delete(id)
+          .then(
+            () => {
+              dispatch('authentication/logout')
+            },
+            error => {
+              console.error({error})
+            }
+          );
         },
     },
     mutations: {

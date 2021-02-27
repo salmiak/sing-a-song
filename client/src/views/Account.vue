@@ -67,6 +67,27 @@
                 @click="updatePassword"
                 :disabled="submitted">Uppdatera lösenord</v-btn>
             </v-form>
+
+            <h3 class="text-h3 mt-8 mb-4">Farliga grejer</h3>
+            <v-form>
+              <v-btn
+                v-if="askToDeleteUser"
+                @click="deleteUser"
+                color="error"
+              >
+                <v-icon left>mdi-delete</v-icon>
+                Är du helt säker? Det går inte att ångra
+              </v-btn>
+              <v-btn
+                v-else
+                @click="askToDeleteUser = true"
+                color="error"
+                outlined
+              >
+                <v-icon left>mdi-delete</v-icon>
+                Ta bort användare
+              </v-btn>
+            </v-form>
           </v-col>
         </v-row>
       </v-tab-item>
@@ -311,7 +332,8 @@ export default {
       mediaValidationError: null,
       newMediaURL: undefined,
       avatarFile: undefined,
-      coverFile: undefined
+      coverFile: undefined,
+      askToDeleteUser: false
     }
   },
   computed: {
@@ -353,6 +375,12 @@ export default {
       if (!file)
         return false
       this.updateImage(file, 'cover')
+    },
+    askToDeleteUser() {
+      if(this.askToDeleteUser)
+        setTimeout(()=> {
+          this.askToDeleteUser = false
+        }, 5000)
     }
   },
   methods: {
@@ -382,6 +410,11 @@ export default {
           this.submitted = false
         })
     },
+    deleteUser() {
+      console.log('delete user:' + this.user.id) // eslint-disable-line no-console
+      this.$store.dispatch('authentication/_delete', this.user.id)
+    },
+
     updateProfile() {
       this.profileValidationError = null
       this.submitted = true
@@ -444,6 +477,7 @@ export default {
       };
       xhr.send();
     },
+
     addNewMedia() {
       if (!this.newMediaValidation) {
         return false

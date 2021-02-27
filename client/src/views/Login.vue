@@ -2,12 +2,18 @@
   <v-container class="login">
 
     <v-alert
+      v-if="$route.params.status === 'loggedOut'"
+      color="warning"
+    >
+      Du blev utloggad. Logga in igen.
+    </v-alert>
+
+    <v-alert
       v-if="$route.params.status === 'verifiedEmail'"
       color="success"
     >
       Du är verifierad! Nu kan du logga in.
     </v-alert>
-
 
     <v-alert
       v-if="$route.params.status === 'passwordReset'"

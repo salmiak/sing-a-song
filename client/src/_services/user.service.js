@@ -11,6 +11,7 @@ export const userService = {
     logout,
     register,
     update,
+    _delete,
     getAll
 };
 
@@ -123,6 +124,20 @@ function update(payload) {
         });
 }
 
+function _delete(id) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader()
+    };
+
+    return fetch(`${apiUrl}/users/${id}`, requestOptions)
+        .then(handleResponse)
+        .then(() => {
+          logout();
+          location.href = '/';
+        });
+}
+
 function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -141,7 +156,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                location.reload(true);
+                location.href = '/#/login/loggedOut';
             }
 
             const error = (data && data.message) || response.statusText;
