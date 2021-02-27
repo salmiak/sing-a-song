@@ -11,18 +11,19 @@ export const authentication = {
     state: initialState,
     actions: {
         login({ commit }, { email, password }) {
+          return new Promise((resolve, reject) => {
             commit('loginRequest', { email });
 
             services.userService.login(email, password)
-                .then(
-                    user => {
-                        commit('loginSuccess', user);
-                        router.push('/');
-                    },
-                    error => {
-                        commit('loginFailure', error);
-                    }
-                );
+              .then(response => {
+                commit('loginSuccess', user);
+                router.push('/');
+                resolve(response)
+              }, error => {
+                commit('loginFailure', error);
+                reject(error)
+              })
+          });
         },
         forgotPassword(a, { email }) {
           return new Promise((resolve, reject) => {

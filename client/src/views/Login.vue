@@ -46,6 +46,15 @@
             :disabled="loggingIn"
             @click="handleSubmit"
           >Logga in</v-btn>
+
+          <v-alert
+            v-if="validationError"
+            type="error"
+            text
+            class="mt-2"
+            transition="scale-transition"
+          >{{validationError}}</v-alert>
+
           <p>
             <router-link to="/forgot-password">Glömt lösenord</router-link>
           </p>
@@ -63,7 +72,8 @@ export default {
       return {
           email: '',
           password: '',
-          submitted: false
+          submitted: false,
+          validationError: false
       }
   },
   computed: {
@@ -81,7 +91,10 @@ export default {
           const { email, password } = this;
           const { dispatch } = this.$store;
           if (email && password) {
-              dispatch('authentication/login', { email, password });
+              dispatch('authentication/login', { email, password })
+              .then(null, (error) => {
+                this.validationError = error
+              });
           }
       }
   }
