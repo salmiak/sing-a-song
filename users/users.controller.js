@@ -65,15 +65,15 @@ function revokeToken(req, res, next) {
     const token = req.body.token || req.cookies.refreshToken;
     const ipAddress = req.ip;
 
-    if (!token) return res.status(400).json({ message: 'Token is required' });
+    if (!token) return res.status(400).json({ message: 'Det krävs en token. Försök igen.' });
 
     // users can revoke their own tokens and admins can revoke any tokens
     if (!req.user.ownsToken(token) && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Ej behörig' });
     }
 
     userService.revokeToken({ token, ipAddress })
-        .then(() => res.json({ message: 'Token revoked' }))
+        .then(() => res.json({ message: 'Token återkallad' }))
         .catch(next);
 }
 
@@ -91,7 +91,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     userService.register(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Registration successful, please check your email for verification instructions' }))
+        .then(() => res.json({ message: 'Registrerigen lyckades. Kolla i din e-post för vidare instruktioner.' }))
         .catch(next);
 }
 
@@ -119,7 +119,7 @@ function forgotPasswordSchema(req, res, next) {
 
 function forgotPassword(req, res, next) {
     userService.forgotPassword(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Please check your email for password reset instructions' }))
+        .then(() => res.json({ message: 'Kolla din e-post för vidare instruktioner för nytt lösenord.' }))
         .catch(next);
 }
 
@@ -132,7 +132,7 @@ function validateResetTokenSchema(req, res, next) {
 
 function validateResetToken(req, res, next) {
     userService.validateResetToken(req.body)
-        .then(() => res.json({ message: 'Token is valid' }))
+        .then(() => res.json({ message: 'Token är giltig' }))
         .catch(next);
 }
 
@@ -147,7 +147,7 @@ function resetPasswordSchema(req, res, next) {
 
 function resetPassword(req, res, next) {
     userService.resetPassword(req.body)
-        .then(() => res.json({ message: 'Password reset successful, you can now login' }))
+        .then(() => res.json({ message: 'Lösenordet återställdes. Nu kan du logga in.' }))
         .catch(next);
 }
 
@@ -160,7 +160,7 @@ function getAll(req, res, next) {
 function getById(req, res, next) {
     // users can get their own user and admins can get any user
     if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Ej behörig' });
     }
 
     userService.getById(req.params.id)
@@ -209,7 +209,7 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
     // users can update their own user and admins can update any user
     if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Ej behörig' });
     }
 
     userService.update(req.params.id, req.body)
@@ -220,11 +220,11 @@ function update(req, res, next) {
 function _delete(req, res, next) {
     // users can delete their own user and admins can delete any user
     if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Ej behörig' });
     }
 
     userService.delete(req.params.id)
-        .then(() => res.json({ message: 'User deleted successfully' }))
+        .then(() => res.json({ message: 'Användaren raderad' }))
         .catch(next);
 }
 

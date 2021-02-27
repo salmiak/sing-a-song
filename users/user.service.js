@@ -27,7 +27,7 @@ async function authenticate({ email, password, ipAddress }) {
     const user = await db.User.scope('withHash').findOne({ where: { email } });
 
     if (!user || !user.isVerified || !(await bcrypt.compare(password, user.passwordHash))) {
-        throw 'Email or password is incorrect';
+        throw 'Felaktig e-post eller lösenord.';
     }
 
     // authentication successful so generate jwt and refresh tokens
@@ -105,7 +105,7 @@ async function register(params, origin) {
 async function verifyEmail({ token }) {
     const user = await db.User.findOne({ where: { verificationToken: token } });
 
-    if (!user) throw 'Verification failed - unknown token';
+    if (!user) throw 'Något gick fel - okänd token';
 
     user.verified = Date.now();
     user.verificationToken = null;
@@ -168,7 +168,7 @@ async function getById(id) {
 async function create(params) {
     // validate
     if (await db.User.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
+        throw 'E-postadressen "' + params.email + '" finns redan registrerad.';
     }
 
     const user = new db.User(params);
@@ -188,7 +188,7 @@ async function update(id, params) {
 
     // validate (if email was changed)
     if (params.email && user.email !== params.email && await db.User.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
+        throw 'E-postadressen "' + params.email + '" finns redan registrerad.';
     }
 
     // hash password if it was entered
@@ -213,7 +213,7 @@ async function _delete(id) {
 
 async function getUser(id) {
     const user = await db.User.findByPk(id);
-    if (!user) throw 'User not found';
+    if (!user) throw 'Användaren finns ej';
     return user;
 }
 

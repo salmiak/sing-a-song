@@ -49,7 +49,7 @@ async function _delete(id) {
 
 async function getProfile(id) {
     const profile = await db.Profile.findByPk(id, { include: [db.User, db.Media] });
-    if (!profile) throw 'Profile not found';
+    if (!profile) throw 'Profil finns ej';
     return profile;
 }
 

@@ -55,7 +55,7 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
     if (Number(req.body.userId) !== req.user.id) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Ej behörig' });
     }
 
     mediaService.update(req.params.id, req.body)
