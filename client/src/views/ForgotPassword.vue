@@ -12,6 +12,7 @@
             v-model="email"
             label="Email"
             outlined
+            type="email"
           ></v-text-field>
           <v-btn
             :disabled="submitted"

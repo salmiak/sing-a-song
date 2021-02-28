@@ -33,15 +33,24 @@
       <v-col class="col-6">
         <v-form @submit.prevent="handleSubmit">
           <v-text-field
+            type = "email"
             v-model="email"
             label="Email"
             outlined
           ></v-text-field>
           <v-text-field
             v-model="password"
-            label="Lösenord" type="password"
+            label="Lösenord"
+            :type="showPassword?'text':'password'"
             outlined
-          ></v-text-field>
+          >
+            <v-icon
+              slot="append"
+              @click="showPassword = !showPassword"
+            >
+              {{showPassword?'mdi-eye-off':'mdi-eye'}}
+            </v-icon>
+          </v-text-field>
           <v-btn
             :disabled="loggingIn"
             @click="handleSubmit"
@@ -55,8 +64,8 @@
             transition="scale-transition"
           >{{validationError}}</v-alert>
 
-          <p>
-            <router-link to="/forgot-password">Glömt lösenord</router-link>
+          <p class="mt-8">
+            <router-link to="/forgot-password">Glömt lösenord</router-link> - Om du inte har något konto så <router-link to="/register">skapa ett här</router-link>.
           </p>
         </v-form>
       </v-col>
@@ -73,7 +82,8 @@ export default {
           email: '',
           password: '',
           submitted: false,
-          validationError: false
+          validationError: false,
+          showPassword: false
       }
   },
   computed: {

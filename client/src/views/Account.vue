@@ -31,7 +31,8 @@
                 label="Efternamn" ></v-text-field>
               <v-text-field
                 v-model="user.email"
-                label="Email" ></v-text-field>
+                label="Email"
+                type="email"></v-text-field>
 
               <v-btn
                 @click="updateAccount"
@@ -51,11 +52,27 @@
               <v-text-field
                 v-model="password"
                 label="Lösenord"
-                type="password" ></v-text-field>
+                :type="showPassword?'text':'password'"
+              >
+                <v-icon
+                  slot="append"
+                  @click="showPassword = !showPassword"
+                >
+                  {{showPassword?'mdi-eye-off':'mdi-eye'}}
+                </v-icon>
+              </v-text-field>
               <v-text-field
                 v-model="confirmPassword"
                 label="Lösenord igen"
-                type="password" ></v-text-field>
+                :type="showPassword?'text':'password'"
+              >
+                <v-icon
+                  slot="append"
+                  @click="showPassword = !showPassword"
+                >
+                  {{showPassword?'mdi-eye-off':'mdi-eye'}}
+                </v-icon>
+              </v-text-field>
 
               <v-btn
                 @click="updatePassword"
@@ -334,7 +351,8 @@ export default {
       newMediaURL: undefined,
       avatarFile: undefined,
       coverFile: undefined,
-      askToDeleteUser: false
+      askToDeleteUser: false,
+      showPassword: false
     }
   },
   computed: {

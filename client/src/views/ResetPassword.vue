@@ -20,15 +20,29 @@
           <v-text-field
             v-model="password"
             label="Lösenord"
-            type="password"
+            :type="showPassword?'text':'password'"
             outlined
-          ></v-text-field>
+          >
+            <v-icon
+              slot="append"
+              @click="showPassword = !showPassword"
+            >
+              {{showPassword?'mdi-eye-off':'mdi-eye'}}
+            </v-icon>
+          </v-text-field>
           <v-text-field
             v-model="confirmPassword"
             label="Lösenord igen"
-            type="password"
+            :type="showPassword?'text':'password'"
             outlined
-          ></v-text-field>
+          >
+            <v-icon
+              slot="append"
+              @click="showPassword = !showPassword"
+            >
+              {{showPassword?'mdi-eye-off':'mdi-eye'}}
+            </v-icon>
+          </v-text-field>
           <v-btn
             :disabled="submitted"
             @click="handleSubmit"
@@ -65,7 +79,8 @@ export default {
           submitted: false,
           success: false,
           error: false,
-          tokenStatus: undefined
+          tokenStatus: undefined,
+          showPassword: false
       }
   },
   created() {

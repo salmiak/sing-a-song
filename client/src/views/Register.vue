@@ -19,17 +19,34 @@
           <v-text-field
             outlined
             v-model="email"
-            label="Email" ></v-text-field>
+            label="Email"
+            type="email" ></v-text-field>
           <v-text-field
-            outlined
             v-model="password"
             label="Lösenord"
-            type="password" ></v-text-field>
-          <v-text-field
+            :type="showPassword?'text':'password'"
             outlined
+          >
+            <v-icon
+              slot="append"
+              @click="showPassword = !showPassword"
+            >
+              {{showPassword?'mdi-eye-off':'mdi-eye'}}
+            </v-icon>
+          </v-text-field>
+          <v-text-field
             v-model="confirmPassword"
             label="Lösenord igen"
-            type="password" ></v-text-field>
+            :type="showPassword?'text':'password'"
+            outlined
+          >
+            <v-icon
+              slot="append"
+              @click="showPassword = !showPassword"
+            >
+              {{showPassword?'mdi-eye-off':'mdi-eye'}}
+            </v-icon>
+          </v-text-field>
           <v-checkbox
             v-model="acceptTerms"
             label="Genom att kryssa i godkänner du våra användarvilkor"
@@ -37,6 +54,7 @@
           <v-btn
             @click="handleSubmit"
             :disabled="submitted">Skapa konto</v-btn>
+          <p class="mt-8">Om du redan har ett konto så <router-link to="/login">logga in här</router-link>.</p>
         </v-form>
         <div v-else>
           <v-alert
@@ -66,7 +84,8 @@ export default {
         confirmPassword: '',
         acceptTerms: false,
         submitted: false,
-        success: false
+        success: false,
+        showPassword: false
       }
   },
   methods: {
