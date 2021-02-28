@@ -15,10 +15,9 @@ export const authentication = {
             commit('loginRequest', { email });
 
             services.userService.login(email, password)
-              .then(response => {
+              .then(() => {
                 commit('loginSuccess', user);
                 router.push('/');
-                resolve(response)
               }, error => {
                 commit('loginFailure', error);
                 reject(error)
