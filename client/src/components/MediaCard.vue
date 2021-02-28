@@ -30,6 +30,16 @@
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen></iframe>
 
+      <iframe
+        v-if="media.provider === 'soundcloud'"
+        width="100%"
+        height="450"
+        scrolling="no"
+        rameborder="no"
+        allow="autoplay"
+        :src="media.value"
+      ></iframe>
+
     </v-responsive>
   </v-card>
 </template>

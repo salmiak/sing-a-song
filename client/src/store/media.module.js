@@ -27,6 +27,13 @@ export const media = {
               provider: 'spotify',
               url: newMediaURL
             })
+          } else if (newMediaURL.search('soundcloud') !== -1) {
+            payload =  {
+              type: 'sc',
+              id: newMediaURL,
+              provider: 'soundcloud',
+              url: newMediaURL
+            }
           } else {
             payload =  Object.assign(urlParser.parse(newMediaURL), {
               url: newMediaURL

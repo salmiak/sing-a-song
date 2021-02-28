@@ -379,6 +379,13 @@ export default {
       } else {
         return urlParser.parse(this.newMediaURL)
       }
+    },
+    soundcloudValue() {
+      if (this.newMediaValidation.provider !== 'soundcloud')
+        return undefined
+
+      let output = this.newMediaURL.split('src')[1].split('"')[1]
+      return output
     }
   },
   created () {
@@ -539,7 +546,7 @@ export default {
       this.submitted = true
 
       this.$store.dispatch('media/add', {
-        newMediaURL: this.newMediaURL,
+        newMediaURL: this.soundcloudValue||this.newMediaURL,
         profileId: this.profile.id
       })
         .then(media => {
