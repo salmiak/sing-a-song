@@ -91,7 +91,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     userService.register(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Registrerigen lyckades. Kolla i din e-post för vidare instruktioner.' }))
+        .then(() => res.json({ message: 'Registrerigen lyckades.' }))
         .catch(next);
 }
 

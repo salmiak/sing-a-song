@@ -54,12 +54,21 @@
           <v-btn
             @click="handleSubmit"
             :disabled="submitted">Skapa konto</v-btn>
+
+          <v-alert
+            v-if="validation"
+            type="error"
+            text
+            class="mt-2"
+            transition="scale-transition"
+          >{{validation}}</v-alert>
+
           <p class="mt-8">Om du redan har ett konto så <router-link to="/login">logga in här</router-link>.</p>
         </v-form>
         <div v-else>
           <v-alert
             color="success"
-          >Kolla din email</v-alert>
+          >Kolla i din e-post för vidare instruktioner.</v-alert>
         </div>
       </v-col>
     </v-row>
@@ -85,7 +94,8 @@ export default {
         acceptTerms: false,
         submitted: false,
         success: false,
-        showPassword: false
+        showPassword: false,
+        validation: false
       }
   },
   methods: {
@@ -96,6 +106,9 @@ export default {
       dispatch('authentication/register', { firstName, lastName, email, password, confirmPassword, acceptTerms })
       .then(() => {
         this.success = true
+      }, error => {
+        this.validation = error
+        this.submitted = false;
       })
     }
   }
