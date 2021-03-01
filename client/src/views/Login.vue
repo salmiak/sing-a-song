@@ -89,11 +89,21 @@ export default {
   computed: {
       loggingIn () {
           return this.$store.state.authentication.status.loggingIn;
+      },
+      loggedIn() {
+        return this.$store.state.authentication.status.loggedIn
       }
   },
   created () {
       // reset login status
       this.$store.dispatch('authentication/logout');
+  },
+  watch: {
+    loggedIn() {
+      if(this.loggedIn){
+        this.$router.push('/')
+      }
+    }
   },
   methods: {
       handleSubmit () {
