@@ -3,7 +3,7 @@
     class="mediaCard"
     color="secondary darken-4">
 
-    <v-responsive :aspect-ratio="1/1">
+    <v-responsive :aspect-ratio="4/3">
 
       <iframe
         v-if="media.provider === 'youtube'"

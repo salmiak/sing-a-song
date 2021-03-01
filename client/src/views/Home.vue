@@ -26,7 +26,7 @@
             :to="`/profile/${profile.id}`"
           >
             <v-img
-              :aspect-ratio="1"
+              :aspect-ratio="4/3"
               :src="profile.coverURL"
               class="rounded" />
 
@@ -64,7 +64,7 @@
           </v-card>
         </v-col>
         <v-col
-          v-for="media in profile.media.slice(0,3)"
+          v-for="media in profile.media.slice(0,2)"
           :key="media.id"
         >
           <media-card :media="media" />
