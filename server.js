@@ -1,15 +1,12 @@
 ﻿require('rootpath')();
 const express = require('express');
+const history = require('connect-history-api-fallback');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
 const app = express();
-
-process.env.PWD = process.cwd();
-const path = process.env.PWD + '/client/dist/';
-app.use(express.static(path));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,17 +16,15 @@ app.use(cookieParser());
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // api routes
-app.use('/users', require('./users/users.controller'));
-app.use('/profiles', require('./profiles/profiles.controller'));
-app.use('/media', require('./media/media.controller'));
-app.use('/sign-s3', require('./s3/s3.controller'));
+app.use('/api/users', require('./users/users.controller'));
+app.use('/api/profiles', require('./profiles/profiles.controller'));
+app.use('/api/media', require('./media/media.controller'));
+app.use('/api/sign-s3', require('./s3/s3.controller'));
 
-// swagger docs route
-app.use('/api-docs', require('_helpers/swagger'));
-
-app.get('/', function (req,res) {
-  res.sendFile(path + "index.html");
-});
+app.use(history())
+process.env.PWD = process.cwd();
+const path = process.env.PWD + '/client/dist/';
+app.use('/', express.static(path));
 
 // global error handler
 app.use(errorHandler);
