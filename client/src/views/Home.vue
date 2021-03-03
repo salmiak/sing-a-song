@@ -2,11 +2,92 @@
   <v-container
     class="mb-16"
   >
-    <v-row>
+  <v-toolbar
+    flat
+    color="transparent"
+  >
+    <v-spacer></v-spacer>
+
+    <v-menu
+      v-if="$store.state.authentication.user"
+      left
+      bottom
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          icon
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item to="/account">
+          <v-list-item-title>
+            Ditt konto
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item to="/login">
+          <v-list-item-title>
+            Logga ut {{$store.state.authentication.user.firstName}}
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <template v-else>
+      <v-btn plain to="/login">Logga in</v-btn>
+      <v-btn
+        outlined
+        to="/register">Skapa konto</v-btn>
+    </template>
+
+  </v-toolbar>
+
+    <v-row
+      justify="center"
+    >
+      <v-col
+        class="col-12 col-sm-10 col-md-8 col-lg-6 pb-12 text-center"
+      >
+        <h1 class="text-h1 mt-16 mb-6">Sing-a-song</h1>
+        <v-text-field
+          placeholder="Sök vissångare"
+          type="search"
+          solo
+          clearable
+          prepend-inner-icon="mdi-magnify"
+          class="mb-0"
+        />
+        <v-chip
+          v-for="area in areas"
+          :key="area"
+          color="white"
+          class="elevation-1 mx-1"
+          filter
+          :input-value="area === selectedArea"
+          @click="filterOnArea(area)"
+        >
+          {{area}}
+        </v-chip>
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="profiles.loading || profiles.error"
+      class="text-center"
+    >
       <v-col>
-        <h1 class="text-h1 mt-16 mb-10">Sing-a-song</h1>
         <em v-if="profiles.loading">Laddar profiler...</em>
-        <span v-if="profiles.error" class="text-danger">ERROR: {{profiles.error}}</span>
+        <v-alert
+          type="error"
+          v-if="profiles.error"
+        >
+          ERROR: {{profiles.error}}
+        </v-alert>
       </v-col>
     </v-row>
 
@@ -83,6 +164,17 @@ export default {
   components: {
     MediaCard
   },
+  data() {
+    return {
+      areas: [
+        'Stockholm',
+        'Göteborg',
+        'Malmö',
+        'Uppsala'
+      ],
+      selectedArea: false
+    }
+  },
   computed: {
     profiles () {
         return this.$store.state.profiles.all;
@@ -90,6 +182,16 @@ export default {
   },
   created () {
     this.$store.dispatch('profiles/getAll');
+  },
+  methods: {
+    filterOnArea(area) {
+      if (this.selectedArea === area) {
+        this.selectedArea = undefined
+      } else {
+        this.selectedArea = area
+      }
+      console.log({area}) // eslint-disable-line no-console
+    }
   }
 }
 </script>

@@ -4,24 +4,23 @@
       app
       color="primary"
       dark
-      elevate-on-scroll
+      elevation="3"
+      inverted-scroll
+      scroll-threshold="256"
     >
-      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-      <v-toolbar-title>Sing-a-song</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link
+          to="/"
+          class="secondary--text text-decoration-none"
+        >Sing a song</router-link>
+      </v-toolbar-title>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        to="/"
-        icon
-      >
-        <v-icon>mdi-home</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <!--<v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>-->
+      <v-spacer></v-spacer>
 
       <v-menu
         v-if="$store.state.authentication.user"

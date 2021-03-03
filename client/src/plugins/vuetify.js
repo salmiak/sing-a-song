@@ -11,11 +11,16 @@ export default new Vuetify({
     current: 'sv',
   },
   theme: {
+    options: { customProperties: true },
     themes: {
       light: {
-        primary: colors.deepOrange.base,  // #FF5722
-        secondary: colors.blueGrey.lighten4, // #CFD8DC
-        accent: colors.cyan.base, // #00BCD4
+        primary: colors.deepPurple.darken1, //#5E35B1
+        secondary: colors.deepOrange.lighten5, // #FBE9E7
+        accent: colors.deepOrange.base, // #FF5722
+        error: '#FF5252',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FFC107',
       },
     },
   },
