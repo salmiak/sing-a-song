@@ -109,7 +109,7 @@
           justify="center"
         >
           <v-col
-            class="text-center col-8"
+            class="text-center col-12 col-sm-8"
           >
             <h1 class="text-h3 mb-4">{{profileName}}</h1>
             <p>{{profile.description}}</p>

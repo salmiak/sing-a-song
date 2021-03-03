@@ -3,6 +3,7 @@
 
     <v-parallax
       :src="require('../assets/frontpage-hero.jpg')"
+      class="px-3"
     >
       <v-toolbar
         flat
@@ -23,7 +24,7 @@
           <v-col
             class="col-12 col-sm-10 col-md-8 col-lg-6 pb-12 text-center"
           >
-            <h1 class="text-h1 mb-6">Sing-a-song</h1>
+            <h1 class="text-h4 text-sm-h1 mb-6">Sing-a-song</h1>
             <v-text-field
               placeholder="Sök vissångare"
               type="search"
@@ -36,7 +37,7 @@
               v-for="area in areas"
               :key="area"
               color="white"
-              class="elevation-1 mx-1"
+              class="elevation-1 ma-1"
               filter
               :input-value="area === selectedArea"
               @click="filterOnArea(area)"
@@ -82,7 +83,9 @@
           dense
           class="mb-2"
         >
-          <v-col>
+          <v-col
+            class="col-12 col-sm-6 col-md-3"
+          >
             <v-card
               color="accent darken-1 rounded"
               dark
@@ -130,6 +133,7 @@
           <v-col
             v-for="media in profile.media.slice(0,3)"
             :key="media.id"
+            class="col-12 col-sm-6 col-md-3"
           >
             <media-card :media="media" />
           </v-col>
