@@ -2,50 +2,13 @@
   <v-container
     class="mb-16"
   >
-  <v-toolbar
-    flat
-    color="transparent"
-  >
-    <v-spacer></v-spacer>
-
-    <v-menu
-      v-if="$store.state.authentication.user"
-      left
-      bottom
+    <v-toolbar
+      flat
+      color="transparent"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          icon
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item to="/account">
-          <v-list-item-title>
-            Ditt konto
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/login">
-          <v-list-item-title>
-            Logga ut {{$store.state.authentication.user.firstName}}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <template v-else>
-      <v-btn plain to="/login">Logga in</v-btn>
-      <v-btn
-        outlined
-        to="/register">Skapa konto</v-btn>
-    </template>
-
-  </v-toolbar>
+      <v-spacer></v-spacer>
+      <top-navigation />
+    </v-toolbar>
 
     <v-row
       justify="center"
@@ -92,13 +55,18 @@
     </v-row>
 
     <template
-    v-if="profiles.items"
+      v-if="profiles.items"
     >
+    <div
+      v-for="i in 5"
+      :key="i"
+    >
+
       <v-row
         v-for="profile in profiles.items"
         :key="`profile-${profile.id}`"
         dense
-        class="mb-10"
+        class="mb-2"
       >
         <v-col>
           <v-card
@@ -113,6 +81,7 @@
 
             <v-overlay
               absolute
+              z-index="0"
             >
               <v-card-text
                 class="text-center"
@@ -145,24 +114,27 @@
           </v-card>
         </v-col>
         <v-col
-          v-for="media in profile.media.slice(0,2)"
+          v-for="media in profile.media.slice(0,3)"
           :key="media.id"
         >
           <media-card :media="media" />
         </v-col>
       </v-row>
+    </div>
     </template>
   </v-container>
 </template>
 
 <script>
-  import MediaCard from '@/components/MediaCard'
+import MediaCard from '@/components/MediaCard'
+import TopNavigation from '@/components/TopNavigation'
 
 export default {
   name: 'Home',
   title: 'Sing a Song',
   components: {
-    MediaCard
+    MediaCard,
+    TopNavigation
   },
   data() {
     return {
