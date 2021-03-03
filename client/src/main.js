@@ -6,8 +6,13 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import titleMixin from './mixins/titleMixin'
 
+
+import TopNavigation from '@/components/TopNavigation'
+
 Vue.mixin(titleMixin)
-Vue.use(VueResource);
+Vue.use(VueResource)
+
+Vue.component('TopNavigation', TopNavigation)
 
 Vue.config.productionTip = false
 

@@ -3,6 +3,8 @@ $body-font-family: 'Nunito', sans-serif;
 $border-radius-root: 6px;
 // $font-size-root: 14px;
 
+$parallax-padding: 0 0 !default;
+
 $material-light: (
   'color': var(--v-primary-darken3),
   'background': var(--v-secondary-base)

@@ -1,39 +1,81 @@
 <template lang="html">
+  <div>
+    <template v-if="profile">
+      <!-- Profile Cover -->
+      <v-parallax
+        v-if="profile.coverURL"
+        height="320"
+        :src="profile.coverURL"
+      >
+        <v-toolbar
+          flat
+          color="transparent"
+          dark
+          class="flex-grow-0"
+        >
+          <v-toolbar-title>
+            <router-link
+              to="/"
+              class="secondary--text text-decoration-none"
+            >Sing a song</router-link>
+          </v-toolbar-title>
+
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+
+          <v-spacer></v-spacer>
+          <top-navigation />
+        </v-toolbar>
+
+        <v-container
+          class="flex-grow-1 px-0"
+        >
+          <v-row
+            v-if="showEdit"
+            align="start"
+            justify="end"
+          >
+            <v-col
+              cols="12"
+            >
+              <v-btn
+                color="primary"
+                to="/account/profile"
+              >
+                <v-icon left>mdi-pen</v-icon> Redigera profil
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-parallax>
+      <v-toolbar
+        v-else
+        flat
+        color="transparent"
+      >
+        <v-toolbar-title>
+          <router-link
+            to="/"
+            class="text-decoration-none"
+          >Sing a song</router-link>
+        </v-toolbar-title>
+
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+
+        <v-spacer></v-spacer>
+        <top-navigation />
+      </v-toolbar>
+    </template>
 
     <v-container
       class="pb-16"
     >
-      <template v-if="profile">
-        <!-- Profile Cover -->
-        <v-row v-if="profile.coverURL">
-          <v-col class="pa-0">
-            <v-parallax
-              height="250"
-              :src="profile.coverURL"
-              class="ma-1 mt-4 rounded"
-            >
-              <v-row
-                v-if="showEdit"
-                align="start"
-                justify="end"
-              >
-                <v-col
-                  class="pt-7"
-                  cols="12"
-                >
-                  <v-btn
-                    color="primary"
-                    to="/account/profile"
-                  >
-                    <v-icon left>mdi-pen</v-icon> Redigera profil
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-parallax>
-          </v-col>
-        </v-row>
 
         <!-- Profile details -->
+      <template v-if="profile">
         <v-row
           justify="center"
         >
@@ -86,12 +128,15 @@
           </v-col>
         </v-row>
       </template>
-        <v-row v-else>
-          <v-col>
-            <h1 class="text-h1 mt-16">Laddar</h1>
-          </v-col>
-        </v-row>
+
+      <v-row v-else>
+        <v-col>
+          <h1 class="text-h1 mt-16">Laddar</h1>
+        </v-col>
+      </v-row>
+
     </v-container>
+  </div>
 </template>
 
 <script>
