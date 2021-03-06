@@ -24,7 +24,7 @@
           <v-col
             class="col-12 col-sm-10 col-md-8 col-lg-6 pb-12 text-center"
           >
-            <h1 class="text-h4 text-sm-h1 mb-6">Sing-a-song</h1>
+            <h1 class="text-h4 text-sm-h1 mb-6">Sing a song</h1>
             <v-text-field
               placeholder="Sök vissångare"
               type="search"
