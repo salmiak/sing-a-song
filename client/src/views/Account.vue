@@ -325,7 +325,8 @@
 </template>
 
 <script>
-import helpers from '../_helpers';
+import helpers from '../_helpers'
+import areas from '@/_helpers/areas'
 import spotifyUri from 'spotify-uri'
 import urlParser from "js-video-url-parser"
 import MediaCard from '@/components/MediaCard'
@@ -339,12 +340,7 @@ export default {
   data() {
     return {
       submitted: false,
-      areas: [
-        'Götaland',
-        'Svealand',
-        'Södra Norrland',
-        'Norra Norrland'
-      ],
+      areas,
       password: '',
       confirmPassword: '',
       validation: {},

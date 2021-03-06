@@ -53,7 +53,7 @@
               class="mb-0"
             />
             <v-chip
-              v-for="area in areas"
+              v-for="area in areaChips"
               :key="area"
               color="white"
               class="elevation-1 ma-1"
@@ -63,6 +63,51 @@
             >
               {{area}}
             </v-chip>
+
+            <v-expand-x-transition>
+              <v-chip
+                v-if="selectedArea && areaChips.indexOf(selectedArea) === -1"
+                color="white"
+                class="elevation-1 ma-1"
+                filter
+                :input-value="true"
+                @click="filterOnArea(selectedArea)"
+              >
+                {{selectedArea}}
+              </v-chip>
+            </v-expand-x-transition>
+
+
+
+            <v-menu
+              max-height="256"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-chip
+                  color="white"
+                  class="elevation-1 ma-1"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Fler områden
+                </v-chip>
+              </template>
+              <v-list>
+                <v-list-item-group
+                  v-model="selectedArea"
+                  color="primary"
+                >
+                  <v-list-item
+                    v-for="area in areas"
+                    :key="area"
+                    :value="area"
+                  >
+                    <v-list-item-title>{{ area }}</v-list-item-title>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
+
           </v-col>
         </v-row>
       </v-content>
@@ -88,16 +133,16 @@
       </v-row>
 
       <template
-        v-if="profiles.items"
+        v-if="profilesList && profilesList.length"
       >
         <v-row>
           <v-col>
-            <p class="py-2 px-2 ma-0">Senast tillagt</p>
+            <p class="py-2 px-2 ma-0">Senast tillagt {{selectedArea?`i ${selectedArea}`:''}}</p>
           </v-col>
         </v-row>
 
         <v-row
-          v-for="profile in profiles.items"
+          v-for="profile in profilesList"
           :key="`profile-${profile.id}`"
           dense
           class="mb-2"
@@ -158,12 +203,19 @@
           </v-col>
         </v-row>
       </template>
+      <p
+        v-else
+        class="ma-12 text-center font-italic text--secondary"
+      >
+        Inga träffar {{selectedArea?`i ${selectedArea}`:''}}
+      </p>
     </v-container>
   </div>
 </template>
 
 <script>
 import MediaCard from '@/components/MediaCard'
+import areas from '@/_helpers/areas.js'
 
 export default {
   name: 'Home',
@@ -173,18 +225,29 @@ export default {
   },
   data() {
     return {
-      areas: [
+      areas,
+      areaChips: [
         'Stockholm',
         'Göteborg',
-        'Malmö',
-        'Uppsala'
+        'Malmö'
       ],
       selectedArea: false
     }
   },
   computed: {
     profiles () {
-        return this.$store.state.profiles.all;
+      return this.$store.state.profiles.all
+    },
+    profilesList () {
+      if (!this.profiles || !this.profiles.items) {
+        return undefined
+      } else if (this.selectedArea) {
+        return this.profiles.items.filter(profile => {
+          return profile.geoReach.indexOf(this.selectedArea) !== -1
+        })
+      } else {
+        return this.profiles.items;
+      }
     }
   },
   created () {

@@ -151,6 +151,15 @@
           >
             <h1 class="text-h3 mb-4">{{profileName}}</h1>
             <p>{{profile.description}}</p>
+            <p>
+              <v-chip
+                v-for="area in profile.geoReach"
+                :key="area"
+                class="ma-1"
+                color="accent"
+              >
+                {{area}}
+              </v-chip>
             <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
           </v-col>
         </v-row>
