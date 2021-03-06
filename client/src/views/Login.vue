@@ -19,6 +19,7 @@
       <v-icon
         slot="append"
         @click="showPassword = !showPassword"
+        tabindex="-1"
       >
         {{showPassword?'mdi-eye-off':'mdi-eye'}}
       </v-icon>

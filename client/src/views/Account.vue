@@ -57,6 +57,7 @@
                 <v-icon
                   slot="append"
                   @click="showPassword = !showPassword"
+                  tabindex="-1"
                 >
                   {{showPassword?'mdi-eye-off':'mdi-eye'}}
                 </v-icon>
@@ -66,12 +67,6 @@
                 label="Lösenord igen"
                 :type="showPassword?'text':'password'"
               >
-                <v-icon
-                  slot="append"
-                  @click="showPassword = !showPassword"
-                >
-                  {{showPassword?'mdi-eye-off':'mdi-eye'}}
-                </v-icon>
               </v-text-field>
 
               <v-btn
