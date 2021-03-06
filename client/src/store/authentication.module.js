@@ -9,46 +9,58 @@ export const authentication = {
     namespaced: true,
     state: initialState,
     actions: {
-        login({ commit }, { email, password }) {
+        login({ commit, rootState }, { email, password }) {
           return new Promise((resolve, reject) => {
             commit('loginRequest', { email });
+            rootState.loading.push(1)
 
             services.userService.login(email, password)
               .then(response => {
+                rootState.loading.pop()
                 commit('loginSuccess', response);
                 resolve(response)
               }, error => {
+                rootState.loading.pop()
                 commit('loginFailure', error);
                 reject(error)
               })
           });
         },
-        forgotPassword(a, { email }) {
+        forgotPassword({ rootState }, { email }) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.userService.forgotPassword(email)
               .then(response => {
+                rootState.loading.pop()
                 resolve(response)
               }, error => {
+                rootState.loading.pop()
                 reject(error)
               })
           });
         },
-        validateResetToken(a, { token }) {
+        validateResetToken({ rootState }, { token }) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.userService.validateResetToken(token)
               .then(response => {
+                rootState.loading.pop()
                 resolve(response)
               }, error => {
+                rootState.loading.pop()
                 reject(error)
               })
           });
         },
-        resetPassword(a, payload) {
+        resetPassword({ rootState }, payload) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.userService.resetPassword(payload)
               .then(response => {
+                rootState.loading.pop()
                 resolve(response)
               }, error => {
+                rootState.loading.pop()
                 reject(error)
               })
           });
@@ -57,28 +69,34 @@ export const authentication = {
             services.userService.logout();
             commit('logout');
         },
-        register(a, payload) {
+        register({ rootState }, payload) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.userService.register(payload)
             .then(
               response => {
+                rootState.loading.pop()
                 resolve(response)
               },
               error => {
+                rootState.loading.pop()
                 console.error({error})
                 reject(error)
               }
             );
           })
         },
-        update(a, payload) {
+        update({ rootState }, payload) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.userService.update(payload)
             .then(
               response => {
+                rootState.loading.pop()
                 resolve(response)
               },
               error => {
+                rootState.loading.pop()
                 console.error({error})
                 reject(error)
               }

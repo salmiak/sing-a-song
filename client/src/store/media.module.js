@@ -9,16 +9,23 @@ export const media = {
         all: {}
     },
     actions: {
-        getAll({ commit }) {
+        getAll({ commit, rootState }) {
             commit('getAllRequest');
+            rootState.loading.push(1)
 
             services.mediaService.getAll()
                 .then(
-                    users => commit('getAllSuccess', users),
-                    error => commit('getAllFailure', error)
+                    users => {
+                      rootState.loading.pop()
+                      commit('getAllSuccess', users)
+                    },
+                    error => {
+                      rootState.loading.pop()
+                      commit('getAllFailure', error)
+                    }
                 );
         },
-        add(a, {newMediaURL,profileId}) {
+        add({ rootState }, {newMediaURL,profileId}) {
 
           let payload = {}
 
@@ -45,40 +52,49 @@ export const media = {
           payload.profileId = profileId
 
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.mediaService.create(payload)
             .then(
               response => {
+                rootState.loading.pop()
                 resolve(response)
               },
               error => {
+                rootState.loading.pop()
                 console.error({error})
                 reject(error)
               }
             );
           })
         },
-        update(a, payload) {
+        update({ rootState }, payload) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.mediaService.update(payload)
             .then(
               response => {
+                rootState.loading.pop()
                 resolve(response)
               },
               error => {
+                rootState.loading.pop()
                 console.error({error})
                 reject(error)
               }
             );
           })
         },
-        remove(a, payload) {
+        remove({ rootState }, payload) {
           return new Promise((resolve, reject) => {
+            rootState.loading.push(1)
             services.mediaService.remove(payload)
             .then(
               response => {
+                rootState.loading.pop()
                 resolve(response)
               },
               error => {
+                rootState.loading.pop()
                 console.error({error})
                 reject(error)
               }

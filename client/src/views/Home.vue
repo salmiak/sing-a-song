@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <server-comunication-indicator />
     <v-parallax
       :src="require('../assets/frontpage-hero.jpg')"
       class="px-3"

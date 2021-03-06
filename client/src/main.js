@@ -6,13 +6,14 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import titleMixin from './mixins/titleMixin'
 
-
 import TopNavigation from '@/components/TopNavigation'
+import ServerComunicationIndicator from '@/components/ServerComunicationIndicator'
 
 Vue.mixin(titleMixin)
 Vue.use(VueResource)
 
 Vue.component('TopNavigation', TopNavigation)
+Vue.component('ServerComunicationIndicator', ServerComunicationIndicator)
 
 Vue.config.productionTip = false
 

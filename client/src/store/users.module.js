@@ -6,13 +6,20 @@ export const users = {
         all: {}
     },
     actions: {
-        getAll({ commit }) {
+        getAll({ commit, rootState }) {
             commit('getAllRequest');
+            rootState.loading.push(1)
 
             services.userService.getAll()
                 .then(
-                    users => commit('getAllSuccess', users),
-                    error => commit('getAllFailure', error)
+                    users => {
+                      rootState.loading.pop()
+                      commit('getAllSuccess', users)
+                    },
+                    error => {
+                      rootState.loading.pop()
+                      commit('getAllFailure', error)
+                    }
                 );
         }
     },

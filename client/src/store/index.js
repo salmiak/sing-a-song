@@ -14,5 +14,8 @@ export default new Vuex.Store({
         users,
         profiles,
         media
+    },
+    state: {
+      loading: []
     }
 })

@@ -7,6 +7,8 @@
     scroll-threshold="0"
   >
 
+    <server-comunication-indicator />
+
     <v-btn
       to="/"
       icon
