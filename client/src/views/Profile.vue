@@ -178,7 +178,7 @@
 
       <v-row v-else>
         <v-col>
-          <h1 class="text-h1 mt-16">Laddar</h1>
+          <p class="text-center text-h4 mt-16">Laddar…</p>
         </v-col>
       </v-row>
 

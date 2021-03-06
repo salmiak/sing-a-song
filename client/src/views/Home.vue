@@ -122,7 +122,10 @@
         class="text-center"
       >
         <v-col>
-          <em v-if="profiles.loading">Laddar profiler...</em>
+          <p
+            v-if="profiles.loading"
+            class="text-center text-h4 mt-16"
+          >Laddar profiler…</p>
           <v-alert
             type="error"
             v-if="profiles.error"
@@ -204,7 +207,7 @@
         </v-row>
       </template>
       <p
-        v-else
+        v-if="(!profilesList || profilesList.length === 0) && !profiles.loading"
         class="ma-12 text-center font-italic text--secondary"
       >
         Inga träffar {{selectedArea?`i ${selectedArea}`:''}}
