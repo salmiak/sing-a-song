@@ -1,13 +1,9 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <h1>Registrera dig</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="col-6">
-        <v-form v-if="!success" @submit.prevent="handleSubmit">
+  <form-view
+    title="Registrera dig"
+    @submitted="handleSubmit"
+  >
+        <div v-if="!success">
           <v-text-field
             outlined
             v-model="firstName"
@@ -39,19 +35,13 @@
             label="Lösenord igen"
             :type="showPassword?'text':'password'"
             outlined
-          >
-            <v-icon
-              slot="append"
-              @click="showPassword = !showPassword"
-            >
-              {{showPassword?'mdi-eye-off':'mdi-eye'}}
-            </v-icon>
-          </v-text-field>
+          ></v-text-field>
           <v-checkbox
             v-model="acceptTerms"
             label="Genom att kryssa i godkänner du våra användarvilkor"
           ></v-checkbox>
           <v-btn
+            color="primary"
             @click="handleSubmit"
             :disabled="submitted">Skapa konto</v-btn>
 
@@ -64,26 +54,25 @@
           >{{validation}}</v-alert>
 
           <p class="mt-8">Om du redan har ett konto så <router-link to="/login">logga in här</router-link>.</p>
-        </v-form>
-        <div v-else>
-          <v-alert
-            color="success"
-          >Kolla i din e-post för vidare instruktioner.</v-alert>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+</div>
+          <div v-else>
+            <v-alert
+              type="success"
+              class="text-left"
+            ><strong>Registreringen lyckades!</strong><br />Kolla i din e-post för vidare instruktioner.</v-alert>
+          </div>
+
+  </form-view>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-// const api = 'http://localhost:4000/accounts'
-
+import FormView from '@/components/FormView'
 export default {
   name: 'Register',
   title: 'Registrera dig | Sing a Song',
+  components: {
+    FormView
+  },
   data () {
       return {
         firstName: '',

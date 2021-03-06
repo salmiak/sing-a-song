@@ -1,77 +1,62 @@
 <template>
-  <v-container class="login">
-    <v-row>
-      <v-col>
-        <h1>Återställ lösen</h1>
-      </v-col>
-    </v-row>
-    <v-row
+  <form-view
+    title="Återställ lösen"
+    @submitted="handleSubmit"
+  >
+    <v-alert
       v-if="!tokenStatus"
-    >
-      <v-col>
-        Laddar…
-      </v-col>
-    </v-row>
-    <v-row
-      v-if="tokenStatus === 'valid'"
-    >
-      <v-col class="col-6">
-        <v-form @submit.prevent="handleSubmit">
-          <v-text-field
-            v-model="password"
-            label="Lösenord"
-            :type="showPassword?'text':'password'"
-            outlined
+      type="info">
+      Laddar...
+    </v-alert>
+
+    <template v-if="tokenStatus === 'valid'">
+        <v-text-field
+          v-model="password"
+          label="Lösenord"
+          :type="showPassword?'text':'password'"
+          outlined
+        >
+          <v-icon
+            slot="append"
+            @click="showPassword = !showPassword"
           >
-            <v-icon
-              slot="append"
-              @click="showPassword = !showPassword"
-            >
-              {{showPassword?'mdi-eye-off':'mdi-eye'}}
-            </v-icon>
-          </v-text-field>
-          <v-text-field
-            v-model="confirmPassword"
-            label="Lösenord igen"
-            :type="showPassword?'text':'password'"
-            outlined
-          >
-            <v-icon
-              slot="append"
-              @click="showPassword = !showPassword"
-            >
-              {{showPassword?'mdi-eye-off':'mdi-eye'}}
-            </v-icon>
-          </v-text-field>
-          <v-btn
-            :disabled="submitted"
-            @click="handleSubmit"
-          >Spara nytt lösenord</v-btn>
-        </v-form>
+            {{showPassword?'mdi-eye-off':'mdi-eye'}}
+          </v-icon>
+        </v-text-field>
+        <v-text-field
+          v-model="confirmPassword"
+          label="Lösenord igen"
+          :type="showPassword?'text':'password'"
+          outlined
+        ></v-text-field>
+        <v-btn
+          color="primary"
+          :disabled="submitted"
+          @click="handleSubmit"
+        >Spara nytt lösenord</v-btn>
         <v-alert
           v-if="success || error"
           :color="success ? 'success': 'error'"
           class="mt-4"
         >{{success || error}}</v-alert>
-      </v-col>
-    </v-row>
-    <v-row
+    </template>
+
+    <v-alert
       v-if="tokenStatus === 'invalid'"
-    >
-      <v-col class="col-6">
-        <v-alert
-          color="error">
-          Något gick fel. Försök igen.
-        </v-alert>
-      </v-col>
-    </v-row>
-  </v-container>
+      type="error">
+      Något gick fel. Försök igen.
+    </v-alert>
+  </form-view>
 </template>
 
 <script>
+import FormView from '@/components/FormView'
 export default {
   name: 'ResetPassword',
   title: 'Nytt lösenord | Sing a Song',
+  components: {
+    FormView
+  },
   data () {
       return {
           password: '',

@@ -1,38 +1,35 @@
 <template>
-  <v-container class="login">
-    <v-row>
-      <v-col>
-        <h1>Glömt lösen</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="col-6">
-        <v-form @submit.prevent="handleSubmit">
-          <v-text-field
-            v-model="email"
-            label="Email"
-            outlined
-            type="email"
-          ></v-text-field>
-          <v-btn
-            :disabled="submitted"
-            @click="handleSubmit"
-          >Skicka nytt lösenord</v-btn>
-        </v-form>
-        <v-alert
-          v-if="success || error"
-          :color="success ? 'success': 'error'"
-          class="mt-4"
-        >{{success || error}}</v-alert>
-      </v-col>
-    </v-row>
-  </v-container>
+  <form-view
+    title="Glömt lösenord"
+    @submitted="handleSubmit"
+  >
+    <v-text-field
+      v-model="email"
+      label="Email"
+      outlined
+      type="email"
+    ></v-text-field>
+    <v-btn
+      color="primary"
+      :disabled="submitted"
+      @click="handleSubmit"
+    >Skicka nytt lösenord</v-btn>
+    <v-alert
+      v-if="success || error"
+      :color="success ? 'success': 'error'"
+      class="mt-4"
+    >{{success || error}}</v-alert>
+  </form-view>
 </template>
 
 <script>
+import FormView from '@/components/FormView'
 export default {
   name: 'ForgotPassword',
   title: 'Glömt lösenord | Sing a Song',
+  components: {
+    FormView
+  },
   data () {
       return {
           submitted: false,
