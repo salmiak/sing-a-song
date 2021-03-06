@@ -6,7 +6,7 @@ A portfolio website for semi professional musicians in Sweden.
 
 ### Server Dependencies
 1. Install Node.js
-2. Install mysql
+2. Install postgres
 3. Make sure to have a STMP-account available
 4. Make a copy of `config-example.json` and name it `config.json` and fill out with the correct details.
 5. Run `$ npm i` to install server dependencies.

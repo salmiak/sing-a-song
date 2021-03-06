@@ -32,10 +32,43 @@
     </v-menu>
 
     <template v-else>
-      <v-btn plain to="/login">Logga in</v-btn>
-      <v-btn
-        outlined
-        to="/register">Skapa konto</v-btn>
+
+      <v-menu
+        v-if="$vuetify.breakpoint.xs"
+        left
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item to="/login">
+            <v-list-item-title>
+              Logga in
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/register">
+            <v-list-item-title>
+              Skapa konto
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <template v-else>
+        <v-btn plain to="/login">Logga in</v-btn>
+        <v-btn
+          outlined
+          to="/register">Skapa konto</v-btn>
+      </template>
     </template>
 
   </div>
