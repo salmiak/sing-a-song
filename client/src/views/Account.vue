@@ -13,7 +13,9 @@
       </v-col>
     </v-row>
 
-    <v-tabs-items v-model="$route.params.tab">
+    <v-tabs-items
+      v-model="$route.params.tab"
+    >
 
       <v-tab-item value="account">
         <v-row>
@@ -569,3 +571,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.theme--light.v-tabs-items {
+  background: transparent
+}
+</style>
