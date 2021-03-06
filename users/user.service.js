@@ -276,7 +276,7 @@ async function sendAlreadyRegisteredEmail(email, origin) {
 }
 
 async function sendPasswordResetEmail(user, origin) {
-    const resetUrl = `${origin}/#/reset-password/${user.resetToken}`;
+    const resetUrl = `${origin}/reset-password/${user.resetToken}`;
 
     await sendEmail({
         to: user.email,
