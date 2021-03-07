@@ -574,6 +574,6 @@ export default {
 
 <style>
 .theme--light.v-tabs-items {
-  background: transparent
+  background: transparent !important
 }
 </style>
