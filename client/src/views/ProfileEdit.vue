@@ -202,7 +202,7 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-chip
                     class="ma-1"
-                    color="accent"
+                    color="primary"
                     v-bind="attrs"
                     v-on="on"
                     outlined
@@ -244,42 +244,37 @@
         <!-- Media -->
         <v-row>
           <v-col>
-            <v-card
-              class="pa-4 elevation-4"
+            <v-text-field
+              label="Lägg till media"
+              hint="Klistra in länken till din media här"
+              :color="newMediaValidation?'success':'primary'"
+              outlined
+              v-model="newMediaURL">
+              <template v-slot:append>
+                <v-btn
+                  :disabled="!newMediaValidation"
+                  color="primary"
+                  @click="addNewMedia"
+                  style="top: -7px;"
+                >
+                  <v-icon left>mdi-plus</v-icon>
+                  Lägg till
+                </v-btn>
+              </template>
+            </v-text-field>
+
+            <v-alert
+              v-if="newMediaValidation"
+              type="success"
+              transition="scale-transition"
+              outlined
+              text
+              class="mt-2"
             >
-              <v-text-field
-                label="Lägg till media"
-                hint="Klistra in länken till din media här"
-                color="success"
-                v-model="newMediaURL" />
-              <v-btn
-                :disabled="!newMediaValidation"
-                color="primary"
-                @click="addNewMedia"
-              >
-                <v-icon left>mdi-plus</v-icon>
-                Lägg till
-              </v-btn>
-              <v-alert
-                v-if="newMediaValidation"
-                type="success"
-                transition="scale-transition"
-                outlined
-                class="mt-2"
-              >
-                Länken är en <strong>{{newMediaValidation.provider}}
-                  {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
-              </v-alert>
+              Länken är en <strong>{{newMediaValidation.provider}}
+                {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
+            </v-alert>
 
-              <v-alert
-                v-if="validation && validation.target === 'media'"
-                :type="validation.type"
-                text
-                class="mt-2"
-                transition="scale-transition"
-              >{{validation.message}}</v-alert>
-
-            </v-card>
           </v-col>
         </v-row>
 
