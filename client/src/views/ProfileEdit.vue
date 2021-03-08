@@ -151,60 +151,165 @@
           <v-col
             class="text-center col-12 col-sm-8"
           >
-            <div>
-              <v-text-field
-                label="Artistnamn"
-                required
-                v-model="profileName"
-                outlined
-              >
-                <template v-slot:append>
-                  <v-btn
-                    class="mr-1"
-                    style="top: -7px"
-                  >
-                    <v-icon left>
-                      mdi-check
-                    </v-icon>
-                    Spara
-                  </v-btn>
-                  <v-btn
-                    style="top: -7px"
-                  >
-                    <v-icon left>
-                      mdi-close
-                    </v-icon>
-                    Ångra
-                  </v-btn>
-                </template>
-              </v-text-field>
-              <h1 class="text-h3 mb-4">{{profileName}}</h1>
-            </div>
 
-            <p>{{profile.description}}</p>
-            <p>
-              <v-chip
-                v-for="area in profile.geoReach"
-                :key="area"
-                class="ma-1"
-                color="accent"
+            <v-expand-transition>
+              <v-alert
+                v-if="validation.message"
+                :type="validation.type"
+                dense
+                class="text-left"
               >
-                {{area}}
-              </v-chip>
-            <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
+                {{validation.message}}
+              </v-alert>
+            </v-expand-transition>
+
+            <inline-edit
+              :model="profileName"
+              @save="saveProfileName"
+              label="Artistnamn"
+            >
+              <h1 class="text-h3 mb-4">{{profileName}}</h1>
+            </inline-edit>
+
+            <inline-edit
+              :model="profile.description"
+              @save="saveProfileDescription"
+              label="Beskrivning"
+              type="textarea"
+            >
+              <p>{{profile.description}}</p>
+            </inline-edit>
+
+            <p class="text-caption mb-0">Vilka regioner kan du uppträda i?</p>
+            <p>
+              <span>
+                <v-chip
+                  v-for="area in profile.geoReach"
+                  :key="area"
+                  class="ma-1"
+                  color="accent"
+                  close
+                  close-icon="mdi-delete"
+                  @click:close="removeArea(area)"
+                >
+                  {{area}}
+                </v-chip>
+              </span>
+
+              <v-menu
+                max-height="256"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-chip
+                    class="ma-1"
+                    color="accent"
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                  >
+                    <v-icon left>
+                      mdi-plus
+                    </v-icon>
+                    Lägg till område
+                  </v-chip>
+                </template>
+                <v-list>
+                  <v-list-item-group
+                    color="primary"
+                  >
+                    <v-list-item
+                      v-for="area in notSelectedAreas"
+                      :key="area"
+                      @click="addArea(area)"
+                    >
+                      <v-list-item-title>{{ area }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </p>
+
+            <inline-edit
+              :model="profile.contactDetails"
+              @save="saveProfileContactDetails"
+              label="Kontaktuppgifter"
+              type="textarea"
+            >
+              <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
+            </inline-edit>
+
           </v-col>
         </v-row>
 
-        <!--  Media -->
+        <!-- Media -->
         <v-row>
+          <v-col>
+            <v-card
+              class="pa-4 elevation-4"
+            >
+              <v-text-field
+                label="Lägg till media"
+                hint="Klistra in länken till din media här"
+                color="success"
+                v-model="newMediaURL" />
+              <v-btn
+                :disabled="!newMediaValidation"
+                color="primary"
+                @click="addNewMedia"
+              >
+                <v-icon left>mdi-plus</v-icon>
+                Lägg till
+              </v-btn>
+              <v-alert
+                v-if="newMediaValidation"
+                type="success"
+                transition="scale-transition"
+                outlined
+                class="mt-2"
+              >
+                Länken är en <strong>{{newMediaValidation.provider}}
+                  {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
+              </v-alert>
+
+              <v-alert
+                v-if="validation && validation.target === 'media'"
+                :type="validation.type"
+                text
+                class="mt-2"
+                transition="scale-transition"
+              >{{validation.message}}</v-alert>
+
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-row
+          dense
+        >
           <v-col
             v-for="media in profile.media"
             :key="media.id"
-            class="d-flex child-flex pa-1 col-12 col-sm-6 col-md-4"
+            class="d-flex child-flex col-12 col-sm-6 col-md-4"
+            style="position: relative"
           >
+            <v-btn
+              elevation="2"
+              fab
+              dark
+              color="primary"
+              absolute
+              small
+              style="top: 0px; right: 0px;"
+              @click="deleteMedia(media)"
+              >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
             <media-card :media="media" />
           </v-col>
         </v-row>
+
+        <!--  / Media -->
+
       </template>
 
       <v-row v-else>
@@ -218,21 +323,28 @@
 </template>
 
 <script>
+import spotifyUri from 'spotify-uri'
+import urlParser from "js-video-url-parser"
 import helpers from '@/_helpers'
+import allAreas from '@/_helpers/areas.js'
 import MediaCard from '@/components/MediaCard'
+import InlineEdit from '@/components/InlineEdit'
 
 export default {
   name: 'Profile',
   title() {
-    return `${this.profileName} | Sing a Song`
+    return `Redigera ${this.profileName} | Sing a Song`
   },
   components: {
-    MediaCard
+    MediaCard,
+    InlineEdit
   },
   data() {
     return {
+      newMediaURL: undefined,
       coverFile: undefined,
-      avatarFile: undefined
+      avatarFile: undefined,
+      validation: {}
     }
   },
   created() {
@@ -255,6 +367,13 @@ export default {
         return false
       this.updateImage(file, 'cover')
     },
+    validation() {
+      if(this.validation.message) {
+        setTimeout(() => {
+          this.validation = {}
+        }, 10000)
+      }
+    }
   },
   computed: {
     id() {
@@ -275,9 +394,70 @@ export default {
     },
     userName() {
       return this.profile.user.firstName + " " + this.profile.user.lastName
+    },
+    notSelectedAreas() {
+      return allAreas.filter(area => this.profile.geoReach.indexOf(area) === -1)
+    },
+    newMediaValidation() {
+      if (!this.newMediaURL) {
+        return undefined
+      } else if (this.newMediaURL.search('spotify') !== -1) {
+        return Object.assign(spotifyUri.parse(this.newMediaURL), {
+          provider: 'spotify'
+        })
+      } else {
+        return urlParser.parse(this.newMediaURL)
+      }
+    },
+    soundcloudValue() {
+      if (this.newMediaValidation.provider !== 'soundcloud')
+        return undefined
+
+      let output = this.newMediaURL.split('src')[1].split('"')[1]
+      return output
     }
   },
   methods: {
+    saveProfileName(newVal) {
+      this.profile.stageName = newVal
+      this.updateProfile()
+    },
+    saveProfileDescription(newVal) {
+      this.profile.description = newVal
+      this.updateProfile()
+    },
+    saveProfileContactDetails(newVal) {
+      this.profile.contactDetails = newVal
+      this.updateProfile()
+    },
+    addArea(area) {
+      this.profile.geoReach.push(area)
+      this.profile.geoReach.sort()
+      this.updateProfile()
+    },
+    removeArea(area) {
+      this.profile.geoReach = this.profile.geoReach.filter(a => a !== area)
+      this.profile.geoReach.sort()
+      this.updateProfile()
+    },
+    updateProfile() {
+      this.validation = {}
+      this.submitted = true
+      this.$store.dispatch('profiles/update', this.profile)
+        .then(() => {
+          this.validation = {
+            message: 'Din profil uppdaterades',
+            type: 'success'
+          }
+          this.submitted = false
+        }, error => {
+          this.validation = {
+            message: error,
+            type: 'error'
+          }
+          this.submitted = false
+        })
+    },
     updateImage(file, target) {
       const that = this
       const currentUser = this.$store.state.authentication.user
@@ -348,6 +528,43 @@ export default {
       .then(response => {
         this.$store.commit('profiles/update', response)
       })
+    },
+    addNewMedia() {
+      if (!this.newMediaValidation) {
+        return false
+      }
+      this.mediaValidationError = undefined
+      this.submitted = true
+
+      this.$store.dispatch('media/add', {
+        newMediaURL: this.soundcloudValue||this.newMediaURL,
+        profileId: this.profile.id
+      })
+        .then(media => {
+          this.validation = {
+            target: 'media',
+            message: 'Media tillagt',
+            type: 'success'
+          }
+          this.submitted = false
+          this.newMediaURL = ''
+          this.$store.commit('profiles/addMedia', media)
+        }, error => {
+          this.validation = {
+            target: 'media',
+            message: error,
+            type: 'error'
+          }
+          this.mediaValidationError = error
+        })
+    },
+    deleteMedia(media) {
+      this.$store.dispatch('media/remove', media)
+        .then(() => {
+          this.$store.commit('profiles/deleteMedia', media)
+        }, error => {
+          console.log(error) // eslint-disable-line no-console
+        })
     }
   }
 }
