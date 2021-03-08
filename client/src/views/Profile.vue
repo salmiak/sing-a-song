@@ -131,6 +131,21 @@
           <v-col
             class="text-center col-12 col-sm-8"
           >
+            <p
+              v-if="showEdit"
+            >
+              <v-btn
+                :to="`/profile/${profile.userId}/edit`"
+                small
+                color="primary"
+                outlined
+              >
+                <v-icon left>
+                  mdi-pen
+                </v-icon>
+                Redigera din profil
+              </v-btn>
+            </p>
             <h1 class="text-h3 mb-4">{{profileName}}</h1>
             <p>{{profile.description}}</p>
             <p>
