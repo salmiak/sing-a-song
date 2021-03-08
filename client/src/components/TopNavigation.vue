@@ -17,6 +17,12 @@
       </template>
 
       <v-list>
+        <v-list-item :to="`/profile/${$store.state.authentication.user.id}/edit`">
+          <v-list-item-title>
+            Redigera din profil
+          </v-list-item-title>
+        </v-list-item>
+
         <v-list-item to="/account">
           <v-list-item-title>
             Ditt konto
