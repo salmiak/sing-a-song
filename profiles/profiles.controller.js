@@ -33,6 +33,7 @@ function updateSchema(req, res, next) {
         userId: Joi.number().empty(''),
         avatarURL: Joi.string().optional().empty(''),
         coverURL: Joi.string().optional().empty('')
+        // ToDo - Allow avatarURL and coverURL to be empty (means remove image)
     };
 
     const schema = Joi.object(schemaRules);
@@ -43,6 +44,8 @@ function update(req, res, next) {
     if (Number(req.body.userId) !== req.user.id) {
         return res.status(401).json({ message: 'Ej behörig' });
     }
+
+    console.log(req.body) // eslint-disable-line no-console
 
     profileService.update(req.params.id, req.body)
         .then(profile => res.json(profile))

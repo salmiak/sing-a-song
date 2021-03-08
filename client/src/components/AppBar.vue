@@ -54,12 +54,10 @@ export default {
     return {
       hiddenOn: [
         'Home',
-        'Profile'
+        'Profile',
+        'Profile Edit'
       ]
     }
-  },
-  created() {
-    console.log(this.$vuetify.breakpoint) // eslint-disable-line no-console
   },
   computed: {
     isHidden() {

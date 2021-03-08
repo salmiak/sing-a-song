@@ -7,6 +7,7 @@ import ResetPassword from '../views/ResetPassword.vue'
 import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Profile from '../views/Profile.vue'
+import ProfileEdit from '../views/ProfileEdit.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,11 @@ const routes = [
     path: '/profile/:id',
     name: 'Profile Redirect',
     component: Profile
+  },
+  {
+    path: '/profile/:id/edit',
+    name: 'Profile Edit',
+    component: ProfileEdit
   },
   {
     path: '/profile/:id/:slug',
