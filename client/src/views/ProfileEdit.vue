@@ -6,6 +6,7 @@
       <v-parallax
         height="320"
         :src="profile.coverURL"
+        class="secondary darken-3"
       >
         <v-toolbar
           flat
@@ -48,42 +49,44 @@
         </v-toolbar>
 
         <v-container
-          class="flex-grow-1 px-0"
+          class="flex-grow-1 px-0 d-flex"
         >
-          <v-row
-            align="start"
-            justify="end"
-          >
+          <v-row>
             <v-col
               cols="12"
+              class="d-flex justify-center align-center pb-12"
             >
-
-              <v-btn
-                class="mx-1"
-                fab
-                dark
-                small
-                color="accent"
+              <v-sheet
+                color="white"
+                elevation="3"
+                rounded
+                class="px-7 pt-7"
               >
                 <v-file-input
+                  class="mb-0"
                   v-model="coverFile"
-                  hide-input
                   accept="image/*"
-                ></v-file-input>
-              </v-btn>
+                  prepend-icon="mdi-camera"
+                  outlined
+                  placeholder="Ladda upp ny omslagsbild"
+                  dense
+                >
 
-              <v-btn
-                class="mx-1"
-                fab
-                dark
-                small
-                color="accent"
-                @click="removeImg('cover')"
-              >
-                <v-icon dark>
-                  mdi-delete
-                </v-icon>
-              </v-btn>
+                  <v-btn
+                    slot="append-outer"
+                    style="top: -7px;"
+                    v-if="profile.coverURL"
+                    dark
+                    color="accent"
+                    @click="removeImg('cover')"
+                  >
+                    <v-icon dark left>
+                      mdi-delete
+                    </v-icon>
+                    Ta bort omslagsbild
+                  </v-btn>
+                </v-file-input>
+              </v-sheet>
 
             </v-col>
           </v-row>
@@ -101,7 +104,7 @@
           justify="center"
         >
           <v-col
-            class="col-3 text-center"
+            class="text-center"
           >
             <v-avatar
               :size="profile.avatarURL ? 128 : 64"
@@ -124,25 +127,37 @@
                 {{ profile.stageName ? profile.stageName.slice(0,2) : profile.user.firstName[0] + profile.user.lastName[0] }}
               </span>
             </v-avatar>
-
+          </v-col>
+        </v-row>
+        <v-row
+          justify="center"
+        >
+          <v-col
+            class="col-12 col-md-6 text-center"
+          >
             <v-file-input
+              class="mb-0"
               v-model="avatarFile"
-              hide-input
               accept="image/*"
-            ></v-file-input>
-
-            <v-btn
-              class="mx-1"
-              fab
-              dark
-              small
-              color="accent"
-              @click="removeImg('avatar')"
+              prepend-icon="mdi-camera"
+              outlined
+              placeholder="Ladda upp ny profilbild"
+              dense
             >
-              <v-icon dark>
-                mdi-delete
-              </v-icon>
-            </v-btn>
+              <v-btn
+                slot="append-outer"
+                style="top: -7px;"
+                v-if="profile.coverURL"
+                dark
+                color="accent"
+                @click="removeImg('avatar')"
+              >
+                <v-icon dark left>
+                  mdi-delete
+                </v-icon>
+                Ta bort profilbild
+              </v-btn>
+            </v-file-input>
           </v-col>
         </v-row>
         <v-row
@@ -346,12 +361,6 @@ export default {
     this.$store.dispatch('profiles/getAll');
   },
   watch: {
-    profileSlug() {
-      // If the user isn't authenticated as the profile user redirect to the non-edit profile page.
-      if (!this.$store.state.authentication.user || this.profile.userId !== this.$store.state.authentication.user.id) {
-        this.$router.push(`/profile/${this.id}/${this.profileSlug}`)
-      }
-    },
     avatarFile(file) {
       if (!file)
         return false
@@ -513,8 +522,10 @@ export default {
       }
       if (target === 'avatar') {
         payload.avatarURL = ''
+        this.profile.avatarURL = ''
       } else if (target === 'cover') {
         payload.coverURL = ''
+        this.profile.coverURL = ''
       } else {
         console.error('missing target')
       }
