@@ -51,13 +51,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/account/:tab',
+    path: '/account',
     name: 'Account Details',
-    component: Account
-  },
-  {
-    alias: '/account',
-    path: '/account/account',
     component: Account
   },
   {
