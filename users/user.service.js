@@ -253,7 +253,7 @@ function basicDetails(user) {
 
 async function sendVerificationEmail(user, origin) {
     let message;
-    const verifyUrl = `${origin}/users/verify-email/${user.verificationToken}`;
+    const verifyUrl = `${origin}/api/users/verify-email/${user.verificationToken}`;
 
     await sendEmail({
         to: user.email,
