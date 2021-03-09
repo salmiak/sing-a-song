@@ -60,32 +60,33 @@
                 color="white"
                 elevation="3"
                 rounded
-                class="px-7 pt-7"
+                class="px-7 pt-7 text-center"
               >
                 <v-file-input
-                  class="mb-0"
+                  class="mb-0 d-inline-flex mr-2"
+                  style="width: 276px;"
                   v-model="coverFile"
+                  :disabled="coverFile"
+                  clearable
                   accept="image/*"
-                  prepend-icon="mdi-camera"
                   outlined
                   placeholder="Ladda upp ny omslagsbild"
                   dense
                 >
-
-                  <v-btn
-                    slot="append-outer"
-                    style="top: -7px;"
-                    v-if="profile.coverURL"
-                    dark
-                    color="accent"
-                    @click="removeImg('cover')"
-                  >
-                    <v-icon dark left>
-                      mdi-delete
-                    </v-icon>
-                    Ta bort omslagsbild
-                  </v-btn>
                 </v-file-input>
+
+                <v-btn
+                  v-if="profile.coverURL"
+                  dark
+                  color="accent"
+                  @click="removeImg('cover')"
+                  class="mb-3"
+                >
+                  <v-icon dark left>
+                    mdi-delete
+                  </v-icon>
+                  Ta bort omslagsbild
+                </v-btn>
               </v-sheet>
 
             </v-col>
@@ -133,21 +134,23 @@
           justify="center"
         >
           <v-col
-            class="col-12 col-md-6 text-center"
+            class="col-12 col-md-8 text-center"
           >
             <v-file-input
-              class="mb-0"
+              class="mb-0 d-inline-flex mr-2"
+              style="width: 276px;"
               v-model="avatarFile"
+              :disabled="avatarFile"
+              clearable
               accept="image/*"
-              prepend-icon="mdi-camera"
               outlined
               placeholder="Ladda upp ny profilbild"
               dense
             >
+            </v-file-input>
               <v-btn
-                slot="append-outer"
-                style="top: -7px;"
-                v-if="profile.coverURL"
+                style="top: -6px;"
+                v-if="profile.avatarURL"
                 dark
                 color="accent"
                 @click="removeImg('avatar')"
@@ -157,7 +160,6 @@
                 </v-icon>
                 Ta bort profilbild
               </v-btn>
-            </v-file-input>
           </v-col>
         </v-row>
         <v-row
@@ -492,6 +494,8 @@ export default {
               that.$store.dispatch('profiles/update', payload)
               .then(response => {
                 that.$store.commit('profiles/update', response)
+                that.avatarFile = null
+                that.coverFile = null
               })
             }
             else{
@@ -526,10 +530,8 @@ export default {
       }
       if (target === 'avatar') {
         payload.avatarURL = ''
-        this.profile.avatarURL = ''
       } else if (target === 'cover') {
         payload.coverURL = ''
-        this.profile.coverURL = ''
       } else {
         console.error('missing target')
       }
@@ -537,6 +539,10 @@ export default {
       this.$store.dispatch('profiles/update', payload)
       .then(response => {
         this.$store.commit('profiles/update', response)
+        this.validation = {
+          message: 'Bilden raderad',
+          type: 'success'
+        }
       })
     },
     addNewMedia() {

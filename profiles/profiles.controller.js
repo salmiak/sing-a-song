@@ -31,9 +31,8 @@ function updateSchema(req, res, next) {
         contactDetails: Joi.string().empty(''),
         geoReach: Joi.any().empty(''),
         userId: Joi.number().empty(''),
-        avatarURL: Joi.string().optional().empty(''),
-        coverURL: Joi.string().optional().empty('')
-        // ToDo - Allow avatarURL and coverURL to be empty (means remove image)
+        avatarURL: Joi.string().allow(null, ''),
+        coverURL: Joi.string().allow(null, '')
     };
 
     const schema = Joi.object(schemaRules);
