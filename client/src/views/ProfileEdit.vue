@@ -171,7 +171,6 @@
               <v-alert
                 v-if="validation.message"
                 :type="validation.type"
-                dense
                 class="text-left"
               >
                 {{validation.message}}
@@ -354,7 +353,8 @@ export default {
       newMediaURL: undefined,
       coverFile: undefined,
       avatarFile: undefined,
-      validation: {}
+      validation: {},
+      validationTimeout: undefined
     }
   },
   created() {
@@ -372,9 +372,14 @@ export default {
       this.updateImage(file, 'cover')
     },
     validation() {
+      if(this.validationTimeout) {
+        clearTimeout(this.validationTimeout)
+        this.validationTimeout = undefined
+      }
       if(this.validation.message) {
-        setTimeout(() => {
+        this.validationTimeout = setTimeout(() => {
           this.validation = {}
+          this.validationTimeout = undefined
         }, 10000)
       }
     }
@@ -445,7 +450,6 @@ export default {
       this.updateProfile()
     },
     updateProfile() {
-      this.validation = {}
       this.submitted = true
       this.$store.dispatch('profiles/update', this.profile)
         .then(() => {
