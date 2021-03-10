@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row
-      class="justify-center mt-8"
+      class="justify-center mt-8 mb-8"
     >
       <v-col
         style="max-width: 33em;"

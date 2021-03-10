@@ -9,7 +9,7 @@
     <v-container
       class="text-center mb-8 text-body-2"
     >
-      <footer>Singasong.nu drivs av Riksförbundet Visan i Sverige. <router-link to="/about">Läs mer om oss här.</router-link></footer>
+      <footer>Singasong.nu drivs av Riksförbundet Visan i Sverige. <router-link to="/about">Läs mer om oss här.</router-link> | <router-link to="/tos">Användarvillkor</router-link></footer>
     </v-container>
   </v-app>
 </template>
