@@ -231,9 +231,9 @@ export default {
     return {
       areas,
       areaChips: [
-        'Stockholm',
-        'Göteborg',
-        'Malmö'
+        "Stockholm",
+        "Göteborg",
+        "Malmö"
       ],
       selectedArea: false
     }
@@ -247,7 +247,8 @@ export default {
         return undefined
       } else if (this.selectedArea) {
         return this.profiles.items.filter(profile => {
-          return profile.geoReach.indexOf(this.selectedArea) !== -1
+          const geoArray = profile.geoReach || []
+          return geoArray.indexOf(this.selectedArea) !== -1
         })
       } else {
         return this.profiles.items;
