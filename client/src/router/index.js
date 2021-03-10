@@ -18,6 +18,11 @@ const routes = [
     component: Home
   },
   {
+    path: '/s/:search',
+    name: 'Home',
+    component: Home
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login

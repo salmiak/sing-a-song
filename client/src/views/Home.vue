@@ -51,12 +51,12 @@
               solo
               prepend-inner-icon="mdi-magnify"
               class="mb-0"
-              v-model="search"
+              v-model="searchString"
             >
               <v-icon
                 slot="append"
-                @click="search = ''"
-                v-if="search"
+                @click="searchString = ''"
+                v-if="searchString"
                 color="primary"
               >mdi-close</v-icon>
             </v-text-field>
@@ -65,7 +65,7 @@
               :fuse-opts="searchOptions"
               :list="profilesList"
               :defaultAll="true"
-              :search="search"
+              :search="$route.params.search"
               placeholder="Sök artist"
               @fuse-results="handleResults"
               class="d-none"
@@ -155,17 +155,25 @@
       </v-row>
 
       <template
-        v-if="resultsList && resultsList.length"
+        v-if="resultsList"
       >
         <v-row>
           <v-col>
             <p class="text-overline py-2 px-2 ma-0">
-              {{search?`Resultat för "${search}"`:'Senast tillagt'}}{{selectedArea?` i ${selectedArea}`:''}}:
+              {{searchString?`Resultat för "${searchString}"`:'Senast tillagt'}}{{selectedArea?` i ${selectedArea}`:''}}:
             </p>
           </v-col>
         </v-row>
 
+        <v-row v-if="!resultsList.length">
+          <v-col>
+            <p class="ma-12 text-center font-italic text--secondary">
+              Inga träffar
+            </p>
+          </v-col>
+        </v-row>
         <v-row
+          v-else
           v-for="profile in resultsList"
           :key="`profile-${profile.id}`"
           dense
@@ -227,12 +235,6 @@
           </v-col>
         </v-row>
       </template>
-      <p
-        v-if="(!profilesList || profilesList.length === 0) && !profiles.loading"
-        class="ma-12 text-center font-italic text--secondary"
-      >
-        Inga träffar {{selectedArea?`i ${selectedArea}`:''}}
-      </p>
     </v-container>
   </div>
 </template>
@@ -252,7 +254,7 @@ export default {
   data() {
     return {
       resultsList: [],
-      search: '',
+      searchString: this.$route.params.search,
       searchOptions: {
         keys: [
           'stageName',
@@ -292,6 +294,15 @@ export default {
   },
   created () {
     this.$store.dispatch('profiles/getAll');
+  },
+  watch: {
+    searchString() {
+      if(!this.searchString) {
+        this.$router.push('/')
+      } else {
+        this.$router.push('/s/' + this.searchString)
+      }
+    }
   },
   methods: {
     handleResults(a) {
