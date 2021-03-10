@@ -49,10 +49,28 @@
               placeholder="Sök vissångare"
               type="search"
               solo
-              clearable
               prepend-inner-icon="mdi-magnify"
               class="mb-0"
+              v-model="search"
+            >
+              <v-icon
+                slot="append"
+                @click="search = ''"
+                v-if="search"
+                color="primary"
+              >mdi-close</v-icon>
+            </v-text-field>
+
+            <vue-fuse
+              :fuse-opts="searchOptions"
+              :list="profilesList"
+              :defaultAll="true"
+              :search="search"
+              placeholder="Sök artist"
+              @fuse-results="handleResults"
+              class="d-none"
             />
+
             <v-chip
               v-for="area in areaChips"
               :key="area"
@@ -137,16 +155,18 @@
       </v-row>
 
       <template
-        v-if="profilesList && profilesList.length"
+        v-if="resultsList && resultsList.length"
       >
         <v-row>
           <v-col>
-            <p class="py-2 px-2 ma-0">Senast tillagt {{selectedArea?`i ${selectedArea}`:''}}</p>
+            <p class="text-overline py-2 px-2 ma-0">
+              {{search?`Resultat för "${search}"`:'Senast tillagt'}}{{selectedArea?` i ${selectedArea}`:''}}:
+            </p>
           </v-col>
         </v-row>
 
         <v-row
-          v-for="profile in profilesList"
+          v-for="profile in resultsList"
           :key="`profile-${profile.id}`"
           dense
           class="mb-2"
@@ -218,6 +238,7 @@
 </template>
 
 <script>
+import VueFuse from 'vue-fuse'
 import MediaCard from '@/components/MediaCard'
 import areas from '@/_helpers/areas.js'
 
@@ -225,10 +246,24 @@ export default {
   name: 'Home',
   title: 'Sing a Song',
   components: {
+    VueFuse,
     MediaCard
   },
   data() {
     return {
+      resultsList: [],
+      search: '',
+      searchOptions: {
+        keys: [
+          'stageName',
+          {
+            name:'description',
+            weight: 0.5
+          },
+          'user.firstName',
+          'user.lastName'
+        ]
+      },
       areas,
       areaChips: [
         "Stockholm",
@@ -259,6 +294,9 @@ export default {
     this.$store.dispatch('profiles/getAll');
   },
   methods: {
+    handleResults(a) {
+      this.resultsList = a.map(r => r.item)
+    },
     filterOnArea(area) {
       if (this.selectedArea === area) {
         this.selectedArea = undefined
