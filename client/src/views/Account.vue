@@ -1,11 +1,16 @@
 <template lang="html">
   <v-container>
-    <v-row>
-      <v-col class="col-6 pb-4">
-        <h2 class="text-h2">Ditt konto</h2>
-        <p class="mt-4 text--disabled text-body-2">Gick med {{user.created}}</p>
+    <v-row
+      class="mt-12 mb-16"
+      justify="center"
+    >
+      <v-col
+        class="col-12 text-center"
+        style="max-width:400px;"
+      >
+        <h1 class="mb-10">Ditt konto</h1>
 
-        <h3 class="text-h3 mt-8">Kontoinformation</h3>
+        <h2 class="text-h4 mt-8">Information</h2>
         <v-form @submit.prevent="updateAccount">
           <v-text-field
             v-model="user.firstName"
@@ -31,7 +36,7 @@
           >{{validation.message}}</v-alert>
         </v-form>
 
-        <h3 class="text-h3 mt-8">Ändra lösenord</h3>
+        <h2 class="text-h4 mt-12">Ändra lösenord</h2>
         <v-form>
           <v-text-field
             v-model="password"
@@ -66,7 +71,7 @@
           >{{validation.message}}</v-alert>
         </v-form>
 
-        <h3 class="text-h3 mt-8 mb-4">Farliga grejer</h3>
+        <h2 class="text-h4 mt-12 mb-4">Farliga grejer</h2>
         <v-form>
           <v-btn
             v-if="askToDeleteUser"
