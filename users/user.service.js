@@ -268,11 +268,14 @@ async function sendVerificationEmail(user, origin) {
 }
 
 async function sendAlreadyRegisteredEmail(email, origin) {
-
+    const forgotUrl = `${origin}/forgot-password/`;
     await sendEmail({
         to: email,
         subject: 'Sing a song - E-postadress redan registrerad',
-        templateName:'register_error'
+        templateName:'register_error',
+        data: {
+          forgotUrl
+        }
     });
 }
 
