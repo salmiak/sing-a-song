@@ -34,11 +34,12 @@
         <top-navigation />
       </v-toolbar>
 
-      <v-content
+      <v-container
         class="d-flex align-center flex-grow-1"
       >
         <v-row
-          justify="center mb-8"
+          justify="center"
+          class="mb-8"
         >
           <v-col
             class="col-12 col-sm-10 col-md-8 col-lg-6 pb-12 text-center"
@@ -110,7 +111,7 @@
 
           </v-col>
         </v-row>
-      </v-content>
+      </v-container>
     </v-parallax>
 
     <v-container
