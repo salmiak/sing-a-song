@@ -135,7 +135,7 @@
               v-if="showEdit"
             >
               <v-btn
-                :to="`/profile/${profile.userId}/edit`"
+                :to="`/profile/${profile.id}/edit`"
                 small
                 color="primary"
                 outlined

@@ -2,7 +2,7 @@
   <div>
 
     <v-menu
-      v-if="$store.state.authentication.user"
+      v-if="$store.state.authentication.status.loggedIn"
       left
       bottom
     >
@@ -17,7 +17,7 @@
       </template>
 
       <v-list>
-        <v-list-item :to="`/profile/${$store.state.authentication.user.id}/edit`">
+        <v-list-item :to="`/profile/${profileId}/edit`">
           <v-list-item-title>
             Redigera din profil
           </v-list-item-title>
@@ -82,6 +82,19 @@
 
 <script>
 export default {
+  computed: {
+    profile() {
+      const userId = this.$store.state.authentication.user.id
+      if (this.$store.state.profiles.all.items) {
+        return this.$store.state.profiles.all.items.find(p => p.userId === userId)
+      } else {
+        return undefined
+      }
+    },
+    profileId() {
+      return this.profile ? this.profile.id : undefined
+    }
+  }
 }
 </script>
 
