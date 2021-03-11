@@ -407,6 +407,8 @@ export default {
       return this.profile.user.firstName + " " + this.profile.user.lastName
     },
     notSelectedAreas() {
+      if(!this.profile.geoReach)
+        return allAreas
       return allAreas.filter(area => this.profile.geoReach.indexOf(area) === -1)
     },
     newMediaValidation() {
