@@ -92,7 +92,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const authRequired = to.path.search('account') !== -1
+  const authRequired = to.path.search('account') !== -1 || to.path.match(/profile\/[0-9]*\/edit/g)
   const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {

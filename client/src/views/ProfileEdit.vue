@@ -345,7 +345,7 @@ import MediaCard from '@/components/MediaCard'
 import InlineEdit from '@/components/InlineEdit'
 
 export default {
-  name: 'Profile',
+  name: 'Profile Edit',
   title() {
     return `Redigera ${this.profileName} | Sing a Song`
   },
@@ -366,6 +366,11 @@ export default {
     this.$store.dispatch('profiles/getAll');
   },
   watch: {
+    profile() {
+      if (this.profile && this.profile.userId !== this.$store.state.authentication.user.id) {
+        this.$router.push('/')
+      }
+    },
     avatarFile(file) {
       if (!file)
         return false
