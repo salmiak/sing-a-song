@@ -154,6 +154,33 @@
         </v-col>
       </v-row>
 
+
+      <template
+        v-if="resultsList"
+      >
+        <v-row>
+          <v-col>
+            <p class="text-overline py-2 px-2 ma-0">
+              {{searchString?`Resultat för "${searchString}"`:'Senast tillagt'}}{{selectedArea?` i ${selectedArea}`:''}}:
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row
+          dense
+        >
+          <v-col
+            v-for="media in allMedia"
+            :key = "media.id"
+            class="col-12 col-sm-6 col-md-4"
+          >
+            <media-card-with-footer :media="media" />
+          </v-col>
+        </v-row>
+      </template>
+
+
+
       <template
         v-if="resultsList && resultsList.length"
       >
@@ -240,6 +267,7 @@
 <script>
 import VueFuse from 'vue-fuse'
 import MediaCard from '@/components/MediaCard'
+import MediaCardWithFooter from '@/components/MediaCardWithFooter'
 import areas from '@/_helpers/areas.js'
 
 export default {
@@ -247,7 +275,8 @@ export default {
   title: 'Sing a Song',
   components: {
     VueFuse,
-    MediaCard
+    MediaCard,
+    MediaCardWithFooter
   },
   data() {
     return {
@@ -288,6 +317,9 @@ export default {
       } else {
         return this.profiles.items;
       }
+    },
+    allMedia () {
+      return this.resultsList.flatMap(r=>r.media)
     }
   },
   created () {
