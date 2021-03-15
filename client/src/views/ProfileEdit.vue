@@ -260,35 +260,38 @@
         <!-- Media -->
         <v-row>
           <v-col>
-            <v-text-field
-              label="Lägg till media"
-              hint="Klistra in länken till din media här"
-              :color="newMediaValidation?'success':'primary'"
-              outlined
-              v-model="newMediaURL">
-              <template v-slot:append>
-                <v-btn
-                  :disabled="!newMediaValidation"
-                  color="primary"
-                  @click="addNewMedia"
-                  style="top: -7px;"
-                >
-                  <v-icon left>mdi-plus</v-icon>
-                  Lägg till
-                </v-btn>
-              </template>
-            </v-text-field>
-
             <v-alert
-              v-if="newMediaValidation"
-              type="success"
-              transition="scale-transition"
+              :color="newMediaValidation?'success':'info'"
               outlined
               text
-              class="mt-2"
+              class="mt-0"
             >
-              Länken är en <strong>{{newMediaValidation.provider}}
+              <v-text-field
+                label="Lägga till media"
+                placeholder="Klistra in för att lägga till media"
+                :color="newMediaValidation?'success':'primary'"
+                outlined
+                v-model="newMediaURL">
+                <template v-slot:append>
+                  <v-btn
+                    :disabled="!newMediaValidation"
+                    color="primary"
+                    @click="addNewMedia"
+                    style="top: -7px;"
+                  >
+                    <v-icon left>mdi-plus</v-icon>
+                    Lägg till
+                  </v-btn>
+                </template>
+              </v-text-field>
+
+              <div v-if="!newMediaValidation">
+                Klistra in en länk från YouTube, Spotify eller Soundcloud.
+              </div>
+              <div v-if="newMediaValidation">
+                Länken är en <strong>{{newMediaValidation.provider}}
                 {{newMediaValidation.mediaType||newMediaValidation.type}}</strong>.
+              </div>
             </v-alert>
 
           </v-col>
