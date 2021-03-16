@@ -493,6 +493,8 @@ export default {
       const that = this
       const currentUser = this.$store.state.authentication.user
 
+      this.$store.commit('pushLoading')
+
       function uploadFile(file, signedRequest, url){
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
@@ -514,12 +516,27 @@ export default {
 
               that.$store.dispatch('profiles/update', payload)
               .then(response => {
+                that.$store.commit('popLoading')
                 that.$store.commit('profiles/update', response)
                 that.avatarFile = null
                 that.coverFile = null
+                that.validation = {
+                  message: 'Din profil uppdaterades',
+                  type: 'success'
+                }
+              }, error => {
+                that.$store.commit('popLoading')
+                that.validation = {
+                  message: error,
+                  type: 'error'
+                }
               })
-            }
-            else{
+            } else {
+              this.$store.commit('popLoading')
+              this.validation = {
+                message: 'Något gick fel. Filen kunde inte laddas upp.',
+                type: 'error'
+              }
               console.error('Could not upload file.');
             }
           }

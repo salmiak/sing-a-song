@@ -17,5 +17,14 @@ export default new Vuex.Store({
     },
     state: {
       loading: []
+    },
+    mutations: {
+      pushLoading(state) {
+        state.loading.push(1)
+      },
+      popLoading(state) {
+        if(state.loading.length)
+          state.loading.pop(1)
+      }
     }
 })
