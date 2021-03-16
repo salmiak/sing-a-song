@@ -12,6 +12,8 @@
       :label="label"
       v-model="newModel"
       outlined
+      @keydown.enter="handleSave"
+      @keydown.esc="handleCancel"
     >
       <template v-slot:append>
         <v-btn
@@ -41,6 +43,9 @@
       :label="label"
       v-model="newModel"
       outlined
+      @keydown.esc="handleCancel"
+      @keydown.ctrl.enter="handleSave"
+      @keydown.meta.enter="handleSave"
     >
       <template v-slot:append>
         <v-btn
