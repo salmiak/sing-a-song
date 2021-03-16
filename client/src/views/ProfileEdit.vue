@@ -46,6 +46,17 @@
 
           <v-spacer></v-spacer>
 
+          <v-btn
+            :to="`/profile/${profile.id}`"
+            outlined
+            class="mr-2"
+          >
+            <v-icon left>
+              mdi-pen-off
+            </v-icon>
+            Lämna redigering
+          </v-btn>
+
           <top-navigation />
         </v-toolbar>
 

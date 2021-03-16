@@ -1,11 +1,26 @@
 <template lang="html">
   <div>
-    <div
-      @click="editMode=true"
+    <v-tooltip
+      right
+      nudge-right="-30"
+      open-delay="700"
+      transition="scroll-x-reverse-transition"
       v-if="!editMode"
     >
-      <slot/>
-    </div>
+      <template v-slot:activator="{ on, attrs }">
+        <div
+          v-bind="attrs"
+          v-on="on"
+          @click="editMode=true"
+          class="rounded border mb-1 pt-4"
+          v-ripple
+          style="border: 1px dashed var(--v-secondary-darken1); cursor: pointer;"
+        >
+          <slot/>
+        </div>
+      </template>
+      <v-icon dark>mdi-pen</v-icon>
+    </v-tooltip>
 
     <v-text-field
       v-if="editMode && type==='text-field'"
