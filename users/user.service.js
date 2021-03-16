@@ -111,8 +111,7 @@ async function verifyEmail({ token }) {
     user.verificationToken = null;
 
     await user.createProfile({
-      stageName: `${user.firstName} ${user.lastName}`,
-      description: 'Jag är ny på Sing-a-song och har inte fyllt i min profil än.'
+      stageName: `${user.firstName} ${user.lastName}`
     });
 
     await user.save();

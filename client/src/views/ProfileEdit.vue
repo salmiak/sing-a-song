@@ -194,7 +194,17 @@
               label="Beskrivning"
               type="textarea"
             >
-              <p>{{profile.description}}</p>
+              <p
+                v-if="profile.description"
+              >
+                {{profile.description}}
+              </p>
+              <p
+                v-else
+                class="font-italic text--disabled"
+              >
+                Klicka här och skriv ett par rader om dig själv
+              </p>
             </inline-edit>
 
             <p class="text-caption mb-0">Vilka regioner kan du uppträda i?</p>
