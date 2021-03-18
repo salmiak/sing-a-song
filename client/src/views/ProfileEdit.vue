@@ -205,11 +205,11 @@
               label="Beskrivning"
               type="textarea"
             >
-              <p
+              <vue-markdown
                 v-if="profile.description"
               >
                 {{profile.description}}
-              </p>
+              </vue-markdown>
               <p
                 v-else
                 class="font-italic text--disabled"
@@ -273,7 +273,15 @@
               label="Kontaktuppgifter"
               type="textarea"
             >
-              <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
+              <vue-markdown
+                v-if="profile.contactDetails"
+              >
+                {{profile.contactDetails}}
+              </vue-markdown>
+              <p
+                v-else
+                class="font-italic text--disabled"
+              >Klicka för att ange kontaktuppgifter.</p>
             </inline-edit>
 
           </v-col>
@@ -361,6 +369,7 @@
 <script>
 import spotifyUri from 'spotify-uri'
 import urlParser from "js-video-url-parser"
+import VueMarkdown from 'vue-markdown'
 import helpers from '@/_helpers'
 import allAreas from '@/_helpers/areas.js'
 import MediaCard from '@/components/MediaCard'
@@ -372,6 +381,7 @@ export default {
     return `Redigera ${this.profileName} | Sing a Song`
   },
   components: {
+    VueMarkdown,
     MediaCard,
     InlineEdit
   },

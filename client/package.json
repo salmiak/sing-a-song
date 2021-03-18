@@ -14,6 +14,7 @@
     "spotify-uri": "^2.1.0",
     "vue": "^2.6.11",
     "vue-fuse": "^3.0.0",
+    "vue-markdown": "npm:@adapttive/vue-markdown@^4.0.1",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",

@@ -146,7 +146,13 @@
             class="text-center col-12 col-sm-8"
           >
             <h1 class="text-h3 mb-4">{{profileName}}</h1>
-            <p>{{profile.description}}</p>
+
+            <vue-markdown
+              v-if="profile.description"
+            >
+              {{profile.description}}
+            </vue-markdown>
+
             <p>
               <v-chip
                 v-for="area in profile.geoReach"
@@ -156,7 +162,18 @@
               >
                 {{area}}
               </v-chip>
-            <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
+            </p>
+
+              <vue-markdown
+                v-if="profile.contactDetails"
+              >
+                {{profile.contactDetails}}
+              </vue-markdown>
+              <p
+                v-else
+                class="font-italic text--disabled"
+              >Inga kontaktuppgifter.</p>
+
           </v-col>
         </v-row>
 
@@ -183,6 +200,7 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
 import helpers from '@/_helpers'
 import MediaCard from '@/components/MediaCard'
 
@@ -192,6 +210,7 @@ export default {
     return `${this.profileName} | Sing a Song`
   },
   components: {
+    VueMarkdown,
     MediaCard
   },
   data() {
