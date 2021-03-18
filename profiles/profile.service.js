@@ -9,7 +9,10 @@ module.exports = {
 };
 
 async function getAll() {
-    const profiles = await db.Profile.findAll({ include: [db.User, db.Media] });
+    const profiles = await db.Profile.findAll({
+      include: [db.User, db.Media],
+      order: [['createdAt', 'DESC']]
+    });
     return profiles.map(x => basicDetails(x));
 }
 
