@@ -13,7 +13,7 @@ router.delete('/:key', authorize(), deleteS3File);
 
 function getSignedURL(req, res) {
   const s3 = new aws.S3();
-  const fileName = uuid();
+  const fileName = uuid() + '.' + req.query['file-name'].split('.').pop();
   const fileType = req.query['file-type'];
   const s3Params = {
     Bucket: S3_BUCKET_NAME,
