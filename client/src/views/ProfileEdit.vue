@@ -511,6 +511,7 @@ export default {
         })
     },
     updateImage(file, target) {
+
       const that = this
       const currentUser = this.$store.state.authentication.user
 
@@ -565,43 +566,76 @@ export default {
         xhr.send(file);
       }
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
-      xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
-      xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            const response = JSON.parse(xhr.responseText);
-            uploadFile(file, response.signedRequest, response.url);
+      this.removeImg(target).then(() => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+        xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+              const response = JSON.parse(xhr.responseText);
+              uploadFile(file, response.signedRequest, response.url);
+            }
+            else{
+              console.error('Could not get signed URL.');
+            }
           }
-          else{
-            console.error('Could not get signed URL.');
-          }
-        }
-      };
-      xhr.send();
+        };
+        xhr.send();
+      })
     },
     removeImg(target) {
-      console.log('removeImg: ' + target) // eslint-disable-line no-console
-      const payload = {
-        id: this.profile.id,
-        userId: this.$store.state.authentication.user.id
-      }
-      if (target === 'avatar') {
-        payload.avatarURL = ''
-      } else if (target === 'cover') {
-        payload.coverURL = ''
-      } else {
-        console.error('missing target')
-      }
 
-      this.$store.dispatch('profiles/update', payload)
-      .then(response => {
-        this.$store.commit('profiles/update', response)
-        this.validation = {
-          message: 'Bilden raderad',
-          type: 'success'
+      return new Promise((resolve, reject) => {
+
+        if(this.profile[`${target}URL`] === '') {
+          console.log('Ingen bild satt') // eslint-disable-line no-console
+          resolve()
         }
+
+        const fileName = this.profile[`${target}URL`].split('/').pop()
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `${helpers.apiUrl}/sign-s3/${fileName}`);
+        xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+
+              const payload = {
+                id: this.profile.id,
+                userId: this.$store.state.authentication.user.id
+              }
+
+              if (target === 'avatar') {
+                payload.avatarURL = ''
+              } else if (target === 'cover') {
+                payload.coverURL = ''
+              } else {
+                console.error('missing target')
+              }
+              this.$store.dispatch('profiles/update', payload)
+              .then(response => {
+                this.$store.commit('profiles/update', response)
+                this.validation = {
+                  message: 'Bilden raderad',
+                  type: 'success'
+                }
+                resolve()
+              })
+
+            }
+            else{
+              this.validation = {
+                message: 'Något gick fel',
+                type: 'error'
+              }
+              reject()
+            }
+          }
+        };
+        xhr.send();
+
       })
     },
     addNewMedia() {

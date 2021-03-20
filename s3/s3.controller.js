@@ -9,6 +9,7 @@ const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || require('config').S3_BUCKET
 aws.config.region = 'eu-north-1';
 
 router.get('/', authorize(), getSignedURL);
+router.delete('/:key', authorize(), deleteS3File);
 
 function getSignedURL(req, res) {
   const s3 = new aws.S3();
@@ -32,6 +33,27 @@ function getSignedURL(req, res) {
       url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
     res.write(JSON.stringify(returnData));
+    res.end();
+  });
+}
+
+function deleteS3File(req, res) {
+  const s3 = new aws.S3();
+  const fileName = req.params.key;
+  const s3Params = {
+    Bucket: S3_BUCKET_NAME,
+    Key: fileName,
+  };
+
+  s3.deleteObject(s3Params, (err, data) => {
+    if(err){
+      console.log(err);
+      return res.end();
+    }
+    res.write(JSON.stringify({
+      message: 'Image deleted',
+      data
+    }));
     res.end();
   });
 }
