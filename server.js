@@ -10,7 +10,7 @@ const errorHandler = require('_middleware/error-handler');
 // source: https://quickleft.com/blog/6-easy-ways-to-prevent-your-heroku-node-app-from-sleeping/
 const http = require("http");
 setInterval(function() {
-    http.get("https://sing-a-song.herokuapp.com")
+    http.get("https://singasong-vis.herokuapp.com")
 }, 300000); // every 5 minutes (300000)
 
 const app = express();
