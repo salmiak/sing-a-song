@@ -257,7 +257,7 @@
                 label="Lägga till media"
                 placeholder="Klistra in för att lägga till media"
                 :color="newMediaValidation ? 'success' : 'primary'"
-                outlined
+                solo
                 v-model="newMediaURL"
               >
                 <template v-slot:append>
@@ -265,7 +265,6 @@
                     :disabled="!newMediaValidation"
                     color="primary"
                     @click="addNewMedia"
-                    style="top: -7px;"
                   >
                     <v-icon left>mdi-plus</v-icon>
                     Lägg till
@@ -273,10 +272,101 @@
                 </template>
               </v-text-field>
 
-              <div v-if="!newMediaValidation">
-                Klistra in en länk från YouTube, Spotify eller Soundcloud.
-              </div>
-              <div v-if="newMediaValidation">
+              <v-expansion-panels
+                class="mt-n4"
+                flat
+                hover
+                v-if="!newMediaValidation"
+              >
+                <v-expansion-panel class="blue lighten-4">
+                  <v-expansion-panel-header dark>
+                    <div>
+                      Klistra in en länk från YouTube, Spotify eller Soundcloud.
+                      <span class="text-decoration-underline">Läs mer</span>
+                    </div>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-tabs v-model="helpTab">
+                      <v-tab>
+                        YouTube
+                      </v-tab>
+                      <v-tab>
+                        Spotify
+                      </v-tab>
+                      <v-tab>
+                        Soundcloud
+                      </v-tab>
+                      <v-tab>
+                        Andra källor
+                      </v-tab>
+                    </v-tabs>
+                    <v-card flat color="transparent">
+                      <v-tabs-items v-model="helpTab">
+                        <v-tab-item>
+                          <v-card-text>
+                            <h6 class="text-h6 mb-2">Film från YouTube</h6>
+                            För att lägga till en film från YouTube så klistrar
+                            du in webbadressen till filmens YouTube-sida. Den
+                            hittar du längst upp i webbläsarfönstret när du
+                            tittar på filmen på YouTube.
+                          </v-card-text>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card-text>
+                            <h6 class="text-h6 mb-2">
+                              Artist, låt, album eller spellista från Spotify
+                            </h6>
+                            I Spotify kan du vänsterklicka (cmd + klick på Mac)
+                            på nästan vad som helst och få fram en meny. Under
+                            <em>Dela</em> väljer du
+                            <em>Kopiera Spotify-URI</em>. Sedan klistrar du in
+                            här för att lägga till på din profil.
+                          </v-card-text>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card-text>
+                            <h6 class="text-h6 mb-2">
+                              Låt eller spellista från Soundcloud
+                            </h6>
+                            På spellistan eller låten i Soundcloud väljer du
+                            <em>Share</em> (<em>Dela</em>) och i rutan som dyker
+                            upp väljer du <em>Embed</em> (<em>Bädda in</em>).
+                            Kopiera hela texten i rutan <em>Code</em> och
+                            klistra in här för att lägga till på din profil.
+                          </v-card-text>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card-text>
+                            <h6 class="text-h6 mb-2">
+                              Skulle du vilja lägga till annan media?
+                            </h6>
+                            Vi vill alltid veta hur vi kan göra Sing a Song ännu
+                            bättre. Skriv dina önskemål till oss.
+
+                            <iframe
+                              src="https://docs.google.com/forms/d/e/1FAIpQLScqmyKOihgnDy50mbP905EvWg7cxTcToAl9DLQNfuA-Nr5xlA/viewform?embedded=true"
+                              width="640"
+                              height="512"
+                              frameborder="0"
+                              marginheight="0"
+                              marginwidth="0"
+                              class="my-4"
+                              style="width:100%"
+                              >Loading…</iframe
+                            >
+                          </v-card-text>
+                        </v-tab-item>
+                      </v-tabs-items>
+                    </v-card>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+
+              <v-alert
+                v-if="newMediaValidation"
+                type="success"
+                class="mt-n4 mb-0"
+              >
                 Länken är en
                 <strong
                   >{{ newMediaValidation.provider }}
@@ -284,7 +374,7 @@
                     newMediaValidation.mediaType || newMediaValidation.type
                   }}</strong
                 >.
-              </div>
+              </v-alert>
             </v-alert>
           </v-col>
         </v-row>
@@ -345,6 +435,7 @@
     },
     data() {
       return {
+        helpTab: 0,
         newMediaURL: undefined,
         coverFile: undefined,
         avatarFile: undefined,
