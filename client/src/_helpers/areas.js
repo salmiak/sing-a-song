@@ -26,5 +26,5 @@ export default [
   "Västmanlan",
   "Ångermanland",
   "Öland",
-  "Östergötland"
-]
+  "Östergötland",
+];
