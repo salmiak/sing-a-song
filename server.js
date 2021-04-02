@@ -6,6 +6,13 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
+// Keep node dyno on heroku live by pinging it every 5 min
+// source: https://quickleft.com/blog/6-easy-ways-to-prevent-your-heroku-node-app-from-sleeping/
+const http = require("http");
+setInterval(function() {
+    http.get("http://singasong-vis.herokuapp.com")
+}, 300000); // every 5 minutes (300000)
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));

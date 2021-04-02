@@ -26,13 +26,13 @@ function getById(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schemaRules = {
-        stageName: Joi.string().optional().empty(''),
-        description: Joi.string().empty(''),
-        contactDetails: Joi.string().empty(''),
-        geoReach: Joi.any().empty(''),
+        stageName: Joi.string().empty('').optional(),
+        description: Joi.string().allow(null, ''),
+        contactDetails: Joi.string().allow(null, ''),
+        geoReach: Joi.any().empty('').optional(),
         userId: Joi.number().empty(''),
-        avatarURL: Joi.string().allow(null, ''),
-        coverURL: Joi.string().allow(null, '')
+        avatarURL: Joi.string().optional().allow(null, ''),
+        coverURL: Joi.string().optional().allow(null, '')
     };
 
     const schema = Joi.object(schemaRules);

@@ -46,6 +46,17 @@
 
           <v-spacer></v-spacer>
 
+          <v-btn
+            :to="`/profile/${profile.id}`"
+            outlined
+            class="mr-2"
+          >
+            <v-icon left>
+              mdi-pen-off
+            </v-icon>
+            Lämna redigering
+          </v-btn>
+
           <top-navigation />
         </v-toolbar>
 
@@ -167,7 +178,7 @@
           justify="center"
         >
           <v-col
-            class="text-center col-12 col-sm-8"
+            class="col-12 col-sm-8"
           >
 
             <v-expand-transition>
@@ -185,7 +196,7 @@
               @save="saveProfileName"
               label="Artistnamn"
             >
-              <h1 class="text-h3 mb-4">{{profileName}}</h1>
+              <h1 class="text-center text-h3 mb-4">{{profileName}}</h1>
             </inline-edit>
 
             <inline-edit
@@ -193,12 +204,24 @@
               @save="saveProfileDescription"
               label="Beskrivning"
               type="textarea"
+              class="mb-3"
             >
-              <p>{{profile.description}}</p>
+              <vue-markdown
+                v-if="profile.description"
+                class="pa-3"
+              >
+                {{profile.description}}
+              </vue-markdown>
+              <p
+                v-else
+                class="font-italic text--disabled"
+              >
+                Klicka här och skriv ett par rader om dig själv
+              </p>
             </inline-edit>
 
-            <p class="text-caption mb-0">Vilka regioner kan du uppträda i?</p>
-            <p>
+            <p class="text-center text-caption mb-0">Vilka regioner kan du uppträda i?</p>
+            <p class="text-center">
               <span>
                 <v-chip
                   v-for="area in profile.geoReach"
@@ -252,7 +275,16 @@
               label="Kontaktuppgifter"
               type="textarea"
             >
-              <p><strong class="accent--text">Kontakt:</strong> {{profile.contactDetails || 'Inga kontaktuppgifter finns'}}</p>
+              <vue-markdown
+                v-if="profile.contactDetails"
+                class="pa-3"
+              >
+                {{profile.contactDetails}}
+              </vue-markdown>
+              <p
+                v-else
+                class="font-italic text--disabled"
+              >Klicka för att ange kontaktuppgifter.</p>
             </inline-edit>
 
           </v-col>
@@ -340,6 +372,7 @@
 <script>
 import spotifyUri from 'spotify-uri'
 import urlParser from "js-video-url-parser"
+import VueMarkdown from 'vue-markdown'
 import helpers from '@/_helpers'
 import allAreas from '@/_helpers/areas.js'
 import MediaCard from '@/components/MediaCard'
@@ -351,6 +384,7 @@ export default {
     return `Redigera ${this.profileName} | Sing a Song`
   },
   components: {
+    VueMarkdown,
     MediaCard,
     InlineEdit
   },
@@ -480,8 +514,11 @@ export default {
         })
     },
     updateImage(file, target) {
+
       const that = this
       const currentUser = this.$store.state.authentication.user
+
+      this.$store.commit('pushLoading')
 
       function uploadFile(file, signedRequest, url){
         const xhr = new XMLHttpRequest();
@@ -504,12 +541,27 @@ export default {
 
               that.$store.dispatch('profiles/update', payload)
               .then(response => {
+                that.$store.commit('popLoading')
                 that.$store.commit('profiles/update', response)
                 that.avatarFile = null
                 that.coverFile = null
+                that.validation = {
+                  message: 'Din profil uppdaterades',
+                  type: 'success'
+                }
+              }, error => {
+                that.$store.commit('popLoading')
+                that.validation = {
+                  message: error,
+                  type: 'error'
+                }
               })
-            }
-            else{
+            } else {
+              this.$store.commit('popLoading')
+              this.validation = {
+                message: 'Något gick fel. Filen kunde inte laddas upp.',
+                type: 'error'
+              }
               console.error('Could not upload file.');
             }
           }
@@ -517,43 +569,76 @@ export default {
         xhr.send(file);
       }
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
-      xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
-      xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            const response = JSON.parse(xhr.responseText);
-            uploadFile(file, response.signedRequest, response.url);
+      this.removeImg(target).then(() => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${helpers.apiUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+        xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+              const response = JSON.parse(xhr.responseText);
+              uploadFile(file, response.signedRequest, response.url);
+            }
+            else{
+              console.error('Could not get signed URL.');
+            }
           }
-          else{
-            console.error('Could not get signed URL.');
-          }
-        }
-      };
-      xhr.send();
+        };
+        xhr.send();
+      })
     },
     removeImg(target) {
-      console.log('removeImg: ' + target) // eslint-disable-line no-console
-      const payload = {
-        id: this.profile.id,
-        userId: this.$store.state.authentication.user.id
-      }
-      if (target === 'avatar') {
-        payload.avatarURL = ''
-      } else if (target === 'cover') {
-        payload.coverURL = ''
-      } else {
-        console.error('missing target')
-      }
 
-      this.$store.dispatch('profiles/update', payload)
-      .then(response => {
-        this.$store.commit('profiles/update', response)
-        this.validation = {
-          message: 'Bilden raderad',
-          type: 'success'
+      return new Promise((resolve, reject) => {
+
+        if(this.profile[`${target}URL`] === '') {
+          console.log('Ingen bild satt') // eslint-disable-line no-console
+          resolve()
         }
+
+        const fileName = this.profile[`${target}URL`].split('/').pop()
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `${helpers.apiUrl}/sign-s3/${fileName}`);
+        xhr.setRequestHeader('Authorization', helpers.authHeader().Authorization);
+        xhr.onreadystatechange = () => {
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+
+              const payload = {
+                id: this.profile.id,
+                userId: this.$store.state.authentication.user.id
+              }
+
+              if (target === 'avatar') {
+                payload.avatarURL = ''
+              } else if (target === 'cover') {
+                payload.coverURL = ''
+              } else {
+                console.error('missing target')
+              }
+              this.$store.dispatch('profiles/update', payload)
+              .then(response => {
+                this.$store.commit('profiles/update', response)
+                this.validation = {
+                  message: 'Bilden raderad',
+                  type: 'success'
+                }
+                resolve()
+              })
+
+            }
+            else{
+              this.validation = {
+                message: 'Något gick fel',
+                type: 'error'
+              }
+              reject()
+            }
+          }
+        };
+        xhr.send();
+
       })
     },
     addNewMedia() {

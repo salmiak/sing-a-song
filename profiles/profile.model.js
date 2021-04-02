@@ -7,7 +7,7 @@ function model(sequelize) {
         stageName: { type: DataTypes.STRING },
         description: { type: DataTypes.TEXT },
         contactDetails: { type: DataTypes.TEXT },
-        geoReach: { type: DataTypes.JSON },
+        geoReach: { type: DataTypes.JSON, defaultValue: [] },
         avatarURL: { type: DataTypes.STRING },
         coverURL: { type: DataTypes.STRING }
     };
