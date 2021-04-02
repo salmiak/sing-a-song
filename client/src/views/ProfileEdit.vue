@@ -178,7 +178,7 @@
           justify="center"
         >
           <v-col
-            class="text-center col-12 col-sm-8"
+            class="col-12 col-sm-8"
           >
 
             <v-expand-transition>
@@ -196,7 +196,7 @@
               @save="saveProfileName"
               label="Artistnamn"
             >
-              <h1 class="text-h3 mb-4">{{profileName}}</h1>
+              <h1 class="text-center text-h3 mb-4">{{profileName}}</h1>
             </inline-edit>
 
             <inline-edit
@@ -204,9 +204,11 @@
               @save="saveProfileDescription"
               label="Beskrivning"
               type="textarea"
+              class="mb-3"
             >
               <vue-markdown
                 v-if="profile.description"
+                class="pa-3"
               >
                 {{profile.description}}
               </vue-markdown>
@@ -218,8 +220,8 @@
               </p>
             </inline-edit>
 
-            <p class="text-caption mb-0">Vilka regioner kan du uppträda i?</p>
-            <p>
+            <p class="text-center text-caption mb-0">Vilka regioner kan du uppträda i?</p>
+            <p class="text-center">
               <span>
                 <v-chip
                   v-for="area in profile.geoReach"
@@ -275,6 +277,7 @@
             >
               <vue-markdown
                 v-if="profile.contactDetails"
+                class="pa-3"
               >
                 {{profile.contactDetails}}
               </vue-markdown>

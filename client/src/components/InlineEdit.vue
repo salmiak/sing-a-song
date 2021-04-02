@@ -16,7 +16,7 @@
           v-ripple
           style="border: 1px dashed var(--v-secondary-darken1); cursor: pointer;"
         >
-          <div class="text-caption text-left px-1 mb-1 secondary--text text--darken-4">{{label}}</div>
+          <div class="text-caption text-left px-3 mb-1 secondary--text text--darken-4">{{label}}</div>
           <slot/>
         </div>
       </template>
@@ -30,6 +30,7 @@
       outlined
       @keydown.enter="handleSave"
       @keydown.esc="handleCancel"
+      class="mt-4"
     >
       <template v-slot:append>
         <v-btn
@@ -54,16 +55,19 @@
       </template>
     </v-text-field>
 
-    <v-textarea
-      v-if="editMode && type==='textarea'"
-      :label="label"
-      v-model="newModel"
-      outlined
-      @keydown.esc="handleCancel"
-      @keydown.ctrl.enter="handleSave"
-      @keydown.meta.enter="handleSave"
-    >
-      <template v-slot:append>
+    <template v-if="editMode && type==='textarea'">
+      <v-textarea
+        :label="label"
+        v-model="newModel"
+        outlined
+        @keydown.esc="handleCancel"
+        @keydown.ctrl.enter="handleSave"
+        @keydown.meta.enter="handleSave"
+        class="mt-4"
+      >
+      </v-textarea>
+
+      <div class="text-right mb-8">
         <v-btn
           class="mr-1"
           style="top: -7px"
@@ -83,8 +87,8 @@
           </v-icon>
           Ångra
         </v-btn>
-      </template>
-    </v-textarea>
+      </div>
+    </template>
   </div>
 </template>
 
