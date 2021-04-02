@@ -12,10 +12,11 @@
           v-bind="attrs"
           v-on="on"
           @click="editMode=true"
-          class="rounded border mb-1 pt-4"
+          class="rounded border mb-1"
           v-ripple
           style="border: 1px dashed var(--v-secondary-darken1); cursor: pointer;"
         >
+          <div class="text-caption text-left px-1 mb-1 secondary--text text--darken-4">{{label}}</div>
           <slot/>
         </div>
       </template>
