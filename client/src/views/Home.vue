@@ -134,98 +134,20 @@
           </v-col>
         </v-row>
 
-        <v-row dense>
+        <v-row dense v-if="resultsList.length">
           <v-col
-            v-for="media in allMedia"
+            v-for="media in resultsList"
             :key="media.id"
             class="col-12 col-sm-6 col-md-4"
           >
             <media-card-with-footer :media="media" />
           </v-col>
         </v-row>
-      </template>
-
-      <template v-if="resultsList">
-        <v-row>
-          <v-col>
-            <p class="text-overline py-2 px-2 ma-0">
-              {{
-                searchString
-                  ? `Resultat för "${searchString}"`
-                  : "Senast tillagt"
-              }}{{ selectedArea ? ` i ${selectedArea}` : "" }}:
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="!resultsList.length">
-          <v-col>
-            <p class="ma-12 text-center font-italic text--secondary">
-              Inga träffar
-            </p>
-          </v-col>
-        </v-row>
-        <v-row
-          v-else
-          v-for="profile in resultsList"
-          :key="`profile-${profile.id}`"
-          dense
-          class="mb-2"
-        >
-          <v-col class="col-12 col-sm-6 col-md-3">
-            <v-card
-              color="accent darken-1 rounded"
-              dark
-              :to="`/profile/${profile.id}`"
-            >
-              <v-img
-                :aspect-ratio="4 / 3"
-                :src="profile.coverURL"
-                class="rounded"
-              />
-
-              <v-overlay absolute z-index="0">
-                <v-card-text class="text-center">
-                  <v-avatar
-                    :size="64"
-                    class="elevation-3"
-                    color="accent darken-1"
-                  >
-                    <img
-                      v-if="profile.avatarURL"
-                      :src="profile.avatarURL"
-                      :alt="
-                        profile.stageName ||
-                          profile.user.firstName + ' ' + profile.user.lastName
-                      "
-                    />
-                    <span v-else class="white--text text-h5">
-                      {{
-                        profile.stageName
-                          ? profile.stageName.slice(0, 2)
-                          : profile.user.firstName[0] + profile.user.lastName[0]
-                      }}
-                    </span>
-                  </v-avatar>
-                  <h3 class="text-h5 mt-4">
-                    {{
-                      profile.stageName ||
-                        profile.user.firstName + " " + profile.user.lastName
-                    }}
-                  </h3>
-                  <p class="text-overline text-decoration-underline mb-0">
-                    Visa mer
-                  </p>
-                </v-card-text>
-              </v-overlay>
-            </v-card>
-          </v-col>
+        <v-row v-else>
           <v-col
-            v-for="media in profile.media.slice(0, 3)"
-            :key="media.id"
-            class="col-12 col-sm-6 col-md-3"
+            class="col-12 text-center text-h4 secondary--text text--darken-2"
           >
-            <media-card :media="media" />
+            Inga träffar
           </v-col>
         </v-row>
       </template>
@@ -235,7 +157,6 @@
 
 <script>
   import VueFuse from "vue-fuse";
-  import MediaCard from "@/components/MediaCard";
   import MediaCardWithFooter from "@/components/MediaCardWithFooter";
   import areas from "@/_helpers/areas.js";
 
@@ -244,7 +165,6 @@
     title: "Sing a Song",
     components: {
       VueFuse,
-      MediaCard,
       MediaCardWithFooter,
     },
     data() {
@@ -273,8 +193,16 @@
       },
       profilesList() {
         if (!this.profiles || !this.profiles.items) {
-          return undefined;
-        } else if (this.selectedArea) {
+          return [];
+        }
+        // For each profile sort media by date
+        this.profiles.items.forEach(profile => {
+          profile.media.sort(function(a, b) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
+        });
+
+        if (this.selectedArea) {
           return this.profiles.items.filter(profile => {
             const geoArray = profile.geoReach || [];
             return geoArray.indexOf(this.selectedArea) !== -1;
@@ -282,9 +210,6 @@
         } else {
           return this.profiles.items;
         }
-      },
-      allMedia() {
-        return this.resultsList.flatMap(r => r.media);
       },
     },
     created() {
@@ -301,7 +226,32 @@
     },
     methods: {
       handleResults(a) {
-        this.resultsList = a.map(r => r.item);
+        if (!this.searchString) {
+          /*
+            No search string, return last 3 media posts for
+            all profiles and sort them by date.
+          */
+          this.resultsList = this.profilesList
+            .flatMap(r => r.media.slice(0, 3))
+            .sort(function(a, b) {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } else {
+          /*
+            Search string, return last 3 media posts for
+            all profiles sorted by profile relevans.
+          */
+          this.resultsList = a
+            .map(r => r.item)
+            .flatMap(r => r.media.slice(0, 3));
+        }
+      },
+      filterOnArea(area) {
+        if (this.selectedArea === area) {
+          this.selectedArea = undefined;
+        } else {
+          this.selectedArea = area;
+        }
       },
     },
   };
