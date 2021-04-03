@@ -1,6 +1,5 @@
 <template>
   <div>
-    <server-comunication-indicator />
     <v-parallax :src="require('../assets/frontpage-hero.jpg')" class="px-3">
       <v-toolbar flat color="transparent" dark class="flex-grow-0">
         <router-link to="/">

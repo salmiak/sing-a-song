@@ -1,6 +1,5 @@
 <template lang="html">
   <div>
-    <server-comunication-indicator />
     <template v-if="profile">
       <!-- Profile Cover -->
       <v-parallax v-if="profile.coverURL" height="320" :src="profile.coverURL">

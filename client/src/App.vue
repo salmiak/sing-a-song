@@ -1,5 +1,6 @@
 <template>
   <v-app app>
+    <server-comunication-indicator />
     <app-bar />
     <v-main>
       <router-view />
@@ -20,12 +21,14 @@
 </template>
 
 <script>
+  import ServerComunicationIndicator from "@/components/ServerComunicationIndicator";
   import AppBar from "@/components/AppBar";
 
   export default {
     name: "App",
     components: {
       AppBar,
+      ServerComunicationIndicator,
     },
   };
 </script>

@@ -6,8 +6,6 @@
     :inverted-scroll="isHidden"
     scroll-threshold="0"
   >
-    <server-comunication-indicator />
-
     <router-link to="/">
       <v-avatar size="32" class="mr-4">
         <svg
