@@ -44,7 +44,7 @@
     </v-responsive>
 
     <v-card-actions>
-      <v-list-item class="px-2" :to="`profile/${profile.id}`">
+      <v-list-item class="px-2" :to="`/profile/${profile.id}`">
         <v-list-item-avatar color="grey darken-3">
           <v-img class="elevation-6" alt="" :src="profile.avatarURL"></v-img>
         </v-list-item-avatar>
