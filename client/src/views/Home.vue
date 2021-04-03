@@ -234,18 +234,18 @@
 </template>
 
 <script>
-  import VueFuse from 'vue-fuse'
-  import MediaCard from '@/components/MediaCard'
-  import MediaCardWithFooter from '@/components/MediaCardWithFooter'
-  import areas from '@/_helpers/areas.js'
+  import VueFuse from "vue-fuse";
+  import MediaCard from "@/components/MediaCard";
+  import MediaCardWithFooter from "@/components/MediaCardWithFooter";
+  import areas from "@/_helpers/areas.js";
 
   export default {
-    name: 'Home',
-    title: 'Sing a Song',
+    name: "Home",
+    title: "Sing a Song",
     components: {
       VueFuse,
       MediaCard,
-      MediaCardWithFooter
+      MediaCardWithFooter,
     },
     data() {
       return {
@@ -253,47 +253,56 @@
         searchString: this.$route.params.search,
         searchOptions: {
           keys: [
-            'stageName',
+            "stageName",
             {
-              name:'description',
-              weight: 0.5
+              name: "description",
+              weight: 0.5,
             },
-            'user.firstName',
-            'user.lastName'
-          ]
+            "user.firstName",
+            "user.lastName",
+          ],
         },
+        areas,
+        areaChips: ["Stockholm", "Göteborg", "Malmö"],
+        selectedArea: false,
+      };
+    },
+    computed: {
+      profiles() {
+        return this.$store.state.profiles.all;
       },
-      profilesList () {
+      profilesList() {
         if (!this.profiles || !this.profiles.items) {
-          return undefined
+          return undefined;
         } else if (this.selectedArea) {
           return this.profiles.items.filter(profile => {
-            const geoArray = profile.geoReach || []
-            return geoArray.indexOf(this.selectedArea) !== -1
-          })
+            const geoArray = profile.geoReach || [];
+            return geoArray.indexOf(this.selectedArea) !== -1;
+          });
         } else {
           return this.profiles.items;
         }
       },
-      allMedia () {
-        return this.resultsList.flatMap(r=>r.media)
-      }
+      allMedia() {
+        return this.resultsList.flatMap(r => r.media);
+      },
     },
-    created () {
-      this.$store.dispatch('profiles/getAll');
+    created() {
+      this.$store.dispatch("profiles/getAll");
     },
     watch: {
       searchString() {
-        if(!this.searchString) {
-          this.$router.push('/')
+        if (!this.searchString) {
+          this.$router.push("/");
         } else {
-          this.$router.push('/s/' + this.searchString)
+          this.$router.push("/s/" + this.searchString);
         }
-      }
+      },
     },
     methods: {
       handleResults(a) {
-        this.resultsList = a.map(r => r.item)
+        this.resultsList = a.map(r => r.item);
       },
-    };
+    },
+  };
 </script>
