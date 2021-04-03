@@ -8,7 +8,12 @@
       <footer>
         Singasong.nu drivs av Riksförbundet Visan i Sverige.
         <router-link to="/about">Läs mer om oss här</router-link> |
-        <router-link to="/tos">Användarvillkor</router-link>
+        <router-link to="/tos">Användarvillkor</router-link> |
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLScqmyKOihgnDy50mbP905EvWg7cxTcToAl9DLQNfuA-Nr5xlA/viewform?usp=sf_link"
+          target="_blank"
+          >Lämna feedback</a
+        >
       </footer>
     </v-container>
   </v-app>
