@@ -43,10 +43,26 @@
       ></iframe>
     </v-responsive>
 
-    <v-card-actions>
+    <v-card-actions class="pa-0">
       <v-list-item class="px-2" :to="`/profile/${profile.id}`">
-        <v-list-item-avatar color="grey darken-3">
-          <v-img class="elevation-6" alt="" :src="profile.avatarURL"></v-img>
+        <v-list-item-avatar
+          :color="profile.avatarURL ? 'grey  darken-2' : 'accent darken-1'"
+          class="justify-center"
+        >
+          <v-img
+            v-if="profile.avatarURL"
+            class="elevation-6"
+            alt=""
+            :src="profile.avatarURL"
+          ></v-img>
+          <div v-else class="white--text text-h6">
+            {{
+              profile.stageName
+                ? profile.stageName.slice(0, 2)
+                : profile.user.firstName[0].toUpperCase() +
+                  profile.user.lastName[0].toUpperCase()
+            }}
+          </div>
         </v-list-item-avatar>
 
         <v-list-item-content>
