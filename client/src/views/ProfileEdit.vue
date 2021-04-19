@@ -502,6 +502,11 @@
       newMediaValidation() {
         if (!this.newMediaURL) {
           return undefined;
+        } else if (this.newMediaURL.search(".mp3") !== -1) {
+          return {
+            url: this.newMediaURL,
+            provider: "mp3",
+          };
         } else if (this.newMediaURL.search("spotify") !== -1) {
           return Object.assign(spotifyUri.parse(this.newMediaURL), {
             provider: "spotify",

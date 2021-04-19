@@ -27,7 +27,14 @@ export const media = {
     add({ rootState }, { newMediaURL, profileId }) {
       let payload = {};
 
-      if (newMediaURL.search("spotify") !== -1) {
+      if (newMediaURL.search("mp3") !== -1) {
+        payload = {
+          provider: "mp3",
+          url: newMediaURL,
+          type: "mp3",
+          id: newMediaURL,
+        };
+      } else if (newMediaURL.search("spotify") !== -1) {
         payload = Object.assign(spotifyUri.parse(newMediaURL), {
           provider: "spotify",
           url: newMediaURL,

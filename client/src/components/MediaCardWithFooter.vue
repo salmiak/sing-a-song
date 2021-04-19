@@ -1,6 +1,12 @@
 <template lang="html">
   <v-card class="mediaCardWithFooter" color="secondary lighten-4">
-    <v-responsive :aspect-ratio="4 / 3">
+    <v-responsive
+      :aspect-ratio="4 / 3"
+      color="grey darken-3"
+      :content-class="
+        media.provider === 'mp3' ? 'align-center d-flex justify-center' : ''
+      "
+    >
       <iframe
         v-if="media.provider === 'youtube'"
         width="480"
@@ -41,6 +47,13 @@
         allow="autoplay"
         :src="media.value"
       ></iframe>
+
+      <div class="pa-2" style="width:100%;" v-if="media.provider === 'mp3'">
+        <audio controls class="d-block" style="width:100%;">
+          <source :src="media.value" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
     </v-responsive>
 
     <v-card-actions class="pa-0">
